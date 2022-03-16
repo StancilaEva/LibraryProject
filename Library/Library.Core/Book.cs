@@ -10,22 +10,27 @@ namespace Library.Core
     {
         private string title;
         private string author;
-        private Genre genre;
 
         public Book()
         {
         }
 
-        public Book(string title, string author, Genre genre)
+        public Book(string id,string title, string author, Genre genre)
         {
+            this.Id = id;
             this.title = title;
             this.author = author;
-            this.genre = genre;
+            this.Genre = genre;
         }
 
         public string Title { get { return title; } set { if (value.Length >= 3) title = value; } }
         public string Author { get { return author; } set { if (value.Length >= 3) author = value; } }
-        public Genre Genre { get { return genre; } set { genre = value; } }
+        public Genre Genre { get; set; }
+        public string Id { get; set; }
 
+        public override string? ToString()
+        {
+            return $"{title} {author}";
+        }
     }
 }
