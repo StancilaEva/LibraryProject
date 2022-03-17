@@ -1,18 +1,29 @@
-﻿using Library.Core;
+﻿
+
+using Library.Application;
+using Library.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MainApp
 {
      public class UserSignUpService
     {
+        IClientRepository clientRepository;
 
-        public Client LogIn(String email,String password, List<Client> clients)
+        public UserSignUpService(IClientRepository clientRepository)
         {
-            Client client = checkiIfEmailIsAlreadyUsed(email, clients);
+            this.clientRepository = clientRepository;
+        }
+
+        public Client LogIn(String email,String password)
+        {
+            List<Client> clientList = clientRepository.GetAllClients();
+            Client client = checkiIfEmailIsAlreadyUsed(email, clientList);
             if (client == null)
             {
                 throw new NonExistentUserException("this email is not in the database");
@@ -27,13 +38,14 @@ namespace MainApp
             return client;
             
         }
-        public Client SignUp(Client client, List<Client> clients)
-        { 
-            if(isValid(client,clients))
+        public void SignUp(Client client)
+        {
+            List<Client> clientList = clientRepository.GetAllClients();
+            if(isValid(client,clientList))
             {
                 throw new EmailAlreadyInUseException("this email is already being used by another user");
             }
-            return client;
+            clientRepository.InsertClient(client);
         }
 
         private bool isValid(Client client,List<Client> clients)

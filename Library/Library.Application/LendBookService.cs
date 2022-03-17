@@ -1,4 +1,6 @@
-﻿using Library.Core;
+﻿using Library.Application;
+using Library.Application.Exceptions;
+using Library.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +9,32 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class LendBookService
+    public class LendBookService
     {
-        public void LendBookToClient(Book book, Client client, DateTime startDate, DateTime endDate, List<Lend> lendList)
+        ILendRepository lendRepository;
+
+        public LendBookService(ILendRepository lendRepository)
         {
+            this.lendRepository = lendRepository;
+        }
+
+        public void LendBookToClient(Book book, Client client, DateTime startDate, DateTime endDate)
+        {
+            List<Lend> lendList = lendRepository.getAllLends();
             Lend lend = new Lend(book, client, startDate, endDate);
-            if (CheckIfBookIsAvailabe(lend, lendList))
+            if (CheckIfBookIsAvailabe(lend,lendList))
             {
                 lendList.Add(lend);
+            }
+            else
+            {
+                throw new BookNotAvailableException("the book is not available in that time period");
             }
         }
 
         public bool CheckIfBookIsAvailabe(Lend lend, List<Lend> lendList)
         {
-            List<Lend> lendedBooks = findAllTheLendsThatContainTheBook(lend.Book, lendList);
+            List<Lend> lendedBooks = FindAllTheLendsThatContainTheBook(lend.Book);
             foreach (Lend lendThatContainsBook in lendedBooks)
             {
                 if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, lend.StartDate) ||
@@ -33,9 +47,10 @@ namespace MainApp
             return true;
         }
 
-        private static List<Lend> findAllTheLendsThatContainTheBook(Book book, List<Lend> lendList)
+        public List<Lend> FindAllTheLendsThatContainTheBook(Book book)
         {
-            return lendList.Where(lendedBook => lendedBook.Book.Id == book.Id).ToList();
+            List<Lend> lendList = lendRepository.getAllLends();
+            return lendList.Where(lendedBook => lendedBook.Book.Id.Equals(book.Id)).ToList();
         }
 
         public bool BetweenTwoDates(DateTime start, DateTime end,DateTime date)

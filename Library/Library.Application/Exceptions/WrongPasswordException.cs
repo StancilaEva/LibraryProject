@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class NonExistentUserException : Exception
+    internal class WrongPasswordException : Exception
     {
-        public NonExistentUserException(string message) : base(message)
+        public WrongPasswordException(string? message) : base(message)
         {
         }
     }
