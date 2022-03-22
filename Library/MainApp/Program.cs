@@ -1,5 +1,6 @@
 ﻿
 
+using Library.Application;
 using Library.Application.Exceptions;
 using Library.Core;
 using Library.Infrastructure;
@@ -26,16 +27,20 @@ namespace MainApp
             }
 
             LendBookService lendBookService = new LendBookService(lendRepository);
-            try
-            {
-                lendBookService.LendBookToClient(bookList[0], clientList[1], DateTime.Today.AddDays(1), DateTime.Today.AddDays(3));
-            }catch(BookNotAvailableException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            //try
+            //{
+            //    lendBookService.LendBookToClient(bookList[0], clientList[1], DateTime.Today.AddDays(1), DateTime.Today.AddDays(3));
+            //}catch(BookNotAvailableException ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+
+            BooksToFilesService booksToFilesService = new BooksToFilesService(bookRepository);
+            booksToFilesService.WriteBooksToFile();
+            List<Book> booksFromFile = booksToFilesService.RestoreBooksFromFile();
+            booksFromFile.ForEach((book) =>Console.WriteLine(book));    
 
 
-            
         }
 
     }
