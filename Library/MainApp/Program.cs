@@ -40,6 +40,12 @@ namespace MainApp
             List<Book> booksFromFile = booksToFilesService.RestoreBooksFromFile();
             booksFromFile.ForEach((book) =>Console.WriteLine(book));    
 
+            IMembershipFactory factory = new StandardMembershipFactory();
+            LibraryMembership membership1 = factory.Create();
+            factory = new PremiumMembershipFactory();
+            LibraryMembership membership2 = factory.Create();
+            Console.WriteLine($"Abonamentul Standard are {membership1.Duration} zile\nAbonamentul Premium are {membership2.Duration} zile\n");
+
 
         }
 

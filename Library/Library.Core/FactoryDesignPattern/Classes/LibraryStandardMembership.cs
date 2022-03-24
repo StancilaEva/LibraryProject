@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class NonExistentUserException : Exception
+    public class LibraryStandardMembership : LibraryMembership
     {
-        public NonExistentUserException(string message) : base(message)
+        public LibraryStandardMembership() : base(7)
         {
         }
     }

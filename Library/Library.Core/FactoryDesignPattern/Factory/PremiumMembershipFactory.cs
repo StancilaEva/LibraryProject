@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class NonExistentUserException : Exception
+    public class PremiumMembershipFactory : IMembershipFactory
     {
-        public NonExistentUserException(string message) : base(message)
+        public LibraryMembership Create()
         {
+            return new LibraryPremiumMembership();
         }
     }
 }

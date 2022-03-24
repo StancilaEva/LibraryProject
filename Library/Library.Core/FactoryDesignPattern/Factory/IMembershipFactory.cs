@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class NonExistentUserException : Exception
+    public interface IMembershipFactory
     {
-        public NonExistentUserException(string message) : base(message)
-        {
-        }
+        public LibraryMembership Create();
     }
 }

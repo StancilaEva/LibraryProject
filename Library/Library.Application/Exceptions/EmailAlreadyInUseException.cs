@@ -8,7 +8,7 @@ namespace MainApp
 {
     internal class EmailAlreadyInUseException : Exception
     {
-        public EmailAlreadyInUseException(string? message) : base(message)
+        public EmailAlreadyInUseException(string message) : base(message)
         {
         }
     }

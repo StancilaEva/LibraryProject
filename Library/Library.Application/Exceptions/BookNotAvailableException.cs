@@ -8,7 +8,7 @@ namespace Library.Application.Exceptions
 {
     public class BookNotAvailableException : Exception
     {
-        public BookNotAvailableException(string? message) : base(message)
+        public BookNotAvailableException(string message) : base(message)
         {
         }
     }
