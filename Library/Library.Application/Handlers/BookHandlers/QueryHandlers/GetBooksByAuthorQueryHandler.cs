@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers
 {
-    public class GetBooksByAuthorHandler : IRequestHandler<GetBooksByAuthorQuery, List<Book>>
+    public class GetBooksByAuthorQueryHandler : IRequestHandler<GetBooksByAuthorQuery, List<Book>>
     {
         IBookRepository _bookRepository;
 
-        public GetBooksByAuthorHandler(IBookRepository bookRepository)
+        public GetBooksByAuthorQueryHandler(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
 
         public Task<List<Book>> Handle(GetBooksByAuthorQuery request, CancellationToken cancellationToken)
         {
-            var books = _bookRepository.GetAllBooks().Where(book => book.Author.Equals(request.Author)).ToList();
-            // nu ar fi mai bine sa chem direct getBooksByAuthor din repository
+            var books = _bookRepository.FilterBooksByAuthor(request.Author);
+           
             return Task.FromResult(books);
 
         }

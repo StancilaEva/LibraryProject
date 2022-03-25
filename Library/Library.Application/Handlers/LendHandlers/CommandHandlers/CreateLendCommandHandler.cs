@@ -1,30 +1,33 @@
-﻿using Library.Application;
+﻿using Library.Application.Commands.LendCommands;
 using Library.Application.Exceptions;
 using Library.Core;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainApp
+namespace Library.Application.Handlers.LendHandlers
 {
-    public class LendBookService
+    public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,Lend>
     {
-        ILendRepository lendRepository;
+        ILendRepository _lendRepository;
 
-        public LendBookService(ILendRepository lendRepository)
+        public CreateLendCommandHandler(ILendRepository lendRepository)
         {
-            this.lendRepository = lendRepository;
+            this._lendRepository = lendRepository;
         }
 
-        public void LendBookToClient(Book book, Client client, DateTime startDate, DateTime endDate)
+        public Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            List<Lend> lendList = lendRepository.GetAllLends();
-            Lend lend = new Lend(book, client, startDate, endDate);
+
+            
+            Lend lend = new Lend(request.Book, request.Client, request.StartDate, request.EndDate);
             if (CheckIfBookIsAvailabe(lend))
             {
-                lendList.Add(lend);
+                _lendRepository.InsertLend(lend);
+                return Task.FromResult(lend);
             }
             else
             {
@@ -34,7 +37,7 @@ namespace MainApp
 
         public bool CheckIfBookIsAvailabe(Lend lend)
         {
-            List<Lend> lendedBooks = lendRepository.FilterLendsByBook(lend.Book);
+            List<Lend> lendedBooks = _lendRepository.FilterLendsByBook(lend.Book);
             foreach (Lend lendThatContainsBook in lendedBooks)
             {
                 if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, lend.StartDate) ||
@@ -47,8 +50,7 @@ namespace MainApp
             return true;
         }
 
-       
-        public bool BetweenTwoDates(DateTime start, DateTime end,DateTime date)
+        public bool BetweenTwoDates(DateTime start, DateTime end, DateTime date)
         {
             if (DateOnly.FromDateTime(start) < DateOnly.FromDateTime(date) &&
                 DateOnly.FromDateTime(end) > DateOnly.FromDateTime(date))

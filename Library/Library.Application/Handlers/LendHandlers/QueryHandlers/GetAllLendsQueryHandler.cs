@@ -20,7 +20,7 @@ namespace Library.Application.Handlers.LendHandlers
 
         public Task<List<Lend>> Handle(GetAllLendsQuery request, CancellationToken cancellationToken)
         {
-            var result = _lendRepository.getAllLends();
+            var result = _lendRepository.GetAllLends();
             return Task.FromResult(result);
         }
     }

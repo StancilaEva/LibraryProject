@@ -16,13 +16,18 @@ namespace Library.Infrastructure
             lendList = new List<Lend>();
         }
 
-        public List<Lend> getAllLends()
+        public List<Lend> GetAllLends()
         {
             return lendList;
         }
         public void InsertLend(Lend lend)
         {
             lendList.Add(lend);
+        }
+        
+        public List<Lend> FilterLendsByBook(Book book)
+        {
+            return lendList.Where(lendedBook => lendedBook.Book.Id.Equals(book.Id)).ToList();
         }
     }
 }

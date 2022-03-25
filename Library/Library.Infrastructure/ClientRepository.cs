@@ -20,17 +20,23 @@ namespace Library.Infrastructure
                 new Client("3","client3","aefhkeghg",new Address("Bld Vladimirescu","Ploiesti","Prahova",15),"client3@gmail.com")
             };
         }
+        public Client GetClientByEmail(string email)
+        {
+            return clientList.Where((client) => client.Email.Equals(email)).FirstOrDefault();
+        }
         public List<Client> GetAllClients()
         {
             return clientList;
         }
-        public Client GetClientByEmailAndPassowrd()
-        {
-            return null;
-        }
+        
         public void InsertClient(Client client)
         {
             clientList.Add(client);
+        }
+
+        public Client GetClientByEmailAndPassowrd()
+        {
+            throw new NotImplementedException();
         }
     }
 }

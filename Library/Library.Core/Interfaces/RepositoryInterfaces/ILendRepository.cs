@@ -9,7 +9,8 @@ namespace Library.Application
 {
     public interface ILendRepository
     {
-        public List<Lend> getAllLends();
+        public List<Lend> GetAllLends();
         public void InsertLend(Lend lend);
+        public List<Lend> FilterLendsByBook(Book book);
     }
 }

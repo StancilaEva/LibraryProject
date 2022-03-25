@@ -12,5 +12,7 @@ namespace Library.Application
         public List<Client> GetAllClients();
         public Client GetClientByEmailAndPassowrd();
         public void InsertClient(Client client);
+
+        public Client GetClientByEmail(string email);
     }
 }

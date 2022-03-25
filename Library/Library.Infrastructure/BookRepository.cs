@@ -38,11 +38,20 @@ namespace Library.Infrastructure
             return booksByAuthor;
         }
 
-
-
         public void InsertBook(Book book)
         {
             bookList.Add(book);
+        }
+
+        public void delete(Book book)
+        {
+            bookList.Remove(book);
+        }
+
+        public void update(Book book)
+        {
+            int index = bookList.FindIndex(x => x.Id == book.Id);
+            bookList.Insert(index, book);
         }
     }
 }

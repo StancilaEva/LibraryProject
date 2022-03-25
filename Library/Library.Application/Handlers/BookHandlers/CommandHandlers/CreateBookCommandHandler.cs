@@ -9,19 +9,20 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers
 {
-    internal class CreateBookHandler : IRequestHandler<CreateBookCommand, Book>
+    internal class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book>
     {
         IBookRepository _bookRepository;
 
-        public CreateBookHandler(IBookRepository bookRepository)
+        public CreateBookCommandHandler(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
 
         public Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
-            _bookRepository.InsertBook(request.NewBook);
-            return Task.FromResult(request.NewBook);
+            var book = request.NewBook;
+            _bookRepository.InsertBook(book);
+            return Task.FromResult(book);
         }
     }
 }

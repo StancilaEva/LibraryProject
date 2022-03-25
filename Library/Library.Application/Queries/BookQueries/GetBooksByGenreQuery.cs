@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application.Queries.ClientQueries
+namespace Library.Application.Queries.BookQueries
 {
-    internal class GetClientQuery : IRequest<Client>
+    public class GetBooksByGenreQuery : IRequest<List<Book>>
     {
+        public Genre Genre { get; set; }
     }
 }

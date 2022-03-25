@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Commands.BookCommands
 {
-    internal class CreateBookCommand :IRequest<Book>
+    public class CreateBookCommand :IRequest<Book>
     {
         public Book NewBook { get; set; }
     }
