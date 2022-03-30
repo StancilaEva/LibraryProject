@@ -11,6 +11,6 @@ namespace Library.Application
     {
         public List<Lend> GetAllLends();
         public void InsertLend(Lend lend);
-        public List<Lend> FilterLendsByBook(Book book);
+        public List<Lend> FilterLendsByBook(string bookId);
     }
 }

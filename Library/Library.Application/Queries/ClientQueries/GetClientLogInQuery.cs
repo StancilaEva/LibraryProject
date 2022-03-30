@@ -1,4 +1,5 @@
-﻿using Library.Core;
+﻿using Library.Application.DTOs;
+using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.ClientQueries
 {
-    public class GetClientLogInQuery : IRequest<Client>
+    public class GetClientLogInQuery : IRequest<LogInDTO>
     {
         public String Email { get; set; }
 

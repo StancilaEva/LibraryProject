@@ -23,6 +23,8 @@ namespace Library.Core
             this.endDate = endDate;
         }
 
+        
+
         public int Id { get; set; }
         public Book Book { get; set; }
         public Client Client { get; set; }

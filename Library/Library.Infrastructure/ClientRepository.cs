@@ -20,6 +20,10 @@ namespace Library.Infrastructure
                 new Client("3","client3","aefhkeghg",new Address("Bld Vladimirescu","Ploiesti","Prahova",15),"client3@gmail.com")
             };
         }
+        public Client GetClientById(string id)
+        {
+            return clientList.Where((client) => client.Id.Equals(id)).FirstOrDefault();
+        }
         public Client GetClientByEmail(string email)
         {
             return clientList.Where((client) => client.Email.Equals(email)).FirstOrDefault();

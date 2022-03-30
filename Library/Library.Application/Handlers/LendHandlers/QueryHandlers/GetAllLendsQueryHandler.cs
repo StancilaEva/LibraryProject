@@ -1,5 +1,6 @@
 ﻿using Library.Application.Queries.LendQueries;
 using Library.Core;
+using Library.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Library.Application.Handlers.LendHandlers
     {
         ILendRepository _lendRepository;
 
-        public GetAllLendsQueryHandler(ILendRepository lendRepository)
+        public GetAllLendsQueryHandler()
         {
-            _lendRepository = lendRepository;
+            _lendRepository = new LendRepository();
         }
 
         public Task<List<Lend>> Handle(GetAllLendsQuery request, CancellationToken cancellationToken)

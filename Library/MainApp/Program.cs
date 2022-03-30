@@ -1,11 +1,15 @@
 ﻿
 
 using Library.Application;
-using Library.Application.Exceptions;
+using Library.Application.Commands.ClientCommands;
 using Library.Core;
 using Library.Core.DesignPatterns.Singleton;
 using Library.Core.FactoryDesignPattern.Factory;
 using Library.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using Library.Core.DesignPatterns.Proxy;
+using Library.Core.DesignPatterns.Decorator;
 
 namespace MainApp
 {
@@ -13,7 +17,7 @@ namespace MainApp
     {
         //   static ArrayList bookArray;
         // static ArrayList clientArray;
-        static void Main(string[] args)
+        static  void Main(string[] args)
         {
             BookRepository bookRepository = new BookRepository();
             ClientRepository clientRepository = new ClientRepository();
@@ -28,11 +32,11 @@ namespace MainApp
                 Console.WriteLine(lend.Book+" "+lend.Client);
             }
 
-            LendBookService lendBookService = new LendBookService(lendRepository);
+            
           
 
 
-            BooksToFilesService booksToFilesService = new BooksToFilesService(bookRepository);
+            BooksToFile booksToFilesService = new BooksToFile(bookRepository);
             booksToFilesService.WriteBooksToFile();
             List<Book> booksFromFile = booksToFilesService.RestoreBooksFromFile();
             booksFromFile.ForEach((book) =>Console.WriteLine(book));
@@ -42,9 +46,19 @@ namespace MainApp
             librarianSingleton.MembershipFactory = new PremiumMembershipFactory();
             LibraryMembership membership2 = librarianSingleton.MembershipFactory.Create();
             Console.WriteLine($"Abonamentul Standard are {membership1.Duration} zile\nAbonamentul Premium are {membership2.Duration} zile\n");
-          
+            LibraryVIPServicesProxy libraryVIPServicesProxy = new LibraryVIPServicesProxy(new LibraryVIPServices());
+            libraryVIPServicesProxy.GetInternetAccess(membership1);
+            libraryVIPServicesProxy.GetInternetAccess(membership2);
 
-
+            IMembership membership = new DefaultMembership();
+            membership = new ComputerAccess(membership);
+            membership = new InternetAccess(membership);
+            Console.WriteLine(membership.GetAccess() + " " + membership.GetCost());
+            //var serviceCollection = new ServiceCollection();
+            //serviceCollection.AddMediatR(typeof(SignUpCommand));
+            //var serviceProvider = serviceCollection.BuildServiceProvider();
+            //var meditr = serviceProvider.GetRequiredService<IMediator>();
+            //await meditr.Send()
         }
 
     }

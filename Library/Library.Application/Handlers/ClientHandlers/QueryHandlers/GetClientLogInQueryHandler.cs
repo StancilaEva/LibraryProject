@@ -1,5 +1,7 @@
-﻿using Library.Application.Queries.ClientQueries;
+﻿using Library.Application.DTOs;
+using Library.Application.Queries.ClientQueries;
 using Library.Core;
+using Library.Infrastructure;
 using MainApp;
 using MediatR;
 using System;
@@ -10,10 +12,16 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
 {
-    public class GetClientLogInQueryHandler : IRequestHandler<GetClientLogInQuery, Client>
+    public class GetClientLogInQueryHandler : IRequestHandler<GetClientLogInQuery, LogInDTO>
     {
         IClientRepository _clientRepository;
-        public Task<Client> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
+
+        public GetClientLogInQueryHandler()
+        {
+            _clientRepository = new ClientRepository();
+        }
+
+        public Task<LogInDTO> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
         {
             List<Client> clientList = _clientRepository.GetAllClients();
             Client client = checkiIfEmailIsAlreadyUsed(request.Email);
@@ -28,7 +36,10 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
                 throw new WrongPasswordException("wrong password");
             }
             else
-                  return Task.FromResult(client);
+            {
+                LogInDTO logInDTO = new LogInDTO(client.Username, client.Id);
+                return Task.FromResult(logInDTO);
+            }
         }
 
         private Client checkiIfEmailIsAlreadyUsed(string email)

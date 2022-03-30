@@ -26,7 +26,10 @@ namespace Library.Infrastructure
         {
             return bookList;
         }
-
+        public Book GetBookById(string id)
+        {
+            return bookList.Where(book => book.Id.Equals(id)).FirstOrDefault();
+        }
         public List<Book> FilterBooksByAuthor(string author)
         {
             List<Book> booksByAuthor = bookList.Where(book => book.Author.Equals(author)).ToList();

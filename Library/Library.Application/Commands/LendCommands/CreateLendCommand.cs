@@ -10,9 +10,7 @@ namespace Library.Application.Commands.LendCommands
 {
     public class CreateLendCommand : IRequest<Lend>
     {
-        public Book Book{ get; set; }
-
-        public Client Client{ get; set; }
+        
 
         public DateTime StartDate { get; set; }
 

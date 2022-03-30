@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Library.Application
 {
-     public class BooksToFilesService
+     public class BooksToFile
     {
         IBookRepository bookRepository;
-        public BooksToFilesService(IBookRepository bookRepository)
+        public BooksToFile(IBookRepository bookRepository)
         {
             this.bookRepository = bookRepository;
         }

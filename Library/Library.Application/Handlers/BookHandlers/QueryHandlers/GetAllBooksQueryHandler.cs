@@ -1,5 +1,6 @@
 ﻿using Library.Application.Queries;
 using Library.Core;
+using Library.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Library.Application.Handlers
     {
         private IBookRepository _bookRepository;
 
-        public GetAllBooksQueryHandler(IBookRepository bookRepository)
+        public GetAllBooksQueryHandler()
         {
-            _bookRepository = bookRepository;
+            _bookRepository = new BookRepository();
         }
 
         public Task<List<Book>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)

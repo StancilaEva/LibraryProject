@@ -1,4 +1,6 @@
-﻿using Library.Core;
+﻿using Library.Application.Commands.ClientCommands.SignUpUserCommand;
+using Library.Application.DTOs;
+using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,11 +10,9 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Commands.ClientCommands
 {
-    public class SignUpCommand : IRequest<Client>
+    public class SignUpCommand : IRequest<LogInDTO>
     {
-        public Client Client { get; set; }
-
-        public Address Address { get; set; }
+        public SignUpDTO SignUpDTO { get; set; }
 
     }
 }
