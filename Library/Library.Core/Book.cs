@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Library.Core
 {
-    public class Book : BookObserver
+    public class Book 
     {
         private string title;
         private string author;
 
-        public Book() : base(new List<ClientSubscriber>())
+        public Book() 
         {
         }
 
-        public Book(string id, string title, string author, Genre genre) : base(new List<ClientSubscriber>())
+        public Book(string id, string title, string author, Genre genre) 
         {
             this.Id = id;
             this.title = title;
@@ -24,16 +24,8 @@ namespace Library.Core
             this.Genre = genre;
 
         }
-        public Book(string title, string author, Genre genre) : base(new List<ClientSubscriber>())
+        public Book(string title, string author, Genre genre)
         {
-            this.title = title;
-            this.author = author;
-            this.Genre = genre;
-        }
-
-        public Book(string id, string title, string author, Genre genre, List<ClientSubscriber> subscribers) : base(subscribers)
-        {
-            this.Id = id;
             this.title = title;
             this.author = author;
             this.Genre = genre;
@@ -44,10 +36,6 @@ namespace Library.Core
         public Genre Genre { get; set; }
         public string Id { get; set; }
 
-        public override void IsNowAvailable()
-        {
-            clientSubscribers.ForEach(clientSubscriber => clientSubscriber.Notify(this));
-        }
 
         public override string? ToString()
         {

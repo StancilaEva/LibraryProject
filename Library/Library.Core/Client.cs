@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Core
 {
-    public class Client : ClientSubscriber
+    public class Client 
     {
        
         private string username;

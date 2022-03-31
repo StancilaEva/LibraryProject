@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using Library.Core.DesignPatterns.Proxy;
 using Library.Core.DesignPatterns.Decorator;
+using Library.Core.DesignPatterns.Observer;
 
 namespace MainApp
 {
@@ -59,6 +60,10 @@ namespace MainApp
             //var serviceProvider = serviceCollection.BuildServiceProvider();
             //var meditr = serviceProvider.GetRequiredService<IMediator>();
             //await meditr.Send()
+            BookSubject bookSubject = new BookSubject(bookList[0]);
+            bookSubject.AddSubcription(new UserObserver(clientList[0].Email));
+            bookSubject.AddSubcription(new UserObserver(clientList[1].Email));
+            bookSubject.IsNowAvailable();
         }
 
     }
