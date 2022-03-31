@@ -23,11 +23,20 @@ namespace Library.Core
             this.endDate = endDate;
         }
 
-        
+        public Lend(DateTime startDate, DateTime endDate, string bookId, string clientId)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            BookId = bookId;
+            ClientId = clientId;
+        }
 
         public int Id { get; set; }
         public Book Book { get; set; }
         public Client Client { get; set; }
+        public string BookId { get; set; }
+        public string ClientId { get; set; }
+
         public DateTime StartDate { get { return startDate; } set { if (DateOnly.FromDateTime(value) >= DateOnly.FromDateTime(DateTime.Today)) startDate = value; } }
         public DateTime EndDate { get { return endDate; } set { if (DateOnly.FromDateTime(value) > DateOnly.FromDateTime(DateTime.Today)) endDate = value; } }
 

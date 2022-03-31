@@ -1,4 +1,5 @@
 ﻿using Library.Application.Commands.LendCommands;
+using Library.Application.DTOs;
 using Library.Application.Exceptions;
 using Library.Core;
 using Library.Infrastructure;
@@ -11,29 +12,28 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.LendHandlers
 {
-    public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,Lend>
+    public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,LendDTO>
     {
         ILendRepository _lendRepository;
 
 
-        public CreateLendCommandHandler(ILendRepository lendRepository)
+        public CreateLendCommandHandler()
         {
             this._lendRepository = new LendRepository();
         }
 
-        public Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
+        public Task<LendDTO> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            //Lend lend = new Lend(request.Book, request.Client, request.StartDate, request.EndDate);
-            //if (CheckIfBookIsAvailabe(lend))
-            //{
-            //    _lendRepository.InsertLend(lend);
-            //    return Task.FromResult(lend);
-            //}
-            //else
-            //{
-            //    throw new BookNotAvailableException("the book is not available in that time period");
-            //}
-            throw new NotImplementedException();
+            Lend lend = new Lend(request.lendDTO.StartDate, request.lendDTO.EndDate,request.lendDTO.BookId, request.lendDTO.UserId);
+            if (CheckIfBookIsAvailabe(lend))
+            {
+                _lendRepository.InsertLend(lend);
+                return Task.FromResult(request.lendDTO);
+            }
+            else
+            {
+                throw new BookNotAvailableException("the book is not available in that time period");
+            }
         }
 
         public bool CheckIfBookIsAvailabe(Lend lend)
@@ -59,5 +59,7 @@ namespace Library.Application.Handlers.LendHandlers
             else
                 return false;
         }
+
+        
     }
 }

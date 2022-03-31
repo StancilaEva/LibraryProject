@@ -14,7 +14,7 @@ namespace Library.Core.DesignPatterns.Decorator
 
         public override string GetAccess()
         {
-            return membership.GetAccess() + " got access for comic books";
+            return membership.GetAccess() + ", got access for comic books";
         }
 
         public override int GetCost()

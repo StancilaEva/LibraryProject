@@ -1,4 +1,5 @@
-﻿using Library.Core;
+﻿using Library.Application.DTOs;
+using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetBooksByAuthorQuery : IRequest<List<Book>>
+    public class GetBooksByAuthorQuery : IRequest<List<BooksDTO>>
     {
         public String Author { get; set; }
     }

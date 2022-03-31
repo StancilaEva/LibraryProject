@@ -1,4 +1,5 @@
-﻿using Library.Application.Queries;
+﻿using Library.Application.DTOs;
+using Library.Application.Queries;
 using Library.Core;
 using Library.Infrastructure;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers
 {
-    public class GetAllBooksQueryHandler : IRequestHandler<GetAllBooksQuery, List<Book>>
+    public class GetAllBooksQueryHandler : IRequestHandler<GetAllBooksQuery, List<BooksDTO>>
     {
         private IBookRepository _bookRepository;
 
@@ -19,9 +20,9 @@ namespace Library.Application.Handlers
             _bookRepository = new BookRepository();
         }
 
-        public Task<List<Book>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
+        public Task<List<BooksDTO>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
         {
-            var result = _bookRepository.GetAllBooks();
+            var result = _bookRepository.GetAllBooks().Select(book=>new BooksDTO(book.Id,book.Title,book.Author)).ToList();
             return Task.FromResult(result);
         }
 

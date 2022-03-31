@@ -8,9 +8,15 @@ namespace Library.Application.DTOs
 {
     public class BooksDTO
     {
+        public BooksDTO(string id, string title, string author)
+        {
+            Id = id;
+            Title = title;
+            Author = author;
+        }
+
         public string Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }  
-        public string Genre { get; set; }
     }
 }
