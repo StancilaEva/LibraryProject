@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetBooksByAuthorQuery : IRequest<List<BooksDTO>>
+    public class GetComicBooksByAuthorQuery : IRequest<List<ComicBooksDTO>>
     {
         public String Author { get; set; }
     }

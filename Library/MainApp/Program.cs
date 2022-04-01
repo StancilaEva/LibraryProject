@@ -20,10 +20,10 @@ namespace MainApp
         // static ArrayList clientArray;
         static  void Main(string[] args)
         {
-            BookRepository bookRepository = new BookRepository();
+            ComicBookRepository bookRepository = new ComicBookRepository();
             ClientRepository clientRepository = new ClientRepository();
             LendRepository lendRepository = new LendRepository();
-            List<Book> bookList = bookRepository.GetAllBooks();
+            List<ComicBook> bookList = bookRepository.GetAllBooks();
             List<Client> clientList = clientRepository.GetAllClients();
             List<Lend> lendList = lendRepository.GetAllLends();
             lendRepository.InsertLend(new Lend(bookList[0], clientList[0], DateTime.Today, DateTime.Today.AddDays(7)));
@@ -39,7 +39,7 @@ namespace MainApp
 
             BooksToFile booksToFilesService = new BooksToFile(bookRepository);
             booksToFilesService.WriteBooksToFile();
-            List<Book> booksFromFile = booksToFilesService.RestoreBooksFromFile();
+            List<ComicBook> booksFromFile = booksToFilesService.RestoreBooksFromFile();
             booksFromFile.ForEach((book) =>Console.WriteLine(book));
             LibrarianSingleton librarianSingleton = LibrarianSingleton.GetInstance();
             librarianSingleton.MembershipFactory = new StandardMembershipFactory();
@@ -60,7 +60,7 @@ namespace MainApp
             //var serviceProvider = serviceCollection.BuildServiceProvider();
             //var meditr = serviceProvider.GetRequiredService<IMediator>();
             //await meditr.Send()
-            BookSubject bookSubject = new BookSubject(bookList[0]);
+            ComicBookSubject bookSubject = new ComicBookSubject(bookList[0]);
             bookSubject.AddSubcription(new UserObserver(clientList[0].Email));
             bookSubject.AddSubcription(new UserObserver(clientList[1].Email));
             bookSubject.IsNowAvailable();

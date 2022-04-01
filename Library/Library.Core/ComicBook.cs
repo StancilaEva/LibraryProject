@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Library.Core
 {
-    public class Book 
+    public class ComicBook 
     {
         private string title;
         private string author;
 
-        public Book() 
+        public ComicBook() 
         {
         }
 
-        public Book(string id, string title, string author, Genre genre) 
+        public ComicBook(string id, string title, string author, Genre genre) 
         {
             this.Id = id;
             this.title = title;
@@ -24,7 +24,7 @@ namespace Library.Core
             this.Genre = genre;
 
         }
-        public Book(string title, string author, Genre genre)
+        public ComicBook(string title, string author, Genre genre)
         {
             this.title = title;
             this.author = author;

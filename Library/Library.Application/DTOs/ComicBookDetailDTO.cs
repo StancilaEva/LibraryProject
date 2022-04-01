@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace Library.Application.DTOs
 {
-    public class BooksDTO
+    public class ComicBookDetailDTO
     {
-        public BooksDTO(string id, string title, string author)
+        public ComicBookDetailDTO(string id,string title, string author, string genre)
         {
             Id = id;
             Title = title;
             Author = author;
+            Genre = genre;
         }
 
-        public string Id { get; set; }
         public string Title { get; set; }
-        public string Author { get; set; }  
+        public string Author { get; set; }
+        public string Genre { get; set; }
+        public string Id { get; set; }
     }
 }

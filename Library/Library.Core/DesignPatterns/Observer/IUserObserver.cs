@@ -8,6 +8,6 @@ namespace Library.Core.DesignPatterns.Observer
 {
     public interface IUserObserver
     {
-        public void Notify(Book book);
+        public void Notify(ComicBook book);
     }
 }

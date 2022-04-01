@@ -23,17 +23,17 @@ namespace Library.Application
             FileStream fileStream = File.Create(filesPath);
             using(StreamWriter writer = new StreamWriter(fileStream))
             {
-               List<Book> books = bookRepository.GetAllBooks();
-               foreach(Book book in books)
+               List<ComicBook> books = bookRepository.GetAllBooks();
+               foreach(ComicBook book in books)
                 {
                     writer.WriteLine(WriteBook(book));
                 }
             }
         }
 
-        public List<Book> RestoreBooksFromFile()
+        public List<ComicBook> RestoreBooksFromFile()
         {
-            List<Book> books = new List<Book>();
+            List<ComicBook> books = new List<ComicBook>();
             string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "LibraryFolder");
             string filesPath = Path.Combine(folderPath, "BookFile.csv");
             FileStream fileStream = File.OpenRead(filesPath);
@@ -44,7 +44,7 @@ namespace Library.Application
                     if (line == null) break;
                     else
                     {
-                        Book book = ReadBook(line);
+                        ComicBook book = ReadBook(line);
                         books.Add(book);
                     }
                 }
@@ -52,14 +52,14 @@ namespace Library.Application
             return books;
         }
 
-        private Book ReadBook(string? line)
+        private ComicBook ReadBook(string? line)
         {
             string[] stringArray = line.Split(',');
-            Book book = new Book(stringArray[0], stringArray[1], stringArray[2], GenreConverter.FromString(stringArray[3]));
+            ComicBook book = new ComicBook(stringArray[0], stringArray[1], stringArray[2], GenreConverter.FromString(stringArray[3]));
             return book;
         }
 
-        private string WriteBook(Book book)
+        private string WriteBook(ComicBook book)
         {
             return $"{book.Id},{book.Title},{book.Author},{GenreConverter.FromEnum(book.Genre)}";
         }

@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application.Queries
+namespace Library.Application.Commands.BookCommands.CreateBookCommand
 {
-    public class GetAllBooksQuery : IRequest<List<BooksDTO>>
+    public class CreateComicBookCommand : IRequest<ComicBookDetailDTO>
     {
-
+        public ComicBookDetailDTO BookDTO { get; set; }
     }
 }

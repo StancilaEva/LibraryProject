@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Library.Core.DesignPatterns.Observer
 {
-    public class BookSubject : IBookSubject
+    public class ComicBookSubject : IComicBookSubject
     {
-        Book book;
+        ComicBook book;
         List<IUserObserver> users;
-        public BookSubject(Book book)
+        public ComicBookSubject(ComicBook book)
         {
             this.book = book;
             users = new List<IUserObserver>();

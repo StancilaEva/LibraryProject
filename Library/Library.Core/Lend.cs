@@ -15,7 +15,7 @@ namespace Library.Core
         {
         }
 
-        public Lend(Book book, Client client, DateTime startDate, DateTime endDate)
+        public Lend(ComicBook book, Client client, DateTime startDate, DateTime endDate)
         {
             this.Book = book;
             this.Client = client;
@@ -32,7 +32,7 @@ namespace Library.Core
         }
 
         public int Id { get; set; }
-        public Book Book { get; set; }
+        public ComicBook Book { get; set; }
         public Client Client { get; set; }
         public string BookId { get; set; }
         public string ClientId { get; set; }

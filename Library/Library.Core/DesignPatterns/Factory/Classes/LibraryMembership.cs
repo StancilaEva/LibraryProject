@@ -11,12 +11,12 @@ namespace MainApp
     {
         private readonly int duration;
         public int Duration { get { return duration; } }
-        public List<Book> BorrowedBooks { get; set; }
+        public List<ComicBook> BorrowedBooks { get; set; }
 
         protected LibraryMembership(int duration)
         {
             this.duration = duration;
-            BorrowedBooks = new List<Book>();
+            BorrowedBooks = new List<ComicBook>();
         }
     }
 }

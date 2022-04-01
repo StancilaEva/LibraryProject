@@ -9,10 +9,10 @@ namespace Library.Application
 {
     public interface IBookRepository
     {
-        public List<Book> GetAllBooks();
-        public List<Book> FilterBooksByAuthor(string author);
-        public List<Book> FilterBooksByGenre(Genre genre);
-        public void InsertBook(Book book);
+        public List<ComicBook> GetAllBooks();
+        public List<ComicBook> FilterBooksByAuthor(string author);
+        public List<ComicBook> FilterBooksByGenre(Genre genre);
+        public void InsertBook(ComicBook book);
 
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Core.DesignPatterns.Observer
 {
-    public interface IBookSubject
+    public interface IComicBookSubject
     {
         public void AddSubcription(IUserObserver userObserver);
 

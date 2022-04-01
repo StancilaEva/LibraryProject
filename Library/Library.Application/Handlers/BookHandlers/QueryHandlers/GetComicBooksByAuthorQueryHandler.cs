@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers
 {
-    public class GetBooksByAuthorQueryHandler : IRequestHandler<GetBooksByAuthorQuery, List<BooksDTO>>
+    public class GetComicBooksByAuthorQueryHandler : IRequestHandler<GetComicBooksByAuthorQuery, List<ComicBooksDTO>>
     {
         IBookRepository _bookRepository;
 
-        public GetBooksByAuthorQueryHandler()
+        public GetComicBooksByAuthorQueryHandler()
         {
-            _bookRepository = new BookRepository();
+            _bookRepository = new ComicBookRepository();
         }
 
-        public Task<List<BooksDTO>> Handle(GetBooksByAuthorQuery request, CancellationToken cancellationToken)
+        public Task<List<ComicBooksDTO>> Handle(GetComicBooksByAuthorQuery request, CancellationToken cancellationToken)
         {
             var books = _bookRepository.FilterBooksByAuthor(request.Author)
-                .Select(book=>new BooksDTO(book.Id,book.Title,book.Author)).ToList();
+                .Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Author)).ToList();
            
             return Task.FromResult(books);
 
