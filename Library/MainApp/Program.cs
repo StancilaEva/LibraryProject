@@ -16,8 +16,7 @@ namespace MainApp
 {
     class MainApplication
     {
-        //   static ArrayList bookArray;
-        // static ArrayList clientArray;
+
         static  void Main(string[] args)
         {
             ComicBookRepository bookRepository = new ComicBookRepository();
@@ -32,10 +31,6 @@ namespace MainApp
             {
                 Console.WriteLine(lend.Book+" "+lend.Client);
             }
-
-            
-          
-
 
             BooksToFile booksToFilesService = new BooksToFile(bookRepository);
             booksToFilesService.WriteBooksToFile();
