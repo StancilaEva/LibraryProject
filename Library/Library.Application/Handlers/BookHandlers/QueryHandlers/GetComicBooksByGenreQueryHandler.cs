@@ -1,5 +1,6 @@
 ﻿using Library.Application.DTOs;
 using Library.Application.Queries.BookQueries;
+using Library.Application.utils;
 using Library.Core;
 using Library.Infrastructure;
 using MediatR;
@@ -22,8 +23,8 @@ namespace Library.Application.Handlers.BookHandlers.QueryHandlers
 
         public Task<List<ComicBooksDTO>> Handle(GetComicBooksByGenreQuery request, CancellationToken cancellationToken)
         {
-            var books = _bookRepository.FilterBooksByGenre(request.Genre)
-                .Select(book => new ComicBooksDTO(book.Id, book.Title, book.Author)).ToList();
+            var books = _bookRepository.FilterBooksByGenre(GenreConverter.FromString(request.Genre))
+                .Select(book => new ComicBooksDTO(book.Id, book.Title, book.Publisher)).ToList();
             return Task.FromResult(books);
         }
     }

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetComicBooksByAuthorQuery : IRequest<List<ComicBooksDTO>>
+    public class GetComicBooksByPublisherQuery : IRequest<List<ComicBooksDTO>>
     {
-        public String Author { get; set; }
+        public String Publisher { get; set; }
     }
 }

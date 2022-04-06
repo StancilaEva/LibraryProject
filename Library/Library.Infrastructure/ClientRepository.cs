@@ -15,18 +15,18 @@ namespace Library.Infrastructure
         {
             clientList = new List<Client>()
             {
-                new Client("1","client1","12345678",new Address("Blvd Iuliu Maniu","Bucuresti","Bucuresti",12),"stancilaeva@gmail.com"),
-                new Client("2","client2","asdfghjkl",new Address("Mihail Moxa","Bucuresti","Bucuresti",11),"stancilaeva@gmail.com"),
-                new Client("3","client3","aefhkeghg",new Address("Bld Vladimirescu","Ploiesti","Prahova",15),"stancilaeva@gmail.com")
+                new Client(1,"client1","12345678",new Address("Blvd Iuliu Maniu","Bucuresti","Bucuresti",12),"stancilaeva@gmail.com"),
+                new Client(2,"client2","asdfghjkl",new Address("Mihail Moxa","Bucuresti","Bucuresti",11),"stancilaeva@gmail.com"),
+                new Client(3,"client3","aefhkeghg",new Address("Bld Vladimirescu","Ploiesti","Prahova",15),"stancilaeva@gmail.com")
             };
         }
         public Client GetClientById(string id)
         {
-            return clientList.Where((client) => client.Id.Equals(id)).FirstOrDefault();
+            return clientList.FirstOrDefault((client) => client.Id.Equals(id));
         }
         public Client GetClientByEmail(string email)
         {
-            return clientList.Where((client) => client.Email.Equals(email)).FirstOrDefault();
+            return clientList.FirstOrDefault((client) => client.Email.Equals(email));
         }
         public List<Client> GetAllClients()
         {
@@ -38,9 +38,9 @@ namespace Library.Infrastructure
             clientList.Add(client);
         }
 
-        public Client GetClientByEmailAndPassowrd()
+        public Client GetClientByEmailAndPassowrd(String email,String password)
         {
-            throw new NotImplementedException();
+            return clientList.FirstOrDefault((client) => client.Email.Equals(email) && client.Password.Equals(password) );
         }
     }
 }

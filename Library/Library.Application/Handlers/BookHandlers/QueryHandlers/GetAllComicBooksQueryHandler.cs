@@ -22,7 +22,7 @@ namespace Library.Application.Handlers
 
         public Task<List<ComicBooksDTO>> Handle(GetAllComicBooksQuery request, CancellationToken cancellationToken)
         {
-            var result = _bookRepository.GetAllBooks().Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Author)).ToList();
+            var result = _bookRepository.GetAllBooks().Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Publisher)).ToList();
             return Task.FromResult(result);
         }
 

@@ -8,13 +8,12 @@ namespace Library.Application.DTOs
 {
     public class LogInDTO
     {
-        public LogInDTO(string userName, string id)
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public LogInDTO(string userName, int id)
         {
             UserName = userName;
             Id = id;
         }
-
-        public string UserName { get; set; }
-        public string Id { get; set; }
     }
 }

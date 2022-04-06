@@ -10,9 +10,11 @@ namespace Library.Application
     public interface IClientRepository
     {
         public List<Client> GetAllClients();
-        public Client GetClientByEmailAndPassowrd();
+        public Client GetClientByEmailAndPassowrd(String email, String password);
         public void InsertClient(Client client);
-
         public Client GetClientByEmail(string email);
     }
 }
+
+
+

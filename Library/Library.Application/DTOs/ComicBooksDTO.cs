@@ -8,14 +8,14 @@ namespace Library.Application.DTOs
 {
     public class ComicBooksDTO
     {
-        public ComicBooksDTO(string id, string title, string author)
+        public ComicBooksDTO(int id, string title, string author)
         {
             Id = id;
             Title = title;
             Author = author;
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }  
     }

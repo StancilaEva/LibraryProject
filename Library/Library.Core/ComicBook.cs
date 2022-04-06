@@ -7,39 +7,31 @@ using System.Threading.Tasks;
 
 namespace Library.Core
 {
-    public class ComicBook 
+    public class ComicBook
     {
-        private string title;
-        private string author;
-
-        public ComicBook() 
-        {
-        }
-
-        public ComicBook(string id, string title, string author, Genre genre) 
-        {
-            this.Id = id;
-            this.title = title;
-            this.author = author;
-            this.Genre = genre;
-
-        }
-        public ComicBook(string title, string author, Genre genre)
-        {
-            this.title = title;
-            this.author = author;
-            this.Genre = genre;
-        }
-
-        public string Title { get { return title; } set { if (value.Length >= 3) title = value; } }
-        public string Author { get { return author; } set { if (value.Length >= 3) author = value; } }
+        public int Id { get; set; }
+        public string Title { get; set; }
         public Genre Genre { get; set; }
-        public string Id { get; set; }
-
-
+        public string Publisher { get; set; }
+        public int IssueNumber { get; set; }
+        public ComicBook(int id, string title, string publisher, Genre genre, int issueNumber)
+        {
+            Id = id;
+            Title = title;
+            Publisher = publisher;
+            Genre = genre;
+            IssueNumber = issueNumber;
+        }
+        public ComicBook(string title, string author, Genre genre, int issueNumber)
+        {
+            Title = title;
+            Publisher = author;
+            Genre = genre;
+            IssueNumber = issueNumber;
+        }
         public override string? ToString()
         {
-            return $"{title} {author}";
+            return $"{Title} {Publisher}";
         }
     }
 }

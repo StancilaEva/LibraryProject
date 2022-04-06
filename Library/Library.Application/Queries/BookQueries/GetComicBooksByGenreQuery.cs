@@ -11,6 +11,6 @@ namespace Library.Application.Queries.BookQueries
 {
     public class GetComicBooksByGenreQuery : IRequest<List<ComicBooksDTO>>
     {
-        public Genre Genre { get; set; }
+        public String Genre { get; set; }
     }
 }

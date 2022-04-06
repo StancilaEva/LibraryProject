@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
 {
-    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, LogInDTO>
+    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, string>
     {
         IClientRepository _clientRepository;
 
@@ -21,7 +21,7 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             _clientRepository = new ClientRepository();
         }
 
-        public Task<LogInDTO> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public Task<string> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             Client client = new Client(request.SignUpDTO.Username,request.SignUpDTO.Password,
                 new Address(request.SignUpDTO.Street,request.SignUpDTO.City,request.SignUpDTO.County,request.SignUpDTO.Number)
@@ -29,9 +29,7 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             if (isValid(client))
             {
                 _clientRepository.InsertClient(client);
-                LogInDTO logInDTO = new LogInDTO(client.Username, client.Id);
-                return Task.FromResult(logInDTO);
-               
+                return Task.FromResult(client.Username);
             }
             else
             {
@@ -41,18 +39,16 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
 
         private bool isValid(Client client)
         {
-            if (checkiIfEmailIsAlreadyUsed(client.Email) == null)
+            if (checkIfEmailIsAlreadyUsed(client.Email) == null)
             {
                 return false;
             }
             return true;
         }
 
-        private Client checkiIfEmailIsAlreadyUsed(string email)
+        private Client checkIfEmailIsAlreadyUsed(string email)
         {
-
             return _clientRepository.GetClientByEmail(email);
-
         }
     }
 }

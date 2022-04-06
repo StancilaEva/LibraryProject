@@ -11,13 +11,18 @@ using MediatR;
 using Library.Core.DesignPatterns.Proxy;
 using Library.Core.DesignPatterns.Decorator;
 using Library.Core.DesignPatterns.Observer;
+using Library.Application.Queries;
+using Library.Application.Handlers;
+using Library.Application.Queries.ClientQueries;
+using Library.Application.Commands.BookCommands.CreateBookCommand;
+using Library.Application.DTOs;
 
 namespace MainApp
 {
     class MainApplication
     {
 
-        static  void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ComicBookRepository bookRepository = new ComicBookRepository();
             ClientRepository clientRepository = new ClientRepository();
@@ -32,10 +37,6 @@ namespace MainApp
                 Console.WriteLine(lend.Book+" "+lend.Client);
             }
 
-            BooksToFile booksToFilesService = new BooksToFile(bookRepository);
-            booksToFilesService.WriteBooksToFile();
-            List<ComicBook> booksFromFile = booksToFilesService.RestoreBooksFromFile();
-            booksFromFile.ForEach((book) =>Console.WriteLine(book));
             LibrarianSingleton librarianSingleton = LibrarianSingleton.GetInstance();
             librarianSingleton.MembershipFactory = new StandardMembershipFactory();
             LibraryMembership membership1 = librarianSingleton.MembershipFactory.Create();
@@ -50,15 +51,29 @@ namespace MainApp
             membership = new ComputerAccess(membership);
             membership = new InternetAccess(membership);
             Console.WriteLine(membership.GetAccess() + " " + membership.GetCost());
-            //var serviceCollection = new ServiceCollection();
-            //serviceCollection.AddMediatR(typeof(SignUpCommand));
-            //var serviceProvider = serviceCollection.BuildServiceProvider();
-            //var meditr = serviceProvider.GetRequiredService<IMediator>();
-            //await meditr.Send()
-            ComicBookSubject bookSubject = new ComicBookSubject(bookList[0]);
-            bookSubject.AddSubcription(new UserObserver(clientList[0].Email));
-            bookSubject.AddSubcription(new UserObserver(clientList[1].Email));
-            bookSubject.IsNowAvailable();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddMediatR(typeof(GetAllComicBooksQueryHandler));
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var meditr = serviceProvider.GetRequiredService<IMediator>();
+            var result = await meditr.Send(new GetAllComicBooksQuery());
+            foreach(var item in result)
+            {
+                Console.WriteLine(item.Title);
+            }
+            var result2 = await meditr.Send(new GetClientLogInQuery()
+            {
+                Email = "stancilaeva@gmail.com",
+                Password = "12345678"
+            });
+            Console.WriteLine(result2.UserName);
+            var result3 = await meditr.Send(new CreateComicBookCommand()
+            {
+                BookDTO = new ComicBookDetailDTO(1,"someTitle","someAuthor","comedy",24)
+                
+            });
+            Console.WriteLine(result3.Title + " " + result3.Publisher);
+            Console.WriteLine(Guid.NewGuid());
+            Console.WriteLine(Guid.NewGuid());
         }
 
     }

@@ -16,10 +16,10 @@ namespace Library.Infrastructure
         public ComicBookRepository()
         {
            bookList = new List<ComicBook>(){
-            new ComicBook("1","Dune", "Frank Herbert",Genre.SCIFI),
-            new ComicBook("2","Project Hail Mary","Andy Weir",Genre.SCIFI),
-            new ComicBook("3","Beach Read","Emily Henry",Genre.ROMANCE),
-            new ComicBook("4","Fifth Season","N.K. Jesmin",Genre.FANTASY)
+            new ComicBook(1,"Dune", "Frank Herbert",Genre.SCIFI,12),
+            new ComicBook(2,"Project Hail Mary","Andy Weir",Genre.SCIFI,12),
+            new ComicBook(3,"Beach Read","Emily Henry",Genre.ROMANCE,13),
+            new ComicBook(4,"Fifth Season","N.K. Jesmin",Genre.FANTASY,14)
             };
         }
         public List<ComicBook> GetAllBooks()
@@ -28,29 +28,26 @@ namespace Library.Infrastructure
         }
         public ComicBook GetBookById(string id)
         {
-            return bookList.Where(book => book.Id.Equals(id)).FirstOrDefault();
+            return bookList.FirstOrDefault(book => book.Id.Equals(id));
         }
-        public List<ComicBook> FilterBooksByAuthor(string author)
+        public List<ComicBook> FilterBooksByPublisher(string author)
         {
-            List<ComicBook> booksByAuthor = bookList.Where(book => book.Author.Equals(author)).ToList();
-            return booksByAuthor;
+            List<ComicBook> booksByPublisher = bookList.Where(book => book.Publisher.Equals(author)).ToList();
+            return booksByPublisher;
         }
         public List<ComicBook> FilterBooksByGenre(Genre genre)
         {
-            List<ComicBook> booksByAuthor = bookList.Where(book => book.Genre.Equals(genre)).ToList();
-            return booksByAuthor;
+            List<ComicBook> booksByGenre = bookList.Where(book => book.Genre.Equals(genre)).ToList();
+            return booksByGenre;
         }
-
         public void InsertBook(ComicBook book)
         {
             bookList.Add(book);
         }
-
         public void delete(ComicBook book)
         {
             bookList.Remove(book);
         }
-
         public void update(ComicBook book)
         {
             int index = bookList.FindIndex(x => x.Id == book.Id);

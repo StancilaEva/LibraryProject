@@ -9,11 +9,8 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Commands.LendCommands
 {
-    public class CreateLendCommand : IRequest<LendDTO>
+    public class CreateLendCommand : IRequest<Lend>
     {
-
-        public LendDTO lendDTO;
-
-
+        public LendDTO LendDTO { get; set; }
     }
 }

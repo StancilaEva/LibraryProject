@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Commands.BookCommands.CreateBookCommand
 {
-    public class CreateComicBookCommand : IRequest<ComicBookDetailDTO>
+    public class CreateComicBookCommand : IRequest<ComicBook>
     {
         public ComicBookDetailDTO BookDTO { get; set; }
     }

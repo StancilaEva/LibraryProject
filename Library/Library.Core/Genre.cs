@@ -12,6 +12,11 @@ namespace Library.Core
         COMEDY,
         SCIFI,
         FANTASY,
-        ROMANCE
+        ROMANCE,
+        ADVENTURE,
+        HISTORY,
+        SLICEOFLIFE,
+        SUPERHEROES,
+        NONFICTION
     }
 }

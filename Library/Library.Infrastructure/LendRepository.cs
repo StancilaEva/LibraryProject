@@ -24,11 +24,12 @@ namespace Library.Infrastructure
         {
             lendList.Add(lend);
         }
-        
         public List<Lend> FilterLendsByBook(string bookId)
         {
             return lendList.Where(lendedBook => lendedBook.Book.Id.Equals(bookId)).ToList();
         }
-        
+
     }
 }
+
+

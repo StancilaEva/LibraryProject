@@ -12,23 +12,22 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.LendHandlers
 {
-    public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,LendDTO>
+    public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,Lend>
     {
         ILendRepository _lendRepository;
-
-
         public CreateLendCommandHandler()
         {
             this._lendRepository = new LendRepository();
         }
-
-        public Task<LendDTO> Handle(CreateLendCommand request, CancellationToken cancellationToken)
+        //SCHIMBA CAND POTI
+        public Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            Lend lend = new Lend(request.lendDTO.StartDate, request.lendDTO.EndDate,request.lendDTO.BookId, request.lendDTO.UserId);
-            if (CheckIfBookIsAvailabe(lend))
+            Lend lend = null;
+            if (CheckIfBookIsAvailabe(request.LendDTO.BookId,request.LendDTO.StartDate,request.LendDTO.EndDate))
             {
+                
                 _lendRepository.InsertLend(lend);
-                return Task.FromResult(request.lendDTO);
+                return Task.FromResult(lend);
             }
             else
             {
@@ -36,13 +35,13 @@ namespace Library.Application.Handlers.LendHandlers
             }
         }
 
-        public bool CheckIfBookIsAvailabe(Lend lend)
+        public bool CheckIfBookIsAvailabe(String id,DateTime startDate,DateTime endDate)
         {
-            List<Lend> lendedBooks = _lendRepository.FilterLendsByBook(lend.Book.Id);
+            List<Lend> lendedBooks = _lendRepository.FilterLendsByBook(id);
             foreach (Lend lendThatContainsBook in lendedBooks)
             {
-                if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, lend.StartDate) ||
-                    BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, lend.EndDate))
+                if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, startDate) ||
+                    BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, endDate))
                 {
                     return false;
                 }

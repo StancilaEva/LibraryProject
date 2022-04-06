@@ -28,7 +28,7 @@ namespace Library.Core.DesignPatterns.Observer
 
         public void IsNowAvailable()
         {
-            users.ForEach(user => user.Notify(book));
+            users.ForEach(user => user.NotifyAsync(book));
         }
     }
 }

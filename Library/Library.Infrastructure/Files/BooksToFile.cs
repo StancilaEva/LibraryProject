@@ -55,13 +55,13 @@ namespace Library.Application
         private ComicBook ReadBook(string? line)
         {
             string[] stringArray = line.Split(',');
-            ComicBook book = new ComicBook(stringArray[0], stringArray[1], stringArray[2], GenreConverter.FromString(stringArray[3]));
+            ComicBook book = new ComicBook(Int32.Parse(stringArray[0]), stringArray[1],stringArray[2], GenreConverter.FromString(stringArray[3]),Int32.Parse(stringArray[4]));
             return book;
         }
 
         private string WriteBook(ComicBook book)
         {
-            return $"{book.Id},{book.Title},{book.Author},{GenreConverter.FromEnum(book.Genre)}";
+            return $"{book.Id},{book.Title},{book.Publisher},{GenreConverter.FromEnum(book.Genre)},{book.IssueNumber}";
         }
     }
 }

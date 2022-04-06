@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Commands.ClientCommands
 {
-    public class SignUpCommand : IRequest<LogInDTO>
+    public class SignUpCommand : IRequest<string>
     {
         public SignUpDTO SignUpDTO { get; set; }
 
