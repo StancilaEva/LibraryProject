@@ -8,10 +8,13 @@ namespace Library.Core
 {
     public class Address
     {
-        private string Street { get; set; }
-        private string City { get; set; }
-        private string County { get; set; }
-        private int Number { get; set; }
+        public int Id { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string County { get; set; }
+        public int Number { get; set; }
+        public Client Client { get; set; }  
+
         public Address(string street, string city, string county, int number)
         {
             if(city != null)

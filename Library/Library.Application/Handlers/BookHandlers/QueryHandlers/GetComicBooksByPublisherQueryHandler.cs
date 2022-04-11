@@ -1,6 +1,7 @@
 ﻿using Library.Application.DTOs;
 using Library.Application.Queries.BookQueries;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
 using MediatR;
 using System;
@@ -15,17 +16,17 @@ namespace Library.Application.Handlers.BookHandlers
     {
         IBookRepository _bookRepository;
 
-        public GetComicBooksByPublisherQueryHandler()
+        public GetComicBooksByPublisherQueryHandler(IBookRepository bookRepository)
         {
-            _bookRepository = new ComicBookRepository();
+            _bookRepository = bookRepository;
         }
 
-        public Task<List<ComicBooksDTO>> Handle(GetComicBooksByPublisherQuery request, CancellationToken cancellationToken)
+        public async Task<List<ComicBooksDTO>> Handle(GetComicBooksByPublisherQuery request, CancellationToken cancellationToken)
         {
-            var books = _bookRepository.FilterBooksByPublisher(request.Publisher)
-                .Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Publisher)).ToList();
-           
-            return Task.FromResult(books);
+            var books = (await _bookRepository.FilterBooksByPublisherAsync(request.Publisher))
+                .Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Publisher,book.Cover)).ToList();
+
+            return books;
 
         }
     }

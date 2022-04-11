@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Application", "Libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainApp", "MainApp\MainApp.csproj", "{D019BAF9-3855-4F5B-8023-10D5BC775122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Infrastructure", "Library.Infrastructure\Library.Infrastructure.csproj", "{A3741451-1139-407F-A742-B23BB9294E59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Infrastructure", "Library.Infrastructure\Library.Infrastructure.csproj", "{A3741451-1139-407F-A742-B23BB9294E59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicBook.Api", "ComicBook.Api\ComicBook.Api.csproj", "{72E88D85-E56C-475A-977F-2B3A234BD80D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A3741451-1139-407F-A742-B23BB9294E59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3741451-1139-407F-A742-B23BB9294E59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3741451-1139-407F-A742-B23BB9294E59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E88D85-E56C-475A-977F-2B3A234BD80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E88D85-E56C-475A-977F-2B3A234BD80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E88D85-E56C-475A-977F-2B3A234BD80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E88D85-E56C-475A-977F-2B3A234BD80D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

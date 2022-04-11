@@ -1,16 +1,22 @@
-﻿using Library.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application
+namespace Library.Core.Interfaces.RepositoryInterfaces
 {
     public interface ILendRepository
     {
-        public List<Lend> GetAllLends();
-        public void InsertLend(Lend lend);
-        public List<Lend> FilterLendsByBook(string bookId);
+        public Task<List<Lend>> GetAllLendsAsync();
+
+        public void InsertLendAsync(Lend lend);
+
+        public Task<List<Lend>> FilterLendsByBookAsync(int bookId);
+
+        public Task<ComicBook> GetBookByIdAsync(int id);
+
+        public Task<Client> GetClientByIdAsync(int id);
+
     }
 }

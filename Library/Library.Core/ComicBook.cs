@@ -14,21 +14,28 @@ namespace Library.Core
         public Genre Genre { get; set; }
         public string Publisher { get; set; }
         public int IssueNumber { get; set; }
-        public ComicBook(int id, string title, string publisher, Genre genre, int issueNumber)
+        public String Cover { get; set; }
+
+
+        public ComicBook(int id, string title, string publisher, Genre genre, int issueNumber,String cover)
         {
             Id = id;
             Title = title;
             Publisher = publisher;
             Genre = genre;
             IssueNumber = issueNumber;
+            Cover = cover;
         }
-        public ComicBook(string title, string author, Genre genre, int issueNumber)
+
+        public ComicBook(string title, string author, Genre genre, int issueNumber,String cover)
         {
             Title = title;
             Publisher = author;
             Genre = genre;
             IssueNumber = issueNumber;
+            Cover = cover;
         }
+
         public override string? ToString()
         {
             return $"{Title} {Publisher}";

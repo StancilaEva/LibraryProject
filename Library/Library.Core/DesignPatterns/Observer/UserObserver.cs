@@ -22,8 +22,8 @@ namespace Library.Core.DesignPatterns.Observer
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential()
                 {
-                    UserName = "this.comic.book.project@gmail.com",
-                    Password = "cevaParola"
+                    UserName = "*****",
+                    Password = "*****"
                 }
             };
             MailAddress fromAdress = new MailAddress("this.comic.book.project@gmail.com");

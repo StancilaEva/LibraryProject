@@ -14,13 +14,14 @@ namespace Library.Application.utils
             switch (genre)
             {
                 case Genre.HORROR: return "horror";
-                    case Genre.COMEDY: return "comedy";
+                case Genre.COMEDY: return "comedy";
                 case Genre.SCIFI:return "sci-fi";
-                    case Genre.FANTASY: return "fantasy";
+                case Genre.FANTASY: return "fantasy";
                 case Genre.ROMANCE:return "romance";
-                    default: return "-";
+                default: return "-";
             }
         }
+
         public static Genre FromString(string str)
         {
             switch (str)
@@ -33,5 +34,6 @@ namespace Library.Application.utils
                 default:return Genre.HORROR;
             }
         }
+
     }
 }

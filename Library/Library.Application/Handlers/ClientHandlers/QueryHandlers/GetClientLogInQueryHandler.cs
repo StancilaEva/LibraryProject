@@ -1,6 +1,7 @@
 ﻿using Library.Application.DTOs;
 using Library.Application.Queries.ClientQueries;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
 using MainApp;
 using MediatR;
@@ -16,21 +17,21 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
     {
         IClientRepository _clientRepository;
 
-        public GetClientLogInQueryHandler()
+        public GetClientLogInQueryHandler(IClientRepository clientRepository)
         {
-            _clientRepository = new ClientRepository();
+            _clientRepository = clientRepository;
         }
 
-        public Task<LogInDTO> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
+        public async Task<LogInDTO> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
         {
-            List<Client> clientList = _clientRepository.GetAllClients();
-            Client client = checkiIfEmailIsAlreadyUsed(request.Email);
+            List<Client> clientList = await _clientRepository.GetAllClientsAsync();
+            Client client = await checkiIfEmailIsAlreadyUsed(request.Email);
+            
             if (client == null)
             {
                 throw new NonExistentUserException("this email is not in the database");
             }
             else
-
             if (!client.Password.Equals(request.Password))
             {
                 throw new WrongPasswordException("wrong password");
@@ -38,15 +39,15 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
             else
             {
                 LogInDTO logInDTO = new LogInDTO(client.Username, client.Id);
-                return Task.FromResult(logInDTO);
+
+                return logInDTO;
             }
         }
 
-        private Client checkiIfEmailIsAlreadyUsed(string email)
+        private async Task<Client> checkiIfEmailIsAlreadyUsed(string email)
         {
 
-            return _clientRepository.GetClientByEmail(email);
-
+            return await  _clientRepository.GetClientByEmailAsync(email);
         }
 
     }

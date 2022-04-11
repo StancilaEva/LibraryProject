@@ -1,20 +1,19 @@
-﻿using Library.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application
+namespace Library.Core.Interfaces.RepositoryInterfaces
 {
     public interface IClientRepository
     {
-        public List<Client> GetAllClients();
-        public Client GetClientByEmailAndPassowrd(String email, String password);
-        public void InsertClient(Client client);
-        public Client GetClientByEmail(string email);
+        public Task<List<Client>> GetAllClientsAsync();
+
+        public Task<Client> GetClientByEmailAndPassowrdAsync(String email, String password);
+
+        public void InsertClientAsync(Client client);
+
+        public Task<Client> GetClientByEmailAsync(string email);
     }
 }
-
-
-

@@ -9,7 +9,7 @@ namespace Library.Core
 {
     public class Lend
     {
-        
+        public int Id { get; set; }
         public ComicBook Book { get; set; }
         public Client Client { get; set; }
         public DateTime StartDate { get; set; }

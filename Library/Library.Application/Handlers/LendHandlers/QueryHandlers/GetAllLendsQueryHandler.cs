@@ -1,5 +1,6 @@
 ﻿using Library.Application.Queries.LendQueries;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
 using MediatR;
 using System;
@@ -14,15 +15,15 @@ namespace Library.Application.Handlers.LendHandlers
     {
         ILendRepository _lendRepository;
 
-        public GetAllLendsQueryHandler()
+        public GetAllLendsQueryHandler(ILendRepository lendRepository)
         {
-            _lendRepository = new LendRepository();
+            _lendRepository = lendRepository;
         }
 
-        public Task<List<Lend>> Handle(GetAllLendsQuery request, CancellationToken cancellationToken)
+        public async Task<List<Lend>> Handle(GetAllLendsQuery request, CancellationToken cancellationToken)
         {
-            var result = _lendRepository.GetAllLends();
-            return Task.FromResult(result);
+            var result = await _lendRepository.GetAllLendsAsync();
+            return result;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Library.Application.DTOs;
 using Library.Application.Exceptions;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
 using MediatR;
 using System;
@@ -15,19 +16,26 @@ namespace Library.Application.Handlers.LendHandlers
     public class CreateLendCommandHandler : IRequestHandler<CreateLendCommand,Lend>
     {
         ILendRepository _lendRepository;
-        public CreateLendCommandHandler()
+
+        public CreateLendCommandHandler(ILendRepository lendRepository)
         {
-            this._lendRepository = new LendRepository();
+            _lendRepository = lendRepository;
         }
-        //SCHIMBA CAND POTI
-        public Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
+
+        public async Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            Lend lend = null;
-            if (CheckIfBookIsAvailabe(request.LendDTO.BookId,request.LendDTO.StartDate,request.LendDTO.EndDate))
+            List<Lend> lendedBooks = await _lendRepository.FilterLendsByBookAsync(request.LendDTO.BookId);
+
+            if (CheckIfBookIsAvailabe(lendedBooks,request.LendDTO.StartDate,request.LendDTO.EndDate))
             {
+               
+                ComicBook comicBook = await _lendRepository.GetBookByIdAsync(request.LendDTO.BookId);
+                Client client = await _lendRepository.GetClientByIdAsync(request.LendDTO.UserId);
                 
-                _lendRepository.InsertLend(lend);
-                return Task.FromResult(lend);
+                Lend lend = new Lend(comicBook, client, request.LendDTO.StartDate, request.LendDTO.EndDate);
+                _lendRepository.InsertLendAsync(lend);
+
+                return lend;
             }
             else
             {
@@ -35,9 +43,9 @@ namespace Library.Application.Handlers.LendHandlers
             }
         }
 
-        public bool CheckIfBookIsAvailabe(String id,DateTime startDate,DateTime endDate)
+        public bool CheckIfBookIsAvailabe(List<Lend> lendedBooks, DateTime startDate,DateTime endDate)
         {
-            List<Lend> lendedBooks = _lendRepository.FilterLendsByBook(id);
+           
             foreach (Lend lendThatContainsBook in lendedBooks)
             {
                 if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, startDate) ||

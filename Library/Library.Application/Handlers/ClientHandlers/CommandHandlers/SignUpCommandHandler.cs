@@ -1,6 +1,7 @@
 ﻿using Library.Application.Commands.ClientCommands;
 using Library.Application.DTOs;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
 using MainApp;
 using MediatR;
@@ -16,9 +17,9 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
     {
         IClientRepository _clientRepository;
 
-        public SignUpCommandHandler()
+        public SignUpCommandHandler(IClientRepository clientRepository)
         {
-            _clientRepository = new ClientRepository();
+            _clientRepository = clientRepository;
         }
 
         public Task<string> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -28,7 +29,7 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
                 ,request.SignUpDTO.Email);
             if (isValid(client))
             {
-                _clientRepository.InsertClient(client);
+                _clientRepository.InsertClientAsync(client);
                 return Task.FromResult(client.Username);
             }
             else
@@ -46,9 +47,10 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             return true;
         }
 
-        private Client checkIfEmailIsAlreadyUsed(string email)
+        private async Task<Client> checkIfEmailIsAlreadyUsed(string email)
         {
-            return _clientRepository.GetClientByEmail(email);
+            return await _clientRepository.GetClientByEmailAsync(email);
         }
+
     }
 }

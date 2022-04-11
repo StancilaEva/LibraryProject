@@ -1,18 +1,22 @@
-﻿using Library.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application
+namespace Library.Core.Interfaces.RepositoryInterfaces
 {
     public interface IBookRepository
     {
-        public List<ComicBook> GetAllBooks();
-        public List<ComicBook> FilterBooksByPublisher(string author);
-        public List<ComicBook> FilterBooksByGenre(Genre genre);
-        public void InsertBook(ComicBook book);
+        public Task<List<ComicBook>> GetAllBooksAsync();
+
+        public Task<List<ComicBook>> FilterBooksByPublisherAsync(string author);
+
+        public Task<List<ComicBook>> FilterBooksByGenreAsync(Genre genre);
+        
+        public void InsertBookAsync(ComicBook book);
+
+        public Task<List<ComicBook>> FilterComicBooksAsync(string publisher, string genre, string order, int pageNr);
 
 
     }

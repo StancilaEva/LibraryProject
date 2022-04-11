@@ -1,5 +1,6 @@
 ﻿using Library.Application.utils;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Library.Application
         {
             this.bookRepository = bookRepository;
         }
-        public void WriteBooksToFile()
+        public async void WriteBooksToFile()
         {
             string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "LibraryFolder");
             Directory.CreateDirectory(folderPath);
@@ -23,7 +24,7 @@ namespace Library.Application
             FileStream fileStream = File.Create(filesPath);
             using(StreamWriter writer = new StreamWriter(fileStream))
             {
-               List<ComicBook> books = bookRepository.GetAllBooks();
+               List<ComicBook> books = await bookRepository.GetAllBooksAsync();
                foreach(ComicBook book in books)
                 {
                     writer.WriteLine(WriteBook(book));
@@ -54,9 +55,10 @@ namespace Library.Application
 
         private ComicBook ReadBook(string? line)
         {
-            string[] stringArray = line.Split(',');
-            ComicBook book = new ComicBook(Int32.Parse(stringArray[0]), stringArray[1],stringArray[2], GenreConverter.FromString(stringArray[3]),Int32.Parse(stringArray[4]));
-            return book;
+            //string[] stringArray = line.Split(',');
+            //ComicBook book = new ComicBook(Int32.Parse(stringArray[0]), stringArray[1],stringArray[2], GenreConverter.FromString(stringArray[3]),Int32.Parse(stringArray[4]));
+            //return book;
+            throw new NotImplementedException();
         }
 
         private string WriteBook(ComicBook book)

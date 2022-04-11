@@ -1,5 +1,8 @@
 ﻿using Library.Application;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
+using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,37 +13,43 @@ namespace Library.Infrastructure
 {
     public class ClientRepository : IClientRepository
     {
-        List<Client> clientList;
-        public ClientRepository()
+        private LibraryContext context;
+
+        public ClientRepository(LibraryContext context)
         {
-            clientList = new List<Client>()
-            {
-                new Client(1,"client1","12345678",new Address("Blvd Iuliu Maniu","Bucuresti","Bucuresti",12),"stancilaeva@gmail.com"),
-                new Client(2,"client2","asdfghjkl",new Address("Mihail Moxa","Bucuresti","Bucuresti",11),"stancilaeva@gmail.com"),
-                new Client(3,"client3","aefhkeghg",new Address("Bld Vladimirescu","Ploiesti","Prahova",15),"stancilaeva@gmail.com")
-            };
-        }
-        public Client GetClientById(string id)
-        {
-            return clientList.FirstOrDefault((client) => client.Id.Equals(id));
-        }
-        public Client GetClientByEmail(string email)
-        {
-            return clientList.FirstOrDefault((client) => client.Email.Equals(email));
-        }
-        public List<Client> GetAllClients()
-        {
-            return clientList;
-        }
-        
-        public void InsertClient(Client client)
-        {
-            clientList.Add(client);
+            this.context = context;
         }
 
-        public Client GetClientByEmailAndPassowrd(String email,String password)
+        public async Task<Client> GetClientByIdAsync(string id)
         {
-            return clientList.FirstOrDefault((client) => client.Email.Equals(email) && client.Password.Equals(password) );
+            return  await context.Clients.FirstOrDefaultAsync((client) => client.Id.Equals(id));
+            
+        }
+
+        public async Task<Client> GetClientByEmailAsync(string email)
+        {
+            return await context.Clients.FirstOrDefaultAsync((client) => client.Email.Equals(email));
+        }
+
+        public async Task<List<Client>> GetAllClientsAsync()
+        {
+            return await context.Clients.ToListAsync();
+        }
+        
+        public async void InsertClientAsync(Client client)
+        {
+            context.Clients.Add(client);
+        }
+
+        public async Task<Client> GetClientByEmailAndPassowrdAsync(String email,String password)
+        {
+            Client client = await context.Clients.FirstOrDefaultAsync((client) => client.Email.Equals(email) && client.Password.Equals(password));
+            if(client == null)
+            {
+                throw new InvalidOperationException("Wrong email or password");
+            }
+
+            return client;
         }
     }
 }

@@ -16,7 +16,11 @@ namespace Library.Core
         public string Password { get; set; }
         public Address Address  { get; set; }
         public string Email { get; set; }
-       
+
+        public Client()
+        {
+        }
+
         public Client(int id, string username, string password, Address address, string email)
         {
             Id = id;
@@ -37,7 +41,7 @@ namespace Library.Core
                 throw new InvalidUsernameException("Invalid username");
             }
 
-            Regex regex = new Regex(@"^[\w -\.] +@([\w -] +\.) +[\w -]{ 2,4}$");
+            Regex regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
             if(!String.IsNullOrEmpty(email) && regex.IsMatch(email))
             {

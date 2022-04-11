@@ -1,5 +1,9 @@
 ﻿using Library.Application;
+using Library.Application.utils;
 using Library.Core;
+using Library.Core.Interfaces.RepositoryInterfaces;
+using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,47 +15,83 @@ namespace Library.Infrastructure
 {
     public class ComicBookRepository : IBookRepository
     {
-        List<ComicBook> bookList;
+        private LibraryContext libraryContext;
 
-        public ComicBookRepository()
+        public ComicBookRepository(LibraryContext libraryContext)
         {
-           bookList = new List<ComicBook>(){
-            new ComicBook(1,"Dune", "Frank Herbert",Genre.SCIFI,12),
-            new ComicBook(2,"Project Hail Mary","Andy Weir",Genre.SCIFI,12),
-            new ComicBook(3,"Beach Read","Emily Henry",Genre.ROMANCE,13),
-            new ComicBook(4,"Fifth Season","N.K. Jesmin",Genre.FANTASY,14)
-            };
+            this.libraryContext = libraryContext;
         }
-        public List<ComicBook> GetAllBooks()
+
+        public async Task<List<ComicBook>> GetAllBooksAsync()
         {
-            return bookList;
+            return await libraryContext.ComicBooks.ToListAsync();
         }
-        public ComicBook GetBookById(string id)
+
+        public async Task<ComicBook> GetBookByIdAsync(string id)
         {
-            return bookList.FirstOrDefault(book => book.Id.Equals(id));
+            return await libraryContext.ComicBooks.FirstOrDefaultAsync(book => book.Id.Equals(id));
         }
-        public List<ComicBook> FilterBooksByPublisher(string author)
+
+        public async Task<List<ComicBook>> FilterBooksByPublisherAsync(string author)
         {
-            List<ComicBook> booksByPublisher = bookList.Where(book => book.Publisher.Equals(author)).ToList();
+            List<ComicBook> booksByPublisher = await libraryContext.ComicBooks.Where(book => book.Publisher.Equals(author)).ToListAsync();
             return booksByPublisher;
         }
-        public List<ComicBook> FilterBooksByGenre(Genre genre)
+        
+        public async Task<List<ComicBook>> FilterComicBooksAsync(string publisher,string genre,string order,int pageNr)
         {
-            List<ComicBook> booksByGenre = bookList.Where(book => book.Genre.Equals(genre)).ToList();
+            var comics = libraryContext.ComicBooks;
+            if (publisher != null)
+            {
+                comics.Where(book => book.Publisher.Equals(publisher));
+            }
+
+            if (genre != null)
+            {
+                comics.Where(book => book.Genre == GenreConverter.FromString(genre));
+            }
+
+            if (order == null || order.Equals("asc"))
+            {
+                comics.OrderBy(book => book.Title);
+            }
+            else
+            {
+                comics.OrderByDescending(book => book.Title);
+            }
+
+            List<ComicBook> result =await comics.Skip((pageNr - 1) * 8)//8 benzi desenate pe pagina
+                .Take(8)
+                .ToListAsync();
+            return result;
+        }
+
+        public async Task<List<ComicBook>> FilterBooksByGenreAsync(Genre genre)
+        {
+            List<ComicBook> booksByGenre = await libraryContext.ComicBooks.Where(book => book.Genre.Equals(genre)).ToListAsync();
+
             return booksByGenre;
         }
-        public void InsertBook(ComicBook book)
+
+        public async void InsertBookAsync(ComicBook book)
         {
-            bookList.Add(book);
+            libraryContext.ComicBooks.Add(book);
         }
-        public void delete(ComicBook book)
+
+        public async void deleteAsync(ComicBook book)
         {
-            bookList.Remove(book);
+            libraryContext.ComicBooks.Remove(book);
         }
-        public void update(ComicBook book)
+
+        public async void updateAsync(ComicBook book)
         {
-            int index = bookList.FindIndex(x => x.Id == book.Id);
-            bookList.Insert(index, book);
+            ComicBook comicToUpdate = libraryContext.ComicBooks.FirstOrDefault((x)=>x.Id==book.Id);
+
+            if (comicToUpdate != null)
+            {
+                comicToUpdate = book;
+            }
         }
+
     }
 }
