@@ -18,6 +18,11 @@ namespace Library.Application.utils
                 case Genre.SCIFI:return "sci-fi";
                 case Genre.FANTASY: return "fantasy";
                 case Genre.ROMANCE:return "romance";
+                case Genre.ADVENTURE:return "adventure";
+                case Genre.NONFICTION:return "non-fiction";
+                case Genre.SLICEOFLIFE:return "slice-of-life";
+                case Genre.SUPERHEROES:return "superheroes";
+                case Genre.HISTORY:return "history";
                 default: return "-";
             }
         }
@@ -30,7 +35,12 @@ namespace Library.Application.utils
                 case "comedy":return Genre.COMEDY;
                 case "sci-fi":return Genre.SCIFI;
                 case "romance":return Genre.ROMANCE;
-                case "fantasu":return Genre.FANTASY;
+                case "fantasy":return Genre.FANTASY;
+                case "adventure":return Genre.ADVENTURE;
+                case "history":return Genre.HISTORY;
+                case "slice-of-life":return Genre.SLICEOFLIFE;
+                case "superheroes":return Genre.SUPERHEROES;
+                case "non-fiction":return Genre.NONFICTION;
                 default:return Genre.HORROR;
             }
         }

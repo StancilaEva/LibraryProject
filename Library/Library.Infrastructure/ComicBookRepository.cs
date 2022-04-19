@@ -27,9 +27,9 @@ namespace Library.Infrastructure
             return await libraryContext.ComicBooks.ToListAsync();
         }
 
-        public async Task<ComicBook> GetBookByIdAsync(string id)
+        public async Task<ComicBook> GetBookByIdAsync(int id)
         {
-            return await libraryContext.ComicBooks.FirstOrDefaultAsync(book => book.Id.Equals(id));
+            return await libraryContext.ComicBooks.FirstOrDefaultAsync(book => book.Id==id);
         }
 
         public async Task<List<ComicBook>> FilterBooksByPublisherAsync(string author)
@@ -40,27 +40,28 @@ namespace Library.Infrastructure
         
         public async Task<List<ComicBook>> FilterComicBooksAsync(string publisher,string genre,string order,int pageNr)
         {
-            var comics = libraryContext.ComicBooks;
-            if (publisher != null)
+            var comicsQuery = libraryContext.ComicBooks.AsQueryable();
+            
+            if (!String.IsNullOrEmpty(publisher))
             {
-                comics.Where(book => book.Publisher.Equals(publisher));
+                comicsQuery = comicsQuery.Where(book => book.Publisher.Equals(publisher));
             }
 
-            if (genre != null)
+            if (!String.IsNullOrEmpty(genre))
             {
-                comics.Where(book => book.Genre == GenreConverter.FromString(genre));
+                comicsQuery = comicsQuery.Where(book => book.Genre == GenreConverter.FromString(genre));
             }
 
-            if (order == null || order.Equals("asc"))
+            if (!!String.IsNullOrEmpty(order) || order.Equals("asc"))
             {
-                comics.OrderBy(book => book.Title);
+                comicsQuery = comicsQuery.OrderBy(book => book.Title);
             }
             else
             {
-                comics.OrderByDescending(book => book.Title);
+                comicsQuery = comicsQuery.OrderByDescending(book => book.Title);
             }
 
-            List<ComicBook> result =await comics.Skip((pageNr - 1) * 8)//8 benzi desenate pe pagina
+            List<ComicBook> result = await comicsQuery.Skip((pageNr - 1) * 8)//8 benzi desenate pe pagina
                 .Take(8)
                 .ToListAsync();
             return result;
@@ -76,21 +77,36 @@ namespace Library.Infrastructure
         public async void InsertBookAsync(ComicBook book)
         {
             libraryContext.ComicBooks.Add(book);
+            await libraryContext.AddRangeAsync();
         }
 
-        public async void deleteAsync(ComicBook book)
+        public async Task<ComicBook> DeleteAsync(int id)
         {
-            libraryContext.ComicBooks.Remove(book);
+            var bookToDelete = await libraryContext.ComicBooks.FirstOrDefaultAsync(x=>x.Id==id);
+            if (bookToDelete != null)
+            {
+                libraryContext.ComicBooks.Remove(bookToDelete);
+                await libraryContext.SaveChangesAsync();
+                return bookToDelete;
+            }
+            return null;
         }
 
-        public async void updateAsync(ComicBook book)
+        public async Task<ComicBook> UpdateAsync(ComicBook book)
         {
-            ComicBook comicToUpdate = libraryContext.ComicBooks.FirstOrDefault((x)=>x.Id==book.Id);
+            ComicBook comicToUpdate = await libraryContext.ComicBooks.FirstOrDefaultAsync((x)=>x.Id==book.Id);
 
             if (comicToUpdate != null)
             {
-                comicToUpdate = book;
+                comicToUpdate.Title = book.Title;
+                comicToUpdate.IssueNumber = book.IssueNumber;
+                comicToUpdate.Genre = book.Genre;
+                comicToUpdate.Publisher = book.Publisher;
+                comicToUpdate.Cover = book.Cover;
+                await libraryContext.SaveChangesAsync();
+                return comicToUpdate;
             }
+            return null;
         }
 
     }

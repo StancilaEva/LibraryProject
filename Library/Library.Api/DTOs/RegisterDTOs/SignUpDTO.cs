@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Library.Application.Commands.ClientCommands.SignUpUserCommand
+﻿namespace Library.Api.DTOs
 {
     public class SignUpDTO
     {
@@ -15,5 +9,6 @@ namespace Library.Application.Commands.ClientCommands.SignUpUserCommand
         public string City { get; set; }
         public string County { get; set; }
         public int Number { get; set; }
+
     }
 }

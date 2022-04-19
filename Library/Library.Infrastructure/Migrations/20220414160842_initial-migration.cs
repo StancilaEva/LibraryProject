@@ -5,23 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Library.Infrastructure.Migrations
 {
-    public partial class AddedTheRestOfTheClasses : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_comicBooks",
-                table: "comicBooks");
-
-            migrationBuilder.RenameTable(
-                name: "comicBooks",
-                newName: "ComicBooks");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_ComicBooks",
-                table: "ComicBooks",
-                column: "Id");
-
             migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
@@ -39,6 +26,23 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ComicBooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genre = table.Column<int>(type: "int", nullable: false),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueNumber = table.Column<int>(type: "int", nullable: false),
+                    Cover = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComicBooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
@@ -46,18 +50,18 @@ namespace Library.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    AddressFk = table.Column<int>(type: "int", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Clients_Addresses_AddressId",
-                        column: x => x.AddressId,
+                        name: "FK_Clients_Addresses_AddressFk",
+                        column: x => x.AddressFk,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,9 +93,11 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_AddressId",
+                name: "IX_Clients_AddressFk",
                 table: "Clients",
-                column: "AddressId");
+                column: "AddressFk",
+                unique: true,
+                filter: "[AddressFk] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lends_BookId",
@@ -113,20 +119,10 @@ namespace Library.Infrastructure.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
+                name: "ComicBooks");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_ComicBooks",
-                table: "ComicBooks");
-
-            migrationBuilder.RenameTable(
-                name: "ComicBooks",
-                newName: "comicBooks");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_comicBooks",
-                table: "comicBooks",
-                column: "Id");
         }
     }
 }

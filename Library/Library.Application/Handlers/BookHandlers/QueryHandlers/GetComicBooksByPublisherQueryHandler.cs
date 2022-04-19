@@ -1,8 +1,8 @@
-﻿using Library.Application.DTOs;
+﻿
 using Library.Application.Queries.BookQueries;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
-using Library.Infrastructure;
+
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers
 {
-    public class GetComicBooksByPublisherQueryHandler : IRequestHandler<GetComicBooksByPublisherQuery, List<ComicBooksDTO>>
+    public class GetComicBooksByPublisherQueryHandler : IRequestHandler<GetComicBooksByPublisherQuery, List<ComicBook>>
     {
         IBookRepository _bookRepository;
 
@@ -21,10 +21,9 @@ namespace Library.Application.Handlers.BookHandlers
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<ComicBooksDTO>> Handle(GetComicBooksByPublisherQuery request, CancellationToken cancellationToken)
+        public async Task<List<ComicBook>> Handle(GetComicBooksByPublisherQuery request, CancellationToken cancellationToken)
         {
-            var books = (await _bookRepository.FilterBooksByPublisherAsync(request.Publisher))
-                .Select(book=>new ComicBooksDTO(book.Id,book.Title,book.Publisher,book.Cover)).ToList();
+            var books = (await _bookRepository.FilterBooksByPublisherAsync(request.Publisher));
 
             return books;
 

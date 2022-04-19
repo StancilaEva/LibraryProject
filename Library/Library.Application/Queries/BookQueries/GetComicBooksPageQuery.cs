@@ -1,4 +1,4 @@
-﻿using Library.Application.DTOs;
+﻿using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetComicBooksPageQuery : IRequest<List<ComicBooksDTO>>
+    public class GetComicBooksPageQuery : IRequest<List<ComicBook>>
     {
         public int Index { get; set; }
 
-        public string Order { get; set; }
+        public string? Order { get; set; }
 
-        public string Publisher { get; set; }
+        public string? Publisher { get; set; }
 
-        public string Genre { get; set; }
+        public string? Genre { get; set; }
 
     }
 }

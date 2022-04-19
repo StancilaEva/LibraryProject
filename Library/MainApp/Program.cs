@@ -13,14 +13,10 @@ using Library.Core.DesignPatterns.Decorator;
 using Library.Core.DesignPatterns.Observer;
 using Library.Application.Queries;
 using Library.Application.Handlers;
-using Library.Application.Queries.ClientQueries;
-using Library.Application.Commands.BookCommands.CreateBookCommand;
-using Library.Application.DTOs;
-using System.Drawing;
 using Library.Infrastructure.Data;
-using Library.Application.Handlers.BookHandlers;
-using Microsoft.EntityFrameworkCore;
 using Library.Core.Interfaces.RepositoryInterfaces;
+using Library.Application.Queries.ClientQueries;
+using Microsoft.EntityFrameworkCore;
 
 namespace MainApp
 {
@@ -55,40 +51,13 @@ namespace MainApp
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var meditr = serviceProvider.GetRequiredService<IMediator>();
-            var result = await meditr.Send(new GetAllComicBooksQuery());
+            var result = await meditr.Send(new GetClientLogInQuery()
+            {
+                Email = "stancilaeva@gmail.com",
+                Password="123456789"
+            });
 
-
-            //foreach (var item in result)
-            //{
-            //    Console.WriteLine(item.Title);
-            //}
-            //var result2 = await meditr.Send(new GetClientLogInQuery()
-            //{
-            //    Email = "stancilaeva@gmail.com",
-            //    Password = "12345678"
-            //});
-
-            //Console.WriteLine(result2.UserName);
-            //var result3 = await meditr.Send(new CreateComicBookCommand()
-            //{
-            //    BookDTO = new ComicBookDetailDTO(1, "someTitle", "someAuthor", "comedy", 24)
-
-            //});
-            //Console.WriteLine(result3.Title + " " + result3.Publisher);//C:\Users\eva.stancila\Desktop\poze_benzi_desenate
-
-            //Client client = context.Clients.FirstOrDefault(client => client.Id == 2);
-            ////List<Lend> lends = new List<Lend>
-            ////{
-            ////    new Lend(comicBook,client,DateTime.Now,DateTime.Now.AddDays(7))
-
-            ////};
-            //Lend lend = new Lend(comicBook, client, DateTime.Now.AddDays(14), DateTime.Now.AddDays(28));
-            //context.Lends.Add(lend);
-            //context.SaveChanges();
-            //LibraryContext lb = new LibraryContext();
-            //Address book = lb.Addresses.FirstOrDefault(x => x.Id == 5);
-            //lb.Addresses.Remove(book);
-            //lb.SaveChanges();
+            var ctx = new LibraryContext();
 
 
         }

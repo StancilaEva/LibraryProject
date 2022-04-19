@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Library.Core\Library.Core.csproj" />
-    <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

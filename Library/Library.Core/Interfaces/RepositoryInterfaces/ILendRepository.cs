@@ -10,13 +10,15 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
     {
         public Task<List<Lend>> GetAllLendsAsync();
 
-        public void InsertLendAsync(Lend lend);
+        public Task<Lend> InsertLendAsync(int clientId, int comicId, DateTime startDate, DateTime endDate);
 
         public Task<List<Lend>> FilterLendsByBookAsync(int bookId);
 
         public Task<ComicBook> GetBookByIdAsync(int id);
 
         public Task<Client> GetClientByIdAsync(int id);
+
+        public Task<Lend> GetLendByIdAsync(int id);
 
     }
 }

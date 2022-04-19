@@ -1,4 +1,4 @@
-﻿using Library.Application.DTOs;
+﻿
 using Library.Core;
 using MediatR;
 using System;
@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.ClientQueries
 {
-    public class GetClientLogInQuery : IRequest<LogInDTO>
+    public class GetClientLogInQuery : IRequest<Client>
     {
-        public String Email { get; set; }
+        public string Email { get; set; }
 
-        public String Password { get; set; }
+        public string Password { get; set; }
     }
 }

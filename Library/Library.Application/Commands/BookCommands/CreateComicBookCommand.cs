@@ -1,4 +1,4 @@
-﻿using Library.Application.DTOs;
+﻿
 using Library.Core;
 using MediatR;
 using System;
@@ -11,6 +11,10 @@ namespace Library.Application.Commands.BookCommands.CreateBookCommand
 {
     public class CreateComicBookCommand : IRequest<ComicBook>
     {
-        public ComicBookDetailDTO BookDTO { get; set; }
+        public string Title { get; set; }
+        public string Publisher { get; set; }
+        public string Genre { get; set; }
+        public int IssueNumber { get; set; }
+        public string Cover { get; set; }
     }
 }

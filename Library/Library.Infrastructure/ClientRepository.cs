@@ -22,13 +22,13 @@ namespace Library.Infrastructure
 
         public async Task<Client> GetClientByIdAsync(string id)
         {
-            return  await context.Clients.FirstOrDefaultAsync((client) => client.Id.Equals(id));
+            return  await context.Clients.Include(client=>client.Address).FirstOrDefaultAsync((client) => client.Id.Equals(id));
             
         }
 
         public async Task<Client> GetClientByEmailAsync(string email)
         {
-            return await context.Clients.FirstOrDefaultAsync((client) => client.Email.Equals(email));
+            return await context.Clients.Include(client=> client.Address).FirstOrDefaultAsync((client) => client.Email.Equals(email));
         }
 
         public async Task<List<Client>> GetAllClientsAsync()
@@ -36,20 +36,34 @@ namespace Library.Infrastructure
             return await context.Clients.ToListAsync();
         }
         
-        public async void InsertClientAsync(Client client)
+        public async Task<Client> InsertClientAsync(Client client)
         {
             context.Clients.Add(client);
+            await context.SaveChangesAsync();
+            return client;
         }
 
         public async Task<Client> GetClientByEmailAndPassowrdAsync(String email,String password)
         {
-            Client client = await context.Clients.FirstOrDefaultAsync((client) => client.Email.Equals(email) && client.Password.Equals(password));
+            Client client = await context.Clients.Include(client=>client.Address)
+                .FirstOrDefaultAsync((client) => client.Email.Equals(email) && client.Password.Equals(password));
             if(client == null)
             {
                 throw new InvalidOperationException("Wrong email or password");
             }
 
             return client;
+        }
+
+        public void UpdateClientAdressAsync(int id, Address address)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Client> GetClientByIdAsync(int id)
+        {
+            return await context.Clients.Include(client=>client.Address)
+                .FirstOrDefaultAsync((client) => client.Id == id);
         }
     }
 }

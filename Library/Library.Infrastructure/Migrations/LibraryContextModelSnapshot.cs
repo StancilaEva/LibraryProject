@@ -34,9 +34,6 @@ namespace Library.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("County")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -50,10 +47,6 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId")
-                        .IsUnique()
-                        .HasFilter("[ClientId] IS NOT NULL");
-
                     b.ToTable("Addresses");
                 });
 
@@ -64,6 +57,9 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AddressFk")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -78,6 +74,10 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressFk")
+                        .IsUnique()
+                        .HasFilter("[AddressFk] IS NOT NULL");
 
                     b.ToTable("Clients");
                 });
@@ -142,14 +142,14 @@ namespace Library.Infrastructure.Migrations
                     b.ToTable("Lends");
                 });
 
-            modelBuilder.Entity("Library.Core.Address", b =>
+            modelBuilder.Entity("Library.Core.Client", b =>
                 {
-                    b.HasOne("Library.Core.Client", "Client")
-                        .WithOne("Address")
-                        .HasForeignKey("Library.Core.Address", "ClientId")
+                    b.HasOne("Library.Core.Address", "Address")
+                        .WithOne("Client")
+                        .HasForeignKey("Library.Core.Client", "AddressFk")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Client");
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Library.Core.Lend", b =>
@@ -171,9 +171,9 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("Library.Core.Client", b =>
+            modelBuilder.Entity("Library.Core.Address", b =>
                 {
-                    b.Navigation("Address")
+                    b.Navigation("Client")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

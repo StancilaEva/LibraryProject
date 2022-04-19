@@ -1,7 +1,6 @@
 ﻿using Library.Application.Queries.LendQueries;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
-using Library.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Library.Application.DTOs;
+﻿
 using Library.Core;
 using MediatR;
 using System;
@@ -11,6 +11,9 @@ namespace Library.Application.Commands.LendCommands
 {
     public class CreateLendCommand : IRequest<Lend>
     {
-        public LendDTO LendDTO { get; set; }
+        public int ComicId { get; set; }
+        public int UserId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

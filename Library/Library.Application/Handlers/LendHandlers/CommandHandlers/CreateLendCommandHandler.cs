@@ -1,9 +1,7 @@
 ﻿using Library.Application.Commands.LendCommands;
-using Library.Application.DTOs;
 using Library.Application.Exceptions;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
-using Library.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,17 +22,11 @@ namespace Library.Application.Handlers.LendHandlers
 
         public async Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            List<Lend> lendedBooks = await _lendRepository.FilterLendsByBookAsync(request.LendDTO.BookId);
+            List<Lend> lendedBooks = await _lendRepository.FilterLendsByBookAsync(request.ComicId);
 
-            if (CheckIfBookIsAvailabe(lendedBooks,request.LendDTO.StartDate,request.LendDTO.EndDate))
-            {
-               
-                ComicBook comicBook = await _lendRepository.GetBookByIdAsync(request.LendDTO.BookId);
-                Client client = await _lendRepository.GetClientByIdAsync(request.LendDTO.UserId);
-                
-                Lend lend = new Lend(comicBook, client, request.LendDTO.StartDate, request.LendDTO.EndDate);
-                _lendRepository.InsertLendAsync(lend);
-
+            if (CheckIfBookIsAvailabe(lendedBooks,request.StartDate,request.EndDate))
+            { 
+                Lend lend = await _lendRepository.InsertLendAsync(request.UserId,request.ComicId,request.StartDate,request.EndDate);
                 return lend;
             }
             else
@@ -60,8 +52,8 @@ namespace Library.Application.Handlers.LendHandlers
 
         public bool BetweenTwoDates(DateTime start, DateTime end, DateTime date)
         {
-            if (DateOnly.FromDateTime(start) < DateOnly.FromDateTime(date) &&
-                DateOnly.FromDateTime(end) > DateOnly.FromDateTime(date))
+            if (DateOnly.FromDateTime(start) <= DateOnly.FromDateTime(date) &&
+                DateOnly.FromDateTime(end) >= DateOnly.FromDateTime(date))
                 return true;
             else
                 return false;

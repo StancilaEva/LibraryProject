@@ -18,7 +18,7 @@ namespace ComicBook.Api.Controllers
             _mediatR = mediatR;
         }
 
-        [HttpPost("{clientId}/{comicId}")]
+        [HttpPost("{clientId}/comicbook/{comicId}")]
         public async Task<IActionResult> CreateLend(int clientId,int comicId,[FromBody]LendDTO lendDTO)
         {
             var commandToSend = new CreateLendCommand()
@@ -29,7 +29,7 @@ namespace ComicBook.Api.Controllers
                 EndDate = lendDTO.EndDate
             };
             var result = await _mediatR.Send(commandToSend);
-            return CreatedAtAction(nameof(GetLendById),new { id = result.Id },result);
+            return CreatedAtAction(nameof(GetLendById),new { id = result.Id } ,result);
         }
 
         [HttpGet("{id}")]

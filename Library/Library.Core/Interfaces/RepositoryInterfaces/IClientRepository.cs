@@ -12,8 +12,14 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<Client> GetClientByEmailAndPassowrdAsync(String email, String password);
 
-        public void InsertClientAsync(Client client);
+        public Task<Client> InsertClientAsync(Client client);
 
         public Task<Client> GetClientByEmailAsync(string email);
+
+        public void UpdateClientAdressAsync(int id,Address address);
+
+        public Task<Client> GetClientByIdAsync(int id);
+
+
     }
 }

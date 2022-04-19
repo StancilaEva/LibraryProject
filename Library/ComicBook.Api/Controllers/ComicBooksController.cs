@@ -1,4 +1,5 @@
 ﻿using ComicBook.Api.DTOs;
+using Library.Application.Commands.BookCommands;
 using Library.Application.Queries;
 using Library.Application.Queries.BookQueries;
 using MediatR;
@@ -43,15 +44,39 @@ namespace ComicBook.Api.Controllers
                 Id = id,
             };
             var result = await _mediatr.Send(commandToSend);
+
             return Ok(result);
         }
 
-        //[HttpPut]
-        //[Route("{id}")]
-        //public async Task<IActionResult> UpdateComic()
-        //{
-        //    var commandToSend;
-        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComicBookById(int id)
+        {
+            var commandToSend = new DeleteComicBookCommand()
+            {
+                Id = id
+            };
+            var result = await _mediatr.Send(commandToSend);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateComicBookById(int id,[FromBody]ComicBookDTO comicBookDTO)
+        {
+            var commandToSend = new UpdateComicBookCommand()
+            {
+                Id = id,
+                Title = comicBookDTO.Title,
+                Publisher = comicBookDTO.Publisher,
+                IssueNumber = comicBookDTO.IssueNumber,
+                Genre = comicBookDTO.Genre,
+                Cover = comicBookDTO.Cover,
+            };
+            var result = await _mediatr.Send(commandToSend);
+
+            return Ok(result);
+        }
+
 
     }
 }

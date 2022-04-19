@@ -9,16 +9,31 @@ namespace ComicBook.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class RegisterController : ControllerBase
     {
         private readonly IMediator _mediator;
+        
 
-        public ClientsController(IMediator mediator)
+        public RegisterController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("LogIn")]
+        public async Task<IActionResult> LogIn([FromBody] LogInCredentialsDTO logInDTO)
+        {
+            var queryToSend = new GetClientLogInQuery()
+            {
+                Email = logInDTO.Email,
+                Password = logInDTO.Password
+            };
+            var result = await _mediator.Send(queryToSend);
+
+            return CreatedAtAction(nameof(GetClientId), new { id = result.Id }, result);
+        }
+
+
+        [HttpPost("SignUp")]
         public async Task<IActionResult> CreateClient([FromBody]SignUpDTO signUpDTO)
         {
             var commandToSend = new SignUpCommand()
@@ -32,23 +47,10 @@ namespace ComicBook.Api.Controllers
                 Number = signUpDTO.Number
             };
             var result = await _mediator.Send(commandToSend);
-
-            //return CreatedAtAction(nameof(GetClientId),new { id = result.Id },result);
-            return Ok(result);  
+            return CreatedAtAction(nameof(GetClientId), new { id = result.Id }, result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> LogInClient([FromBody]LogInCredentialsDTO logInDTO)
-        {
-            var queryToSend = new GetClientLogInQuery()
-            {
-                Email = logInDTO.Email,
-                Password = logInDTO.Password
-            };
-            var result = _mediator.Send(queryToSend);
-            return Ok(result);
-        }
-
+      
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetClientId(int id)
@@ -58,7 +60,13 @@ namespace ComicBook.Api.Controllers
                 Id = id
             };
             var result = await _mediator.Send(queryToSend);
-            return Ok(result);
+            var dto = new UserDTO
+            {
+                Id = result.Id,
+                Username = result.Username,
+                County = result.Address.County
+            };
+            return Ok(dto);
         }
         
         

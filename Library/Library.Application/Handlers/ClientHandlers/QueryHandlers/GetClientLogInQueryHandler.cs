@@ -1,8 +1,6 @@
-﻿using Library.Application.DTOs;
-using Library.Application.Queries.ClientQueries;
+﻿using Library.Application.Queries.ClientQueries;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
-using Library.Infrastructure;
 using MainApp;
 using MediatR;
 using System;
@@ -13,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
 {
-    public class GetClientLogInQueryHandler : IRequestHandler<GetClientLogInQuery, LogInDTO>
+    public class GetClientLogInQueryHandler : IRequestHandler<GetClientLogInQuery, Client>
     {
         IClientRepository _clientRepository;
 
@@ -22,11 +20,9 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
             _clientRepository = clientRepository;
         }
 
-        public async Task<LogInDTO> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
+        public async Task<Client> Handle(GetClientLogInQuery request, CancellationToken cancellationToken)
         {
-            List<Client> clientList = await _clientRepository.GetAllClientsAsync();
-            Client client = await checkiIfEmailIsAlreadyUsed(request.Email);
-            
+            var client = await CheckIfEmailIsAlreadyUsed(request.Email);
             if (client == null)
             {
                 throw new NonExistentUserException("this email is not in the database");
@@ -38,16 +34,13 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
             }
             else
             {
-                LogInDTO logInDTO = new LogInDTO(client.Username, client.Id);
-
-                return logInDTO;
+                return client;
             }
         }
 
-        private async Task<Client> checkiIfEmailIsAlreadyUsed(string email)
+        private async Task<Client> CheckIfEmailIsAlreadyUsed(string email)
         {
-
-            return await  _clientRepository.GetClientByEmailAsync(email);
+            return await _clientRepository.GetClientByEmailAsync(email);
         }
 
     }

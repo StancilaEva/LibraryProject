@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Core.Exceptions
 {
-    internal class InvalidUsernameException : Exception
+    public class InvalidUsernameException : Exception
     {
         public InvalidUsernameException(string message) : base(message)
         {

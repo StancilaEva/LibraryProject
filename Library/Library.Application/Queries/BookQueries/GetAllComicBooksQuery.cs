@@ -1,5 +1,4 @@
-﻿using Library.Application.DTOs;
-using Library.Core;
+﻿using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries
 {
-    public class GetAllComicBooksQuery : IRequest<List<ComicBooksDTO>>
+    public class GetAllComicBooksQuery : IRequest<List<ComicBook>>
     {
 
     }

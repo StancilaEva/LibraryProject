@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Library.Core
@@ -13,11 +14,12 @@ namespace Library.Core
         public string City { get; set; }
         public string County { get; set; }
         public int Number { get; set; }
+        [JsonIgnore]
         public Client Client { get; set; }  
 
         public Address(string street, string city, string county, int number)
         {
-            if(city != null)
+            if(!String.IsNullOrEmpty(city))
             {
                 City = city;
             }
@@ -25,7 +27,7 @@ namespace Library.Core
             {
                 throw new ArgumentNullException("City cannot be null");
             }
-            if(street != null)
+            if(!String.IsNullOrEmpty(street))
             {
                 Street = street;
             }
@@ -33,7 +35,7 @@ namespace Library.Core
             {
                 throw new ArgumentNullException("Street canot be null");
             }
-            if (county != null)
+            if (!String.IsNullOrEmpty(county))
             {
                 County = county;
             }
@@ -41,7 +43,7 @@ namespace Library.Core
             {
                 throw new ArgumentNullException("County canot be null");
             }
-            if (number != null)
+            if (number <0)
             {
                 Number = number;
             }

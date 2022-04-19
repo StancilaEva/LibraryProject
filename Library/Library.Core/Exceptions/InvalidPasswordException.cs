@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Core.Exceptions
 {
-    internal class InvalidPasswordException : Exception
+    public class InvalidPasswordException : Exception
     {
         public InvalidPasswordException(string message) : base(message)
         {

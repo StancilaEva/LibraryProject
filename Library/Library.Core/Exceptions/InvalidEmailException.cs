@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Core.Exceptions
 {
-    internal class InvalidEmailException : Exception
+    public class InvalidEmailException : Exception
     {
         public InvalidEmailException(string message) : base(message)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class EmailAlreadyInUseException : Exception
+    public class EmailAlreadyInUseException : Exception
     {
         public EmailAlreadyInUseException(string message) : base(message)
         {

@@ -1,8 +1,6 @@
 ﻿using Library.Application.Commands.ClientCommands;
-using Library.Application.DTOs;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
-using Library.Infrastructure;
 using MainApp;
 using MediatR;
 using System;
@@ -13,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
 {
-    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, string>
+    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, Client>
     {
         IClientRepository _clientRepository;
 
@@ -22,15 +20,15 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             _clientRepository = clientRepository;
         }
 
-        public Task<string> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<Client> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
-            Client client = new Client(request.SignUpDTO.Username,request.SignUpDTO.Password,
-                new Address(request.SignUpDTO.Street,request.SignUpDTO.City,request.SignUpDTO.County,request.SignUpDTO.Number)
-                ,request.SignUpDTO.Email);
-            if (isValid(client))
+            Client client = new Client(request.Username,request.Password,
+                new Address(request.Street,request.City,request.County,request.Number)
+                ,request.Email);
+            if (await IsValid(client))
             {
-                _clientRepository.InsertClientAsync(client);
-                return Task.FromResult(client.Username);
+                await _clientRepository.InsertClientAsync(client);
+                return client;
             }
             else
             {
@@ -38,16 +36,17 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             }
         }
 
-        private bool isValid(Client client)
+        private async Task<bool> IsValid(Client client)
         {
-            if (checkIfEmailIsAlreadyUsed(client.Email) == null)
+            var clientByEmail = await CheckIfEmailIsAlreadyUsed(client.Email);
+            if (clientByEmail != null)
             {
                 return false;
             }
             return true;
         }
 
-        private async Task<Client> checkIfEmailIsAlreadyUsed(string email)
+        private async Task<Client> CheckIfEmailIsAlreadyUsed(string email)
         {
             return await _clientRepository.GetClientByEmailAsync(email);
         }

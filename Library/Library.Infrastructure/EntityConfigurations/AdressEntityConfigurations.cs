@@ -15,8 +15,8 @@ namespace Library.Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<Address> builder)
         {
             builder.HasOne(address => address.Client)
-                .WithOne(client=>client.Address)
-                .HasForeignKey<Address>("ClientId")
+                .WithOne(client => client.Address)
+                .HasForeignKey<Client>("AdressId")
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
         }

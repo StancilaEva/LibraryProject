@@ -18,6 +18,10 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<List<ComicBook>> FilterComicBooksAsync(string publisher, string genre, string order, int pageNr);
 
+        public Task<ComicBook> GetBookByIdAsync(int id);
 
+        public Task<ComicBook> UpdateAsync(ComicBook book);
+
+        public Task<ComicBook> DeleteAsync(int id);
     }
 }

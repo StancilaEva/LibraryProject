@@ -17,6 +17,7 @@ namespace Library.Core
         public String Cover { get; set; }
 
 
+
         public ComicBook(int id, string title, string publisher, Genre genre, int issueNumber,String cover)
         {
             Id = id;
@@ -34,6 +35,10 @@ namespace Library.Core
             Genre = genre;
             IssueNumber = issueNumber;
             Cover = cover;
+        }
+
+        public ComicBook()
+        {
         }
 
         public override string? ToString()

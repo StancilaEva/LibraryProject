@@ -18,12 +18,17 @@ namespace Library.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=ROMOB41209\\SQLEXPRESS;Database=ComicBookDatabase;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer("Server=ROMOB41209\\SQLEXPRESS;Database=ComicBooksDatabase;Trusted_Connection=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AdressEntityConfigurations());
+            modelBuilder.Entity<Address>()
+         .HasOne(x => x.Client)
+         .WithOne(x => x.Address)
+         .HasForeignKey<Client>("AddressFk")
+         .IsRequired(false)
+         .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

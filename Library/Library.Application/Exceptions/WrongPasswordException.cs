@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MainApp
 {
-    internal class WrongPasswordException : Exception
+    public class WrongPasswordException : Exception
     {
         public WrongPasswordException(string message) : base(message)
         {
