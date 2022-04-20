@@ -51,13 +51,13 @@ namespace MainApp
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var meditr = serviceProvider.GetRequiredService<IMediator>();
-            var result = await meditr.Send(new GetClientLogInQuery()
+            var result = await meditr.Send(new GetAllComicBooksQuery());
+            foreach(var book in result)
             {
-                Email = "stancilaeva@gmail.com",
-                Password="123456789"
-            });
+                Console.WriteLine(book.Title+"\n\n\n"+book.Cover);
+            }
 
-            var ctx = new LibraryContext();
+          
 
 
         }

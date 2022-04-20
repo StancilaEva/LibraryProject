@@ -18,6 +18,7 @@ builder.Services.AddMediatR(typeof(GetAllComicBooksQueryHandler));
 //options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddDbContext<LibraryContext>();
 
+
 builder.Services.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
 builder.Services.AddTransient(typeof(IClientRepository), typeof(ClientRepository));
 builder.Services.AddTransient(typeof(ILendRepository), typeof(LendRepository));

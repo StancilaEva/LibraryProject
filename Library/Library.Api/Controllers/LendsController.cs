@@ -7,7 +7,6 @@ using Library.Application.Exceptions;
 using Library.Application.Queries.LendQueries;
 using Library.Core.Exceptions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
@@ -29,6 +28,7 @@ namespace Library.Api.Controllers
         [HttpPost("{clientId}/comicbook/{comicId}")]
         public async Task<IActionResult> CreateLend(int clientId, int comicId, [FromBody] LendDTO lendDTO)
         {
+
             try
             {
                 var commandToSend = new CreateLendCommand()
@@ -39,6 +39,12 @@ namespace Library.Api.Controllers
                     EndDate = lendDTO.EndDate
                 };
                 var result = await _mediatR.Send(commandToSend);
+
+                if(result == null)
+                {
+                    return NotFound();
+                }
+
                 var lendResult = _mapper.Map<LendResultDTO>(result);
 
                 return CreatedAtAction(nameof(GetLendById), new { id = result.Id }, lendResult);
@@ -51,8 +57,37 @@ namespace Library.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
 
-            
+        [HttpPatch("lend/{lendId}")]
+        public async Task<IActionResult> ExtendLend([FromBody] LendExtensionDTO lendExtensionDTO,int lendId)
+        {
+            try
+            {
+                var commandToSend = new ExtendLendCommand()
+                {
+                    EndDate = lendExtensionDTO.NewEndDate,
+                    IdLend = lendId
+                };
+
+                var result = await _mediatR.Send(commandToSend);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                var lendResult = _mapper.Map<LendResultDTO>(result);
+
+                return Ok(lendResult);
+            }
+            catch(ExtendDateNotValidException ex){
+                return BadRequest(ex.Message);
+            }
+            catch(AlreadyExtendedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -63,6 +98,11 @@ namespace Library.Api.Controllers
                 Id = id
             };
             var result = await _mediatR.Send(queryToSend);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
 
             var lendResult = _mapper.Map<LendResultDTO>(result);
 

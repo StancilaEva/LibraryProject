@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainApp", "MainApp\MainApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Infrastructure", "Library.Infrastructure\Library.Infrastructure.csproj", "{A3741451-1139-407F-A742-B23BB9294E59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Api", "Library.Api\Library.Api.csproj", "{B635DDC7-F0DA-491D-8D27-4F5B88388AC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Api", "Library.Api\Library.Api.csproj", "{B635DDC7-F0DA-491D-8D27-4F5B88388AC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitLibraryTests", "NUnitLibraryTests\NUnitLibraryTests.csproj", "{1048833C-AA57-4D9C-A845-A25BFD3D21BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NUnitLibraryTests", "NUnitLibraryTests\NUnitLibraryTests.csproj", "{1048833C-AA57-4D9C-A845-A25BFD3D21BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

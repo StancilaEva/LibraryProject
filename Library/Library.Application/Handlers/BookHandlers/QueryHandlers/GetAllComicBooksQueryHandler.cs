@@ -23,8 +23,20 @@ namespace Library.Application.Handlers
         public async Task<List<ComicBook>> Handle(GetAllComicBooksQuery request, CancellationToken cancellationToken)
         {
             var result = await _bookRepository.GetAllBooksAsync();
+
+            result = convertCoverImages(result);
             return result;
         }
 
+        private List<ComicBook> convertCoverImages(List<ComicBook> result)
+        {
+            foreach (var item in result)
+            {
+                byte[] bytes = File.ReadAllBytes(item.Cover);
+                string encodedCover = Convert.ToBase64String(bytes);
+                item.Cover = encodedCover;
+            }
+            return result;
+        }
     }  
 }

@@ -76,6 +76,15 @@ namespace Library.Infrastructure
             Lend lend = await libraryContext.Lends.Include(l=>l.Book).Include(l=>l.Client).FirstOrDefaultAsync(l => l.Id.Equals(id));
             return lend;
         }
+
+        public async Task<Lend> ExtendLendAsync(Lend lend,DateTime endDate)
+        {
+            lend.EndDate = endDate;
+            lend.IsExtended = true;
+            await libraryContext.SaveChangesAsync();
+            return lend;
+        }
+
     }
 }
 

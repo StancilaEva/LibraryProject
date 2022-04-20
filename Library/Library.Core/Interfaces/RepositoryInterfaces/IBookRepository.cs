@@ -23,5 +23,7 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<ComicBook> UpdateAsync(ComicBook book);
 
         public Task<ComicBook> DeleteAsync(int id);
+
+       
     }
 }

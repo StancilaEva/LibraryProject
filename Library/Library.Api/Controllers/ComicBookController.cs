@@ -36,7 +36,9 @@ namespace Library.Api.Controllers
 
             };
             var result = await _mediatr.Send(queryToSend);
+            
             var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookDTO>>(result);
+            
             return Ok(mappedResult);
         }
 
@@ -49,7 +51,14 @@ namespace Library.Api.Controllers
                 Id = id,
             };
             var result = await _mediatr.Send(commandToSend);
+
+            if(result == null)
+            {
+                return NotFound();
+            }
+
             var mappedResult = _mapper.Map<ComicBook,ComicBookDTO>(result);
+
             return Ok(mappedResult);
         }
 
@@ -61,6 +70,12 @@ namespace Library.Api.Controllers
                 Id = id
             };
             var result = await _mediatr.Send(commandToSend);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             var comicBookResult = _mapper.Map<ComicBook, ComicBookDTO>(result);
 
             return Ok(comicBookResult);
@@ -76,6 +91,11 @@ namespace Library.Api.Controllers
                 ComicBook = comicBook
             };
             var result = await _mediatr.Send(commandToSend);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
 
             var comicBookResult = _mapper.Map<ComicBook,ComicBookDTO>(result);
             return Ok(comicBookResult);

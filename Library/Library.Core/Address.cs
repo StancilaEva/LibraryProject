@@ -14,8 +14,19 @@ namespace Library.Core
         public string City { get; set; }
         public string County { get; set; }
         public int Number { get; set; }
+
         [JsonIgnore]
-        public Client Client { get; set; }  
+        public Client Client { get; set; }
+
+        public Address(int id, string street, string city, string county, int number, Client client)
+        {
+            Id = id;
+            Street = street;
+            City = city;
+            County = county;
+            Number = number;
+            Client = client;
+        }
 
         public Address(string street, string city, string county, int number)
         {
@@ -33,7 +44,7 @@ namespace Library.Core
             }
             else
             {
-                throw new ArgumentNullException("Street canot be null");
+                throw new ArgumentNullException("Street cannot be null");
             }
             if (!String.IsNullOrEmpty(county))
             {
@@ -41,15 +52,15 @@ namespace Library.Core
             }
             else
             {
-                throw new ArgumentNullException("County canot be null");
+                throw new ArgumentNullException("County cannot be null");
             }
-            if (number <0)
+            if (number >0)
             {
                 Number = number;
             }
             else
             {
-                throw new ArgumentNullException("Number canot be null");
+                throw new ArgumentNullException("Number cannot be less than 0");
             }
         }
 

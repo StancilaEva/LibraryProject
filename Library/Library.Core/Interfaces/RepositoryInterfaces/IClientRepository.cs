@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,11 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<Client> GetClientByEmailAsync(string email);
 
-        public void UpdateClientAdressAsync(int id,Address address);
+        public Task<Address> UpdateClientAdressAsync(int id, Address newAddress);
 
         public Task<Client> GetClientByIdAsync(int id);
 
-
+        public Task<Address> GetClientAddress(int id);
+        public Task<List<Lend>> GetAllClientLends(int id);
     }
 }

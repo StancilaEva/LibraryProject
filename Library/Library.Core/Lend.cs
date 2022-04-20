@@ -15,6 +15,8 @@ namespace Library.Core
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        public bool IsExtended { get; set; }
+
         public Lend()
         {
         }
@@ -38,10 +40,13 @@ namespace Library.Core
             {
                 throw new InvalidDateException("Invalid date");
             }
-
+            if (DateOnly.FromDateTime(startDate) > DateOnly.FromDateTime(endDate))
+            {
+                throw new InvalidDateException("Invalid date");
+            }
             this.Book = book;
             this.Client = client;
-            
+            IsExtended = false;
         }
 
     }

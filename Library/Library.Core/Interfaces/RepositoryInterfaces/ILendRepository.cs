@@ -19,6 +19,7 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<Client> GetClientByIdAsync(int id);
 
         public Task<Lend> GetLendByIdAsync(int id);
+        public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
 
     }
 }

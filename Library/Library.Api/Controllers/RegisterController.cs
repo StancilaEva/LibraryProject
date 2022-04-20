@@ -36,6 +36,12 @@ namespace Library.Api.Controllers
                     Password = logInDTO.Password
                 };
                 var result = await _mediator.Send(queryToSend);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
                 var userResult = _mapper.Map<UserDetailDTO>(result);
 
                 return CreatedAtAction(nameof(GetClientId), new { id = result.Id }, result);
@@ -100,7 +106,13 @@ namespace Library.Api.Controllers
             };
             var result = await _mediator.Send(queryToSend);
 
+            if (result == null)
+            {
+                return NotFound();
+            }
+
             var registrationDTO = _mapper.Map<UserDetailDTO>(result);
+
             return Ok(registrationDTO);
         }
 
