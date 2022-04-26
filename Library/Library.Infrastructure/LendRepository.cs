@@ -31,8 +31,8 @@ namespace Library.Infrastructure
 
         public async Task<Lend> InsertLendAsync(int clientId, int comicId, DateTime startDate, DateTime endDate)
         {
-            Client client = libraryContext.Clients.FirstOrDefault(client => client.Id == clientId);   
-            ComicBook comicBook = libraryContext.ComicBooks.FirstOrDefault(comic => comic.Id == comicId);
+            Client client = libraryContext.Clients.SingleOrDefault(client => client.Id == clientId);   
+            ComicBook comicBook = libraryContext.ComicBooks.SingleOrDefault(comic => comic.Id == comicId);
             
             Lend lend = new Lend(comicBook, client, startDate, endDate);
 
@@ -50,7 +50,7 @@ namespace Library.Infrastructure
 
         public async Task<ComicBook> GetBookByIdAsync(int id)
         {
-            ComicBook comicBook = await libraryContext.ComicBooks.FirstOrDefaultAsync(book=>book.Id.Equals(id));
+            ComicBook comicBook = await libraryContext.ComicBooks.SingleOrDefaultAsync(book=>book.Id.Equals(id));
             if(comicBook == null)
             {
                 throw new InvalidOperationException("comic book not found");
@@ -73,8 +73,9 @@ namespace Library.Infrastructure
 
         public async Task<Lend> GetLendByIdAsync(int id)
         {
-            Lend lend = await libraryContext.Lends.Include(l=>l.Book).Include(l=>l.Client).FirstOrDefaultAsync(l => l.Id.Equals(id));
-            return lend;
+            return await libraryContext.Lends.Include(l=>l.Book)
+                .Include(l=>l.Client).SingleOrDefaultAsync(l => l.Id.Equals(id));
+            
         }
 
         public async Task<Lend> ExtendLendAsync(Lend lend,DateTime endDate)

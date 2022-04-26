@@ -16,9 +16,12 @@ namespace Library.Infrastructure.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Lend> Lends { get; set; }
 
+        public LibraryContext(DbContextOptions options):base(options)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=ROMOB41209\\SQLEXPRESS;Database=ComicBooksDatabase;Trusted_Connection=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

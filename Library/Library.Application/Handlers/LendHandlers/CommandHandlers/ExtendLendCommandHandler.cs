@@ -46,7 +46,7 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             }
             if(lend.EndDate < System.DateTime.Now)
             {
-                throw new ExtendDateNotValidException("the comic book has already been returned");
+                throw new ExtendDateNotValidException("this comic book has already been returned");
             }
             if (lend.EndDate > endDate)
             {

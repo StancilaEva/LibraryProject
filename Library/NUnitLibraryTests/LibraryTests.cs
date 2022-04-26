@@ -7,13 +7,13 @@ using Library.Core;
 using Library.Core.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace NUnitLibraryTests
 {
     public class Tests
@@ -62,6 +62,13 @@ namespace NUnitLibraryTests
             Assert.Throws<InvalidPasswordException>(() => new Client("user1", "", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
         }
 
+        [Test]
+        public void ExtensionIsFalseOnNewLend()
+        {
+            Lend lend = new Lend(new ComicBook(), new Client(), System.DateTime.Today, System.DateTime.Today.AddDays(1));
+            Assert.IsFalse(lend.IsExtended);
+        }
+
         [TestCase("","city","county",1)]
         [TestCase("street","","county",1)]
         [TestCase("street", "city", "", 1)]
@@ -81,28 +88,12 @@ namespace NUnitLibraryTests
             var controller = new ComicBooksController(_mediator.Object, _mapper.Object);
 
             var result = await controller.GetComicBookById(1);
-
+           //var newResult = await result.ExecuteResultAsync()
             //Result
             Assert.IsInstanceOf<OkObjectResult>(result);
            
         }
 
-        //[Test]
-        //public async Task Get()
-        //{
-        //    //Arrange
-        //    _mediator
-        //        .Setup(m => m.Send(It.IsAny<GetComicBookByIdQuery>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(() => CreateComicBook());
-        //    //Act
-        //    var controller = new ComicBooksController(_mediator.Object, _mapper.Object);
-
-        //    var result = await controller.GetComicBookById(1);
-
-        //    //Result
-        //    Assert.IsInstanceOf<OkObjectResult>(result);
-
-        //}
 
         [Test]
         public async Task Invalid_ComicBook_GetComicBookByIdIsCalled()
@@ -119,6 +110,8 @@ namespace NUnitLibraryTests
 
             Assert.IsInstanceOf<NotFoundResult>(result);
         }
+
+        
 
         [Test]
         public async Task Create_Lend_CreateLendCommandIsCalled()

@@ -29,7 +29,7 @@ namespace Library.Infrastructure
 
         public async Task<ComicBook> GetBookByIdAsync(int id)
         {
-            return await libraryContext.ComicBooks.FirstOrDefaultAsync(book => book.Id==id);
+            return await libraryContext.ComicBooks.SingleOrDefaultAsync(book => book.Id==id);
         }
 
         public async Task<List<ComicBook>> FilterBooksByPublisherAsync(string author)
@@ -52,7 +52,7 @@ namespace Library.Infrastructure
                 comicsQuery = comicsQuery.Where(book => book.Genre == GenreConverter.FromString(genre));
             }
 
-            if (!!String.IsNullOrEmpty(order) || order.Equals("asc"))
+            if (String.IsNullOrEmpty(order) || order.Equals("asc"))
             {
                 comicsQuery = comicsQuery.OrderBy(book => book.Title);
             }
@@ -82,7 +82,7 @@ namespace Library.Infrastructure
 
         public async Task<ComicBook> DeleteAsync(int id)
         {
-            var bookToDelete = await libraryContext.ComicBooks.FirstOrDefaultAsync(x=>x.Id==id);
+            var bookToDelete = await libraryContext.ComicBooks.SingleOrDefaultAsync(x=>x.Id==id);
             if (bookToDelete != null)
             {
                 libraryContext.ComicBooks.Remove(bookToDelete);
@@ -94,7 +94,7 @@ namespace Library.Infrastructure
 
         public async Task<ComicBook> UpdateAsync(ComicBook book)
         {
-            ComicBook comicToUpdate = await libraryContext.ComicBooks.FirstOrDefaultAsync((x)=>x.Id==book.Id);
+            ComicBook comicToUpdate = await libraryContext.ComicBooks.SingleOrDefaultAsync((x)=>x.Id==book.Id);
 
             if (comicToUpdate != null)
             {

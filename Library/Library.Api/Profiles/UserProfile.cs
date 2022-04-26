@@ -18,6 +18,8 @@ namespace Library.Api.Profiles
                 .ForMember(add => add.Email, opt => opt.MapFrom(x => x.Email))
                 .ForMember(add => add.Address, opt => opt.MapFrom(x => x.Address));
 
+            CreateMap<SignUpDTO,Client>().ReverseMap();
+
         }
 
     }

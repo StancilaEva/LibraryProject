@@ -81,7 +81,8 @@ namespace Library.Api.Controllers
 
                 return Ok(lendResult);
             }
-            catch(ExtendDateNotValidException ex){
+            catch(ExtendDateNotValidException ex)
+            {
                 return BadRequest(ex.Message);
             }
             catch(AlreadyExtendedException ex)

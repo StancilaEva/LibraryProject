@@ -14,9 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(GetAllComicBooksQueryHandler));
-//builder.Services.AddDbContext<LibraryContext>(options=>
-//options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddDbContext<LibraryContext>();
+builder.Services.AddDbContext<LibraryContext>(options =>
+
+options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddCors(options => options
+.AddDefaultPolicy(builder => builder.AllowAnyOrigin()));
+//builder.Services.AddDbContext<LibraryContext>();
 
 
 builder.Services.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
@@ -33,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

@@ -4,6 +4,7 @@ using Library.Api.DTOs;
 using Library.Api.DTOs.UserDTOs;
 using Library.Application.Commands.ClientCommands;
 using Library.Application.Queries.ClientQueries;
+using Library.Core;
 using Library.Core.Exceptions;
 using MainApp;
 using MediatR;
@@ -44,7 +45,7 @@ namespace Library.Api.Controllers
 
                 var userResult = _mapper.Map<UserDetailDTO>(result);
 
-                return CreatedAtAction(nameof(GetClientId), new { id = result.Id }, result);
+                return CreatedAtAction(nameof(GetClientId), new { id = result.Id }, userResult);
             }
             catch(NonExistentUserException ex)
             {
