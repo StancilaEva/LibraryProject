@@ -1,0 +1,41 @@
+.login-input{
+  display:grid;
+  grid-template-columns: 100px 200px;
+}
+
+.small_lend_card{
+  width:40vh
+}
+
+.card {
+  text-align: center;
+}
+
+.card img {
+  width: 75%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  margin: 2rem 0;
+}
+
+.comic_book_list .comic_book_body {
+  margin: .5em;
+  border: 1px solid var(--surface-border);
+}
+
+body{
+  padding:0%;
+  margin: 0%;
+}
+
+.comics_container{
+}
+
+.filters{
+  display: flex;
+}
+
+.addressContainer{
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
