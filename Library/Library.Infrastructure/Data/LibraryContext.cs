@@ -20,13 +20,10 @@ namespace Library.Infrastructure.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-        }
-
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>()
+          modelBuilder.Entity<Address>()
          .HasOne(x => x.Client)
          .WithOne(x => x.Address)
          .HasForeignKey<Client>("AddressFk")

@@ -22,6 +22,7 @@ namespace Library.Api.Profiles
                  .ForMember(x => x.IssueNumber, opt => opt.MapFrom(comic => comic.IssueNumber))
                  .ForMember(x => x.Cover, opt => opt.MapFrom(comic => comic.Cover))
                  .ForMember(x => x.Genre, opt => opt.MapFrom(comic => GenreConverter.FromEnum(comic.Genre)));
+
         }
     }
 }

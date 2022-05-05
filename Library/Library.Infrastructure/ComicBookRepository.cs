@@ -89,6 +89,7 @@ namespace Library.Infrastructure
                 await libraryContext.SaveChangesAsync();
                 return bookToDelete;
             }
+
             return null;
         }
 
@@ -109,5 +110,43 @@ namespace Library.Infrastructure
             return null;
         }
 
+        public async Task<int> GetFilteredRecordsCount(string publisher, string genre, string order)
+        {
+            var comicsQuery = libraryContext.ComicBooks.AsQueryable();
+
+            if (!String.IsNullOrEmpty(publisher))
+            {
+                comicsQuery = comicsQuery.Where(book => book.Publisher.Equals(publisher));
+            }
+
+            if (!String.IsNullOrEmpty(genre))
+            {
+                comicsQuery = comicsQuery.Where(book => book.Genre == GenreConverter.FromString(genre));
+            }
+
+            if (String.IsNullOrEmpty(order) || order.Equals("asc"))
+            {
+                comicsQuery = comicsQuery.OrderBy(book => book.Title);
+            }
+            else
+            {
+                comicsQuery = comicsQuery.OrderByDescending(book => book.Title);
+            }
+            var numberOfRecords = await comicsQuery.CountAsync();
+
+            return numberOfRecords;
+        }
+
+        public async Task<List<string>> GetAllPublishersAsync()
+        {
+            List<string> publishers = await libraryContext.ComicBooks.Select(book => book.Publisher).Distinct().ToListAsync();
+            return publishers;
+        }
+
+        public async Task<List<string>> GetAllGenresAsync()
+        {
+            List<Genre> genres = await libraryContext.ComicBooks.Select(book => book.Genre).Distinct().ToListAsync();
+            return genres.Select(genre => GenreConverter.FromEnum(genre)).ToList();
+        }
     }
 }

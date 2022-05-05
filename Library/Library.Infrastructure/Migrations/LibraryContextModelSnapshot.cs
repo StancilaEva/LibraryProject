@@ -47,7 +47,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("Library.Core.Client", b =>
@@ -79,7 +79,7 @@ namespace Library.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[AddressFk] IS NOT NULL");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Library.Core.ComicBook", b =>
@@ -110,7 +110,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ComicBooks");
+                    b.ToTable("ComicBooks", (string)null);
                 });
 
             modelBuilder.Entity("Library.Core.Lend", b =>
@@ -142,7 +142,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Lends");
+                    b.ToTable("Lends", (string)null);
                 });
 
             modelBuilder.Entity("Library.Core.Client", b =>

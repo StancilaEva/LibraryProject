@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetComicBooksPageQuery : IRequest<List<ComicBook>>
+    public class GetComicBooksPageQuery : IRequest<(List<ComicBook>,int)>
     {
         public int Index { get; set; }
 

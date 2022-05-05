@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Library.Api.DTOs;
+using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.LendDTOs;
 using Library.Application.Commands.LendCommands;
 using Library.Application.Exceptions;
@@ -51,15 +52,22 @@ namespace Library.Api.Controllers
             }
             catch(InvalidDateException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch (BookNotAvailableException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
+            }
+            catch(LendDateNotValidException ex)
+            {
+                ErrorDTO err = new ErrorDTO(){ ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
         }
 
-        [HttpPatch("lend/{lendId}")]
+        [HttpPatch("{lendId}")]
         public async Task<IActionResult> ExtendLend([FromBody] LendExtensionDTO lendExtensionDTO,int lendId)
         {
             try
@@ -77,17 +85,19 @@ namespace Library.Api.Controllers
                     return NotFound();
                 }
 
-                var lendResult = _mapper.Map<LendResultDTO>(result);
+                var lendResult =  _mapper.Map<LendResultDTO>(result);
 
                 return Ok(lendResult);
             }
-            catch(ExtendDateNotValidException ex)
+            catch(LendDateNotValidException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch(AlreadyExtendedException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
         }
 

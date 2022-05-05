@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Exceptions
 {
-    public class ExtendDateNotValidException : Exception
+    public class LendDateNotValidException : Exception
     {
-        public ExtendDateNotValidException(string message) : base(message)
+        public LendDateNotValidException(string message) : base(message)
         {
         }
     }

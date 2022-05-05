@@ -42,21 +42,22 @@ namespace MainApp
             //membership = new ComputerAccess(membership);
             // membership = new InternetAccess(membership);
             // Console.WriteLine(membership.GetAccess() + " " + membership.GetCost());
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddMediatR(typeof(GetAllComicBooksQueryHandler));
-            serviceCollection.AddDbContext<LibraryContext>();
-            serviceCollection.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
-            serviceCollection.AddTransient(typeof(IClientRepository), typeof(ClientRepository));
-            serviceCollection.AddTransient(typeof(ILendRepository), typeof(LendRepository));
+            //var serviceCollection = new ServiceCollection();
+            //serviceCollection.AddMediatR(typeof(GetAllComicBooksQueryHandler));
+            //serviceCollection.AddDbContext<LibraryContext>();
+            //serviceCollection.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
+            //serviceCollection.AddTransient(typeof(IClientRepository), typeof(ClientRepository));
+            //serviceCollection.AddTransient(typeof(ILendRepository), typeof(LendRepository));
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            var meditr = serviceProvider.GetRequiredService<IMediator>();
-            var result = await meditr.Send(new GetAllComicBooksQuery());
-            foreach(var book in result)
-            {
-                Console.WriteLine(book.Title+"\n\n\n"+book.Cover);
-            }
-
+            //var serviceProvider = serviceCollection.BuildServiceProvider();
+            //var meditr = serviceProvider.GetRequiredService<IMediator>();
+            //var result = await meditr.Send(new GetAllComicBooksQuery());
+            //foreach(var book in result)
+            //{
+            //    Console.WriteLine(book.Title+"\n\n\n"+book.Cover);
+            //}
+            //Genre genre = Genre.HORROR;
+            //Console.WriteLine(genre.Attr);
           
 
 

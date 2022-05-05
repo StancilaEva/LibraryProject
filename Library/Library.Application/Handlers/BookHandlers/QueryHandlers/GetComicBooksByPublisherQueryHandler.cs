@@ -24,7 +24,6 @@ namespace Library.Application.Handlers.BookHandlers
         public async Task<List<ComicBook>> Handle(GetComicBooksByPublisherQuery request, CancellationToken cancellationToken)
         {
             var books = (await _bookRepository.FilterBooksByPublisherAsync(request.Publisher));
-
             return books;
 
         }

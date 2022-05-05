@@ -22,41 +22,39 @@ namespace Library.Application.Handlers.LendHandlers
 
         public async Task<Lend> Handle(CreateLendCommand request, CancellationToken cancellationToken)
         {
-            List<Lend> lendedBooks = await _lendRepository.FilterLendsByBookAsync(request.ComicId);
+           
 
-            if (CheckIfBookIsAvailabe(lendedBooks,request.StartDate,request.EndDate))
+            if (await IsValid(request.ComicId,request.StartDate,request.EndDate))
             { 
                 Lend lend = await _lendRepository.InsertLendAsync(request.UserId,request.ComicId,request.StartDate,request.EndDate);
+
+                lend = await _lendRepository.GetLendByIdAsync(lend.Id);
                 return lend;
             }
             else
             {
-                throw new BookNotAvailableException("the book is not available in that time period");
+                throw new BookNotAvailableException("this comic book is not available in that time period");
             }
         }
 
-        public bool CheckIfBookIsAvailabe(List<Lend> lendedBooks, DateTime startDate,DateTime endDate)
+        public async Task<bool> IsValid(int comicId,DateTime startDate,DateTime endDate)
         {
-           
-            foreach (Lend lendThatContainsBook in lendedBooks)
+            if(!(await CheckIfBookIsAvailable(comicId, startDate, endDate)))
             {
-                if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, startDate) ||
-                    BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, endDate))
-                {
-                    return false;
-                }
-
+                throw new BookNotAvailableException("this comic book is not available in that time period");
+            }
+            if ((endDate - startDate).TotalDays > 14)
+            {
+                throw new LendDateNotValidException("lending time cant be more than two weeks");
             }
             return true;
         }
 
-        public bool BetweenTwoDates(DateTime start, DateTime end, DateTime date)
+        public async Task<bool> CheckIfBookIsAvailable(int comicBookId, DateTime startDate,DateTime endDate)
         {
-            if (DateOnly.FromDateTime(start) <= DateOnly.FromDateTime(date) &&
-                DateOnly.FromDateTime(end) >= DateOnly.FromDateTime(date))
-                return true;
-            else
-                return false;
+            if (await _lendRepository.FindOverlapInLendedComics(comicBookId, startDate) == true) return false; 
+            if (await _lendRepository.FindOverlapInLendedComics(comicBookId, endDate) == true) return false;
+            return true;
         }
 
         

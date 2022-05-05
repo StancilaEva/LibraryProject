@@ -46,47 +46,31 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             }
             if(lend.EndDate < System.DateTime.Now)
             {
-                throw new ExtendDateNotValidException("this comic book has already been returned");
+                throw new LendDateNotValidException("this comic book has already been returned");
             }
             if (lend.EndDate > endDate)
             {
-                throw new ExtendDateNotValidException("The extended date cannot be before the original end date");
+                throw new LendDateNotValidException("The extended date cannot be before the original end date");
             }
             if ((endDate - lend.EndDate).TotalDays > 7)
             {
-                throw new ExtendDateNotValidException("You cannot extend the lending time of a comic by more than a week");
+                throw new LendDateNotValidException("You cannot extend the lending time of a comic by more than a week");
             }
-
-            List<Lend> lends = await _lendRepository.FilterLendsByBookAsync(lend.Book.Id);
-
-            if (CheckIfBookIsAvailabe(lends, endDate)==false)
+            if (await CheckIfBookIsAvailabe(lend.BookId, endDate))
             {
-                throw new BookNotAvailableException("The comic book is not available in that time period");
+                throw new LendDateNotValidException("The comic book is not available in that time period");
             }
             return true;
         }
 
-        public bool CheckIfBookIsAvailabe(List<Lend> lendedBooks, DateTime endDate)
+
+        //am cautat cu any daca exista un imprumut care sa fie in perioada cand dorim sa extindem si noi imprumutul => nu putem 
+        private async Task<bool> CheckIfBookIsAvailabe(int comicId, DateTime endDate)
         {
-
-            foreach (Lend lendThatContainsBook in lendedBooks)
-            {
-                if (BetweenTwoDates(lendThatContainsBook.StartDate, lendThatContainsBook.EndDate, endDate))
-                {
-                    return false;
-                }
-
-            }
-            return true;
+            return await _lendRepository.FindOverlapInLendedComics(comicId, endDate);
+           
         }
 
-        public bool BetweenTwoDates(DateTime start, DateTime end, DateTime date)
-        {
-            if (DateOnly.FromDateTime(start) <= DateOnly.FromDateTime(date) &&
-                DateOnly.FromDateTime(end) >= DateOnly.FromDateTime(date))
-                return true;
-            else
-                return false;
-        }
+        
     }
 }

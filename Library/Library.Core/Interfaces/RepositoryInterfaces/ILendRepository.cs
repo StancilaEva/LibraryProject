@@ -14,12 +14,11 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<List<Lend>> FilterLendsByBookAsync(int bookId);
 
-        public Task<ComicBook> GetBookByIdAsync(int id);
-
-        public Task<Client> GetClientByIdAsync(int id);
-
         public Task<Lend> GetLendByIdAsync(int id);
+
         public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
+
+        public Task<bool> FindOverlapInLendedComics(int id,DateTime newDate);
 
     }
 }

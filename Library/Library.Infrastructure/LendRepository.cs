@@ -31,14 +31,12 @@ namespace Library.Infrastructure
 
         public async Task<Lend> InsertLendAsync(int clientId, int comicId, DateTime startDate, DateTime endDate)
         {
-            Client client = libraryContext.Clients.SingleOrDefault(client => client.Id == clientId);   
-            ComicBook comicBook = libraryContext.ComicBooks.SingleOrDefault(comic => comic.Id == comicId);
             
-            Lend lend = new Lend(comicBook, client, startDate, endDate);
+            Lend lend = new Lend(clientId, comicId, startDate, endDate);
 
             libraryContext.Lends.Add(lend);
             await libraryContext.SaveChangesAsync();
-
+            
             
             return lend;
         }
@@ -48,28 +46,6 @@ namespace Library.Infrastructure
             return await libraryContext.Lends.Where(lendedBook => lendedBook.Book.Id.Equals(bookId)).ToListAsync();
         }
 
-        public async Task<ComicBook> GetBookByIdAsync(int id)
-        {
-            ComicBook comicBook = await libraryContext.ComicBooks.SingleOrDefaultAsync(book=>book.Id.Equals(id));
-            if(comicBook == null)
-            {
-                throw new InvalidOperationException("comic book not found");
-            }
-
-            return comicBook;
-        }
-
-        public async Task<Client> GetClientByIdAsync(int id)
-        {
-            Client client = await libraryContext.Clients.Include(client=>client.Address)
-                .FirstOrDefaultAsync(client => client.Id.Equals(id));
-            if (client == null)
-            {
-                throw new InvalidOperationException("client not found");
-            }
-
-            return client;
-        }
 
         public async Task<Lend> GetLendByIdAsync(int id)
         {
@@ -86,6 +62,12 @@ namespace Library.Infrastructure
             return lend;
         }
 
+        public async Task<bool> FindOverlapInLendedComics(int id, DateTime date)
+        {
+            bool exists = await libraryContext.Lends.Include(l => l.Book)
+               .AnyAsync(l => (l.BookId == id) && (l.EndDate >= date && date >= l.StartDate));
+            return exists;
+        }
     }
 }
 

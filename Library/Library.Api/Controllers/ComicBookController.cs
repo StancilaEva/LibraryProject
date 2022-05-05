@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library.Api.DTOs;
+using Library.Api.DTOs.ComicBookDTOs;
 using Library.Application.Commands.BookCommands;
 using Library.Application.Queries;
 using Library.Application.Queries.BookQueries;
@@ -37,9 +38,16 @@ namespace Library.Api.Controllers
             };
             var result = await _mediatr.Send(queryToSend);
             
-            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookDTO>>(result);
-            
-            return Ok(mappedResult);
+            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookDTO>>(result.Item1);
+            var recordCount = result.Item2;
+
+            ComicBookPagingDTO comicBookPaging = new ComicBookPagingDTO()
+            {
+                ComicBooks = mappedResult,
+                RecordCount = recordCount
+            };
+
+            return Ok(comicBookPaging)  ;
         }
 
         [HttpGet]
@@ -77,7 +85,7 @@ namespace Library.Api.Controllers
             }
 
             var comicBookResult = _mapper.Map<ComicBook, ComicBookDTO>(result);
-
+            
             return Ok(comicBookResult);
         }
 
@@ -101,6 +109,34 @@ namespace Library.Api.Controllers
             return Ok(comicBookResult);
         }
 
+        [HttpGet("Publishers")]
+        public async Task<IActionResult> GetAllPublishers()
+        {
+            var querytoSend = new GetAllPublishersQuery();
+            var result = await _mediatr.Send(querytoSend);
+            if(result == null)
+            {
+                return NotFound();
+            }
+            var resultDTO = new PublishersDTO() { Publishers = result };
+
+            return Ok(resultDTO);
+        }
+
+        [HttpGet("Genres")]
+        public async Task<IActionResult> GetAllGenres()
+        {
+            var querytoSend = new GetAllGenresQuery();
+            var result = await _mediatr.Send(querytoSend);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            var resultDTO = new GenresDTO() { Genres = result };
+
+            return Ok(resultDTO);
+        }
 
     }
 }

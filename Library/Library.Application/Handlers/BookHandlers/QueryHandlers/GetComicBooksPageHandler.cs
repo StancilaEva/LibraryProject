@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers.QueryHandlers
 {
-    public class GetComicBooksPageHandler : IRequestHandler<GetComicBooksPageQuery, List<ComicBook>>
+    public class GetComicBooksPageHandler : IRequestHandler<GetComicBooksPageQuery, (List<ComicBook>,int)>
     {
         IBookRepository _bookRepository;
 
@@ -21,10 +21,12 @@ namespace Library.Application.Handlers.BookHandlers.QueryHandlers
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<ComicBook>> Handle(GetComicBooksPageQuery request, CancellationToken cancellationToken)
+        public async Task<(List<ComicBook>,int)> Handle(GetComicBooksPageQuery request, CancellationToken cancellationToken)
         {
             var result = (await _bookRepository.FilterComicBooksAsync(request.Publisher, request.Genre, request.Order, request.Index));
-            return result;
+            var pageNumber = await _bookRepository.GetFilteredRecordsCount(request.Publisher, request.Genre, request.Order);
+
+            return (result,pageNumber);
             
         }
     }

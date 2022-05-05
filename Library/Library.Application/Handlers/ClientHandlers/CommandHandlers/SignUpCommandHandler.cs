@@ -36,6 +36,7 @@ namespace Library.Application.Handlers.ClientHandlers.CommandHandlers
             }
         }
 
+        //as putea verifica si direct daca e null in loc sa 
         private async Task<bool> IsValid(Client client)
         {
             var clientByEmail = await CheckIfEmailIsAlreadyUsed(client.Email);

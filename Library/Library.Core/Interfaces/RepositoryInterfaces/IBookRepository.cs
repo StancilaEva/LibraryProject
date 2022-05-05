@@ -24,6 +24,8 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<ComicBook> DeleteAsync(int id);
 
-       
+        public Task<int> GetFilteredRecordsCount(string publisher, string genre, string order);
+        public Task<List<string>> GetAllPublishersAsync();
+        public Task<List<string>> GetAllGenresAsync();
     }
 }

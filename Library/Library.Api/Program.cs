@@ -18,8 +18,7 @@ builder.Services.AddDbContext<LibraryContext>(options =>
 
 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddCors(options => options
-.AddDefaultPolicy(builder => builder.AllowAnyOrigin()));
-//builder.Services.AddDbContext<LibraryContext>();
+.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 
 builder.Services.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));

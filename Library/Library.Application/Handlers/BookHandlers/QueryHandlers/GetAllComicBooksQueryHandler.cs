@@ -22,9 +22,7 @@ namespace Library.Application.Handlers
 
         public async Task<List<ComicBook>> Handle(GetAllComicBooksQuery request, CancellationToken cancellationToken)
         {
-            var result = await _bookRepository.GetAllBooksAsync();
-
-            return result;
+            return await _bookRepository.GetAllBooksAsync();
         }
 
        

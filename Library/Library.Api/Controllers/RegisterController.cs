@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Library.Api.DTOs;
+using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.UserDTOs;
 using Library.Application.Commands.ClientCommands;
 using Library.Application.Queries.ClientQueries;
@@ -49,11 +50,13 @@ namespace Library.Api.Controllers
             }
             catch(NonExistentUserException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch(WrongPasswordException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
         }
 
@@ -80,19 +83,23 @@ namespace Library.Api.Controllers
             }
             catch(InvalidEmailException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch(InvalidPasswordException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch(InvalidUsernameException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
             catch (EmailAlreadyInUseException ex)
             {
-                return BadRequest(ex.Message);
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
         }
 
