@@ -27,5 +27,6 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<int> GetFilteredRecordsCount(string publisher, string genre, string order);
         public Task<List<string>> GetAllPublishersAsync();
         public Task<List<string>> GetAllGenresAsync();
+        public Task<List<ComicBook>> SearchForComicAsync(string searchString);
     }
 }

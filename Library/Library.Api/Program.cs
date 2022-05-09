@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Library.Application.Handlers;
 using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure;
@@ -24,6 +25,8 @@ builder.Services.AddCors(options => options
 builder.Services.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
 builder.Services.AddTransient(typeof(IClientRepository), typeof(ClientRepository));
 builder.Services.AddTransient(typeof(ILendRepository), typeof(LendRepository));
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorageConnectionString")));
+//builder.Services.AddSingleton<IBlobService,BlobService>()
 builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 

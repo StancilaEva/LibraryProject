@@ -22,7 +22,7 @@ function ComicBookGridCard(props) {
             <CardActionArea onClick={onComicCardClick}>
                 <CardMedia
                     component="img"
-                    image={require(`../../${comicBook.cover}`)}
+                    image={require(`../../../${comicBook.cover}`)}
                     sx={{ objectFit: 'contain', height: '40vh' }}
                 />
                 <CardContent>

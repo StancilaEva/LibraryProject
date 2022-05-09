@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react"
 import ApplicationMenuBar from "../Cards/ApplicationMenuBar"
 import { TextField, Box } from "@mui/material"
-import { MenuItem } from "@mui/material"
 import { Grid } from "@mui/material";
-import ComicBookGridCard from "../Cards/ComicBookGridCard"
+import ComicBookGridCard from "../Cards/GridCards/ComicBookGridCard"
 import { Pagination } from "@mui/material"
-import api from "../../api/posts"
 import FilterHeader from "../Cards/FilterHeader";
-
+import { getComicBooks } from "../../services/ComicBooksService";
 
 function AltHomePage() {
 
@@ -18,7 +16,7 @@ function AltHomePage() {
 
     const [comics, setComicBooks] = useState([])
     const [page, setPage] = useState(1)
-    
+
     const [sortOrder, setSortOrder] = useState(sortOptions[0])
     const [noOfPAges, setNoOfPages] = useState(0)
 
@@ -27,12 +25,9 @@ function AltHomePage() {
 
 
     const loadComics = async () => {
-        const response = await api.get(`/ComicBooks?page=${page}&Order=${sortOrder.value}&Publisher=${filterPublisher}&Genre=${filterGenre}`)
-        if (response.status === 200) {
-            var result = await response.data
-            setComicBooks(result.comicBooks)
-            setNoOfPages(Math.ceil(result.recordCount / 8))
-        }
+          const result = await getComicBooks(page,sortOrder,filterPublisher,filterGenre)
+          setComicBooks(result.comicBooks)
+          setNoOfPages(Math.ceil(result.recordCount / 8))
     };
 
     useEffect(() => { loadComics() }, [page, sortOrder, filterPublisher, filterGenre]);

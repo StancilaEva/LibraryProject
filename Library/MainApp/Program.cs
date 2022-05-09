@@ -58,8 +58,6 @@ namespace MainApp
             //}
             //Genre genre = Genre.HORROR;
             //Console.WriteLine(genre.Attr);
-          
-
 
         }
 

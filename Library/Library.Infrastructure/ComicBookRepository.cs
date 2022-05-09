@@ -148,5 +148,12 @@ namespace Library.Infrastructure
             List<Genre> genres = await libraryContext.ComicBooks.Select(book => book.Genre).Distinct().ToListAsync();
             return genres.Select(genre => GenreConverter.FromEnum(genre)).ToList();
         }
+
+        public async Task<List<ComicBook>> SearchForComicAsync(string searchString)
+        {
+            List<ComicBook> comics = await libraryContext.ComicBooks.Where(comic=>comic.Title.ToLower().Contains(searchString.ToLower())).ToListAsync();
+            return comics;
+            
+        }
     }
 }

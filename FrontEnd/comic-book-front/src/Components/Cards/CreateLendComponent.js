@@ -14,6 +14,7 @@ import api from "../../api/posts"
 import { AxiosError } from "axios";
 import SuccessfulLend from "./Toasts/SuccesfulLend";
 import UnsuccessfulLend from "./Toasts/UnsuccessfulLend";
+import { newLend } from "../../services/LendService";
 
 
 
@@ -22,38 +23,31 @@ function NewLend(props) {
     const [startDate, setStartDate] = useState(new Date(Date.now()))
     const [endDate, setEndDate] = useState(new Date(Date.now()))
     const [showMessage, setShowMessage] = useState(false)
-    const [message, setMessage] = useState('successful')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [message, setMessage] = useState('')
+    const [status, setStatus] = useState(0)
 
     const onBorrowClick = async () => {
         const body = {
             startDate,
             endDate
         }
-        const request = await fetch(`https://localhost:7015/api/Lends/1/comicBook/${comicBook.id}`,
-            {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-        if (request.status === 201) {
+        const result = await newLend(body, comicBook.id)
+        if (result.status === 201) {
             setShowMessage(true)
-            setMessage("successful")
+            setMessage(result.message)
+            setStatus(result.status)
         }
         else
-            if (request.status === 400) {
-                const response = await request.json()
-                setMessage(response.errorMessage)
+            if (result.status === 400) {
+                setMessage(result.message)
                 setShowMessage(true)
+                setStatus(result.status)
             }
     }
 
     const renderMessage = () => {
-        if (message == 'successful') {
-            return (<SuccessfulLend setShowMessage={setShowMessage} showMessage={showMessage} />)
+        if (status === 201) {
+            return (<SuccessfulLend setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
         }
         else {
             return (<UnsuccessfulLend setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
@@ -91,8 +85,8 @@ function NewLend(props) {
                 Borrow
             </Button>
             <Box sx={{ width: '30%', position: "absolute", bottom: 0 }} >
-               <Collapse in={showMessage}>
-                {renderMessage()}
+                <Collapse in={showMessage}>
+                    {renderMessage()}
                 </Collapse>
             </Box>
         </>

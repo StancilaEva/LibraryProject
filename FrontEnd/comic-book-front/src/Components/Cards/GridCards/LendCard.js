@@ -20,7 +20,7 @@ function LendCard(props) {
   const parseDate = () =>{
     let startDate  = new Date(lend.startDate)
     let endDate  = new Date(lend.endDate)
-    return( `${startDate.getDate()}/${startDate.getMonth()}/${startDate.getFullYear()} TO ${endDate.getDate()}/${endDate.getMonth()}/${endDate.getFullYear()}`)
+    return( `${startDate.getDate()}/${startDate.getMonth()+1}/${startDate.getFullYear()} TO ${endDate.getDate()}/${endDate.getMonth()+1}/${endDate.getFullYear()}`)
   }
 
 
@@ -28,7 +28,8 @@ function LendCard(props) {
     <Card sx={{ height: '100%', width: '40vh' }}>
       <CardActionArea onClick={onLendCardClick}>
         <CardMedia
-          image={require(`../../${lend.comicBookCover}`)}
+          component="img"
+          image={require(`../../../${lend.comicBookCover}`)}
           sx={{ objectFit: 'contain', height: '40vh' }}
         />
         <CardContent>

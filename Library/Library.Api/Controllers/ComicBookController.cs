@@ -138,5 +138,22 @@ namespace Library.Api.Controllers
             return Ok(resultDTO);
         }
 
+        [HttpGet("Search/{search}")]
+        public async Task<IActionResult> SearchComics(string search)
+        {
+            var querytoSend = new GetComicBookByNameQuery()
+            {
+                SearchString = search
+            };
+            var result = await _mediatr.Send(querytoSend);
+            if (result.Count==0)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+
     }
 }

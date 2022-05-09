@@ -1,6 +1,7 @@
 import { TextField, Box, MenuItem } from "@mui/material";
 import { useState,useEffect } from "react";
 import api from "../../api/posts"
+import { getGenres,getPublishers } from "../../services/ComicBooksService";
 
 function FilterHeader(props) {
     const {setSortOrder,sortOrder,setFilterGenre,
@@ -11,16 +12,10 @@ function FilterHeader(props) {
 
 
     const loadFilterData = async () => {
-        const genresResponse = await api.get(`/ComicBooks/Genres`)
-        if (genresResponse.status === 200) {
-            var genreResult = await genresResponse.data
-            setGenres(genreResult.genres)
-        }
-        const publishersResponse = await api.get(`/ComicBooks/Publishers`)
-        if (publishersResponse.status === 200) {
-            var publisherResult = await publishersResponse.data
-            setPublishers(publisherResult.publishers)
-        }
+        const genresResponse = await getGenres()
+        setGenres(genresResponse.genres)
+        const publishersResponse = await getPublishers()
+        setPublishers(publishersResponse.publishers)
     }
 
     const onSortChange = (evt) => {

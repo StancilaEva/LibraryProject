@@ -17,8 +17,8 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<Lend> GetLendByIdAsync(int id);
 
         public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
-
-        public Task<bool> FindOverlapInLendedComics(int id,DateTime newDate);
+        public Task<bool> FindIfComicHasBeenLentInThatTimePeriodAsync(int id, DateTime startDate, DateTime endDate);
+        public Task<bool> FindOverlapInLendedComicsAsync(Lend lend,DateTime newDate);
 
     }
 }

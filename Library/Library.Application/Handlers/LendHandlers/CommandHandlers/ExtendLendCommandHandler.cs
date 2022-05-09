@@ -56,7 +56,7 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             {
                 throw new LendDateNotValidException("You cannot extend the lending time of a comic by more than a week");
             }
-            if (await CheckIfBookIsAvailabe(lend.BookId, endDate))
+            if (await CheckIfBookIsAvailabe(lend, endDate))
             {
                 throw new LendDateNotValidException("The comic book is not available in that time period");
             }
@@ -65,9 +65,9 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
 
 
         //am cautat cu any daca exista un imprumut care sa fie in perioada cand dorim sa extindem si noi imprumutul => nu putem 
-        private async Task<bool> CheckIfBookIsAvailabe(int comicId, DateTime endDate)
+        private async Task<bool> CheckIfBookIsAvailabe(Lend lend, DateTime endDate)
         {
-            return await _lendRepository.FindOverlapInLendedComics(comicId, endDate);
+            return await _lendRepository.FindOverlapInLendedComicsAsync(lend, endDate);
            
         }
 

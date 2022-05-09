@@ -51,7 +51,6 @@ namespace Library.Infrastructure
         {
             return await libraryContext.Lends.Include(l=>l.Book)
                 .Include(l=>l.Client).SingleOrDefaultAsync(l => l.Id.Equals(id));
-            
         }
 
         public async Task<Lend> ExtendLendAsync(Lend lend,DateTime endDate)
@@ -62,10 +61,23 @@ namespace Library.Infrastructure
             return lend;
         }
 
-        public async Task<bool> FindOverlapInLendedComics(int id, DateTime date)
+        public async Task<bool> FindIfComicHasBeenLentInThatTimePeriodAsync(int id, DateTime startDate,DateTime endDate) 
+        {
+            bool exists = await libraryContext.Lends.Include(l=>l.Book)
+                .AnyAsync(l=> (l.BookId == id) && (
+                (l.EndDate >= startDate && startDate >= l.StartDate) || //cazul in care prima zi de imprumut se afla intre prima zi si a doua zi a altui imprumut
+                (l.EndDate >= endDate && endDate >= l.StartDate) ||
+                (l.StartDate <= startDate && l.EndDate >= endDate)|| //cazul in care un imprumut acopera in intregime imprumutul nostru
+                (startDate<=l.StartDate && endDate>=l.EndDate)));
+            return exists;
+        }
+
+        public async Task<bool> FindOverlapInLendedComicsAsync(Lend lend, DateTime date)
         {
             bool exists = await libraryContext.Lends.Include(l => l.Book)
-               .AnyAsync(l => (l.BookId == id) && (l.EndDate >= date && date >= l.StartDate));
+               .AnyAsync(l => (l.BookId == lend.Book.Id && l.Id!=lend.Id) && (
+               (l.EndDate >= date && date >= l.StartDate) ||  
+               (l.StartDate>=lend.StartDate && date >= l.EndDate)));
             return exists;
         }
     }
