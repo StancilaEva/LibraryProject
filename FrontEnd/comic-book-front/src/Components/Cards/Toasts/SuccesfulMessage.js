@@ -2,11 +2,10 @@ import { Alert } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { Collapse } from "@mui/material";
-function UnsuccessfulLend(props) {
-    const { setShowMessage, message } = props
-    return (
-        <Alert
-            severity="error"
+function SuccessfulMessage(props) {
+    const {setShowMessage,message} = props
+    return (<Alert
+            severity="success"
             action={
                 <IconButton
                     aria-label="close"
@@ -19,10 +18,9 @@ function UnsuccessfulLend(props) {
                     <CloseIcon fontSize="inherit" />
                 </IconButton>
             }
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, width: '50vh' }}
         >
             {message}
-        </Alert>
-    )
+        </Alert>)
 }
-export default UnsuccessfulLend;
+export default SuccessfulMessage;

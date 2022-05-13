@@ -7,7 +7,6 @@
         public string ComicBookTitle { get; set; }
         public string ComicBookCover { get; set; }
         public int ClientId { get; set; }
-        public string Email { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool Extended { get; set; }

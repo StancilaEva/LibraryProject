@@ -65,7 +65,7 @@ namespace Library.Infrastructure
         {
             bool exists = await libraryContext.Lends.Include(l=>l.Book)
                 .AnyAsync(l=> (l.BookId == id) && (
-                (l.EndDate >= startDate && startDate >= l.StartDate) || //cazul in care prima zi de imprumut se afla intre prima zi si a doua zi a altui imprumut
+                (l.EndDate >= startDate && startDate >= l.StartDate) || //cazul in care prima zi de imprumut se afla intre prima zi si ultima zi a altui imprumut
                 (l.EndDate >= endDate && endDate >= l.StartDate) ||
                 (l.StartDate <= startDate && l.EndDate >= endDate)|| //cazul in care un imprumut acopera in intregime imprumutul nostru
                 (startDate<=l.StartDate && endDate>=l.EndDate)));

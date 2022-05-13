@@ -29,7 +29,7 @@ function LendCard(props) {
       <CardActionArea onClick={onLendCardClick}>
         <CardMedia
           component="img"
-          image={require(`../../../${lend.comicBookCover}`)}
+          src={lend.comicBookCover}
           sx={{ objectFit: 'contain', height: '40vh' }}
         />
         <CardContent>

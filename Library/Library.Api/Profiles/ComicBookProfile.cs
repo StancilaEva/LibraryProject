@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library.Api.DTOs;
+using Library.Api.DTOs.ComicBookDTOs;
 using Library.Application.utils;
 using Library.Core;
 
@@ -23,6 +24,7 @@ namespace Library.Api.Profiles
                  .ForMember(x => x.Cover, opt => opt.MapFrom(comic => comic.Cover))
                  .ForMember(x => x.Genre, opt => opt.MapFrom(comic => GenreConverter.FromEnum(comic.Genre)));
 
+            CreateMap<ComicBook, ComicBookSearchDTO>();
         }
     }
 }

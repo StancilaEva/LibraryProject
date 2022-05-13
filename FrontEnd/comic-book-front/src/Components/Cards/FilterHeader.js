@@ -11,9 +11,12 @@ function FilterHeader(props) {
     const [publishers, setPublishers] = useState([""])
 
 
-    const loadFilterData = async () => {
+    const loadFilterGenres = async () => {
         const genresResponse = await getGenres()
         setGenres(genresResponse.genres)
+    }
+
+    const loadFilterPublishers = async () =>{
         const publishersResponse = await getPublishers()
         setPublishers(publishersResponse.publishers)
     }
@@ -40,7 +43,10 @@ function FilterHeader(props) {
         setPage(1)
     }
 
-    useEffect(() => { loadFilterData() }, [])
+    useEffect(() => { 
+        loadFilterPublishers();
+        loadFilterGenres();
+     }, [])
 
     return (<Box className="filters" sx={{ display: "flex", width: '100%' }}>
         <TextField

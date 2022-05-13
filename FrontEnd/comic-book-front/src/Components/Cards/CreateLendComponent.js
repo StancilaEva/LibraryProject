@@ -6,14 +6,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Alert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-import api from "../../api/posts"
-import { AxiosError } from "axios";
-import SuccessfulLend from "./Toasts/SuccesfulLend";
-import UnsuccessfulLend from "./Toasts/UnsuccessfulLend";
+import SuccessfulMessage from "./Toasts/SuccesfulMessage";
+import UnsuccessfulMessage from "./Toasts/UnsuccessfulMessage";
 import { newLend } from "../../services/LendService";
 
 
@@ -47,10 +42,10 @@ function NewLend(props) {
 
     const renderMessage = () => {
         if (status === 201) {
-            return (<SuccessfulLend setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
+            return (<SuccessfulMessage setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
         }
         else {
-            return (<UnsuccessfulLend setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
+            return (<UnsuccessfulMessage setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
         }
     }
 

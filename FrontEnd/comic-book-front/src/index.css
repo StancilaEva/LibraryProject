@@ -39,3 +39,7 @@ body{
   align-content: center;
   flex-direction: column;
 }
+
+#inputField{
+  margin: 4px;
+}

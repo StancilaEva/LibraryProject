@@ -38,7 +38,7 @@ namespace Library.Api.Controllers
             };
             var result = await _mediatr.Send(queryToSend);
             
-            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookDTO>>(result.Item1);
+            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookSearchDTO>>(result.Item1);
             var recordCount = result.Item2;
 
             ComicBookPagingDTO comicBookPaging = new ComicBookPagingDTO()
@@ -47,7 +47,7 @@ namespace Library.Api.Controllers
                 RecordCount = recordCount
             };
 
-            return Ok(comicBookPaging)  ;
+            return Ok(comicBookPaging);
         }
 
         [HttpGet]
@@ -138,20 +138,27 @@ namespace Library.Api.Controllers
             return Ok(resultDTO);
         }
 
-        [HttpGet("Search/{search}")]
-        public async Task<IActionResult> SearchComics(string search)
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchComics([FromQuery] Search searchValue)
         {
+            if (String.IsNullOrEmpty(searchValue.SearchString))
+            {
+                return NoContent();
+            }
+
             var querytoSend = new GetComicBookByNameQuery()
             {
-                SearchString = search
+                SearchString = searchValue.SearchString
             };
             var result = await _mediatr.Send(querytoSend);
             if (result.Count==0)
             {
-                return NotFound();
+                return NoContent();
             }
 
-            return Ok(result);
+            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookSearchDTO>>(result);
+
+            return Ok(mappedResult);
         }
 
 

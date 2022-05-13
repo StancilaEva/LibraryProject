@@ -7,8 +7,8 @@ import { TextField } from "@mui/material";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { extendLend } from "../../services/LendService";
 import { Collapse } from "@mui/material";
-import SuccessfulLend from "../Cards/Toasts/SuccesfulLend";
-import UnsuccessfulLend from "../Cards/Toasts/UnsuccessfulLend";
+import SuccessfulMessage from "./Toasts/SuccesfulMessage";
+import UnsuccessfulMessage from "./Toasts/UnsuccessfulMessage";
 
 function ExtendLend(props) {
     const {id,setUpdated} = props
@@ -30,7 +30,7 @@ function ExtendLend(props) {
     }
 
     const renderToast =  () =>{
-            return (<UnsuccessfulLend setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
+            return (<UnsuccessfulMessage setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
         
     }
 

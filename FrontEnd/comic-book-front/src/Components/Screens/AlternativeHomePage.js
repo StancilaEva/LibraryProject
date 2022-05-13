@@ -4,8 +4,10 @@ import { TextField, Box } from "@mui/material"
 import { Grid } from "@mui/material";
 import ComicBookGridCard from "../Cards/GridCards/ComicBookGridCard"
 import { Pagination } from "@mui/material"
-import FilterHeader from "../Cards/FilterHeader";
 import { getComicBooks } from "../../services/ComicBooksService";
+import SortFilter from "../Cards/FilterInputs/SortFilter";
+import PublisherFilter from "../Cards/FilterInputs/PublisherFilter";
+import GenreFilter from "../Cards/FilterInputs/GenreFilter";
 
 function AltHomePage() {
 
@@ -37,17 +39,10 @@ function AltHomePage() {
         <div>
             <ApplicationMenuBar />
             <main>
-                <Box>
-                    <FilterHeader
-                        setSortOrder={setSortOrder}
-                        sortOrder={sortOrder}
-                        setFilterGenre={setFilterGenre}
-                        filterGenre={filterGenre}
-                        setFilterPublisher={setFilterPublisher}
-                        filterPublisher={filterPublisher}
-                        setPage={setPage}
-                        sortOptions={sortOptions}
-                    ></FilterHeader>
+                <Box className="filters" sx={{ display: "flex", width: '100%' }}>
+                <SortFilter sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions={sortOptions}/>
+                <PublisherFilter filterPublisher={filterPublisher} setFilterPublisher={setFilterPublisher} setPage={setPage}/>
+                <GenreFilter filterGenre={filterGenre} setFilterGenre={setFilterGenre} setPage={setPage}/>
                 </Box>
                 <Grid container spacing={3} marginLeft={"0.05%"} marginTop="0.05%" width="99%">
                     {

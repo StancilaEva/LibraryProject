@@ -62,7 +62,7 @@ namespace Library.Core
             }
             else
             {
-                throw new InvalidPasswordException("Password must be at least 5 characters long");
+                throw new InvalidPasswordException("Password must be at least 4 characters long");
             }
 
             Address = address;

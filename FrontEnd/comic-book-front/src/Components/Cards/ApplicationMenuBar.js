@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-
+import SearchComic from './FilterInputs/SearchComic';
 
 function ApplicationMenuBar(){
 
@@ -42,7 +42,7 @@ function ApplicationMenuBar(){
     return (
         <div>
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar position='static'>
+            <AppBar position='static'>
                     <Toolbar>
                         <IconButton
                             size="large"
@@ -50,14 +50,14 @@ function ApplicationMenuBar(){
                             color="inherit"
                             aria-label="menu"
                             sx={{ mr: 2 }}
-                            onClick={handleClick}
-                        >
+                            onClick={handleClick}>
                             <MenuIcon />
                         </IconButton>
-                        <HomeIcon onClick={goToHome} />
+                        <HomeIcon
+                          onClick={goToHome} />
+                        <SearchComic sx={{width:'100px',position:'absolute',right:0}}/>
                     </Toolbar>
                 </AppBar>
-
             </Box>
             <Menu
                 id="basic-menu"

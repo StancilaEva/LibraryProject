@@ -4,7 +4,8 @@ import ClientLends from "./Components/Screens/ClientsLendPage";
 import LendPage from "./Components/Screens/LendPage";
 import ComicBookPage from "./Components/Screens/ComicBookPage";
 import AltHomePage from "./Components/Screens/AlternativeHomePage"
-
+import SignUpStepper from "./Components/Screens/SignUpStepper";
+import './index.css';
 function App() {
   return (
     <Routes>
@@ -13,6 +14,7 @@ function App() {
             <Route path="/Client/:id/Lends" exact  element={<ClientLends/>}/>
             <Route path="Lends/:id" exact element={<LendPage/>}></Route>
             <Route path="/ComicBook/:id" exact element={<ComicBookPage/>}></Route>
+            <Route path="/Signup" exact element={<SignUpStepper/>}></Route>
     </Routes>
   );
 }

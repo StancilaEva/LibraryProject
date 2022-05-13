@@ -1,4 +1,4 @@
-import { Button, Card, CardMedia, CssBaseline, Typography } from "@mui/material";
+import { Button, Card, CardMedia, CssBaseline, Divider, Typography } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
@@ -10,9 +10,10 @@ function ComicBookDetailCard(props) {
         <Card sx={{ objectFit: 'contain', height: '85vh' }}>
             <CardMedia
                 component="img"
-                image={require(`../../${comicBook.cover}`)}
+                src={comicBook.cover}
                 sx={{ objectFit: 'contain', height: '65vh' }} />
             <CardContent>
+    
                 <Container>
                     <Box sx={{ display: 'flex' }}>
                         <Typography gutterBottom variant="h5" component="div" flex='75%'>

@@ -15,7 +15,7 @@ function ClientAddress() {
     const [street, setStreet] = useState('')
     const [number, setNumber] = useState(0)
 
-
+//pune axios!!!
     const loadAddress = async () => {
         const response = await fetch(`https://localhost:7015/api/Client/${id}/Address`)
         if (response.status == 200) {
