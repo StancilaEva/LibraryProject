@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 import ApplicationMenuBar from "../Cards/ApplicationMenuBar";
 import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
-import { Box, flexbox } from "@mui/system";
-import { Button, CssBaseline } from "@mui/material";
-import api from "../../api/posts"
+import { Box } from "@mui/system";
+import { Button } from "@mui/material";
 import { modifyAddress } from "../../services/ClientService";
 
 function ClientAddress() {

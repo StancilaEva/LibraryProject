@@ -6,8 +6,6 @@ using Library.Application.Commands.LendCommands;
 using Library.Application.Queries.ClientQueries;
 using Library.Core;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers

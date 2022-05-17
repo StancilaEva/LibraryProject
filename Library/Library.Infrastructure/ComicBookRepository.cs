@@ -74,10 +74,11 @@ namespace Library.Infrastructure
             return booksByGenre;
         }
 
-        public async void InsertBookAsync(ComicBook book)
+        public async Task<ComicBook>  InsertBookAsync(ComicBook book)
         {
             libraryContext.ComicBooks.Add(book);
-            await libraryContext.AddRangeAsync();
+            await libraryContext.SaveChangesAsync();
+            return book;
         }
 
         public async Task<ComicBook> DeleteAsync(int id)

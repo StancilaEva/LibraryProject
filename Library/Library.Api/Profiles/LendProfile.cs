@@ -17,6 +17,11 @@ namespace Library.Api.Profiles
                    .ForMember(add => add.LendId, opt => opt.MapFrom(x => x.Id))
                    .ForMember(add => add.ClientId, opt => opt.MapFrom(x => x.Client.Id))
                    .ForMember(add=>add.Extended,opt=>opt.MapFrom(x=>x.IsExtended));
+            CreateMap<Lend, TimePeriodDTO>()
+                .ForMember(add => add.StartDate, opt => opt.MapFrom(x => x.StartDate))
+                   .ForMember(add => add.EndDate, opt => opt.MapFrom(x => x.EndDate))
+                    .ForMember(add => add.Username, opt => opt.MapFrom(x => x.Client.Username));
+
 
         }
     }

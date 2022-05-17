@@ -21,7 +21,7 @@ const SignUpForm = (props) => {
                     <TextField
                         {...email}
                         placeholder="Email"
-                        sx={{ margin: "16px", wdith: "45%" }}
+                        sx={{ margin: "16px", wdith: "20%" }}
                         defaultValue={user.email}
                         onChange={(event)=>setUser({...user,email:event.target.value})}
                         helperText={errors ? errors.email?.message : null}

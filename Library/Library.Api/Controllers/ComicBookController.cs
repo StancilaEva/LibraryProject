@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using Library.Api.DTOs;
 using Library.Api.DTOs.ComicBookDTOs;
+using Library.Application;
 using Library.Application.Commands.BookCommands;
+using Library.Application.Commands.BookCommands.CreateBookCommand;
 using Library.Application.Queries;
 using Library.Application.Queries.BookQueries;
 using Library.Core;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace Library.Api.Controllers
 {
@@ -105,8 +107,41 @@ namespace Library.Api.Controllers
                 return NotFound();
             }
 
-            var comicBookResult = _mapper.Map<ComicBook,ComicBookDTO>(result);
+            var comicBookResult = _mapper.Map<ComicBook, ComicBookDTO>(result);
             return Ok(comicBookResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateComicBookById([FromBody] ComicBookBodyDTO comicBookDTO)
+        {
+            var commandToSend = new CreateComicBookCommand()
+            {
+                Title = comicBookDTO.Title,
+                Genre = comicBookDTO.Genre,
+                Cover = comicBookDTO.Cover,
+                IssueNumber = comicBookDTO.IssueNumber,
+                Publisher = comicBookDTO.Publisher,
+            };
+            var result = await _mediatr.Send(commandToSend);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("File")]
+        public async Task<IActionResult> PostFile(IFormFile formFile)
+        {
+            var command = new FileCommand()
+            {
+                File = formFile
+            };
+            var result = await _mediatr.Send(command);
+
+            return Ok(result);
         }
 
         [HttpGet("Publishers")]

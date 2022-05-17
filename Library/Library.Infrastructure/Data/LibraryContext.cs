@@ -1,5 +1,6 @@
 ﻿using Library.Core;
 using Library.Infrastructure.EntityConfigurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Data
 {
-    public class LibraryContext : DbContext
+    public class LibraryContext : IdentityDbContext
     {
         public DbSet<ComicBook> ComicBooks { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -29,6 +30,9 @@ namespace Library.Infrastructure.Data
          .HasForeignKey<Client>("AddressFk")
          .IsRequired(false)
          .OnDelete(DeleteBehavior.SetNull);
+          modelBuilder.ApplyConfiguration(new IdentityUserTokenConfig());
+          modelBuilder.ApplyConfiguration(new IdentityUserLogInConfig());
+            modelBuilder.ApplyConfiguration(new IdentityUserRoleConfig());
         }
     }
 }

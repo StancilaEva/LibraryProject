@@ -41,11 +41,6 @@ namespace Library.Infrastructure
             return lend;
         }
 
-        public async Task<List<Lend>> FilterLendsByBookAsync(int bookId)
-        {
-            return await libraryContext.Lends.Where(lendedBook => lendedBook.Book.Id.Equals(bookId)).ToListAsync();
-        }
-
 
         public async Task<Lend> GetLendByIdAsync(int id)
         {
@@ -80,6 +75,12 @@ namespace Library.Infrastructure
                (l.StartDate>=lend.StartDate && date >= l.EndDate)));
             return exists;
         }
+
+        public async Task<List<Lend>> AllLendsThatContainComic(int comicId)
+        {
+            return await libraryContext.Lends.Include(l=>l.Client)
+                .Where(l => l.BookId == comicId).ToListAsync();
+        } 
     }
 }
 

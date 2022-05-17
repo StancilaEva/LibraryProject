@@ -13,8 +13,8 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<List<ComicBook>> FilterBooksByPublisherAsync(string author);
 
         public Task<List<ComicBook>> FilterBooksByGenreAsync(Genre genre);
-        
-        public void InsertBookAsync(ComicBook book);
+
+        public Task<ComicBook> InsertBookAsync(ComicBook book);
 
         public Task<List<ComicBook>> FilterComicBooksAsync(string publisher, string genre, string order, int pageNr);
 

@@ -3,7 +3,7 @@ import api from "../api/posts"
 
 export const getAllClientLends = async (id) => {
     let data = [];
-    await api.get(`/Client/${id}/Lends`).then((result) => data = result.data).catch((err)=>{})
+    await api.get(`/Client/${id}/Lends`).then((result) => data = result.data).catch((err) => { })
     return data
 }
 
@@ -19,7 +19,7 @@ export const getLendById = async (id) => {
         extended: false
     };
     await api.get(`/Lends/${id}`)
-        .then((result) => data = result.data).catch((err)=>{});
+        .then((result) => data = result.data).catch((err) => { });
     return data;
 }
 
@@ -61,4 +61,10 @@ export const extendLend = async (id, newEndDate) => {
         })
 
     return jsonMessage
+}
+
+export const getTimePeriods = async (id) => {
+    let data = [];
+    await api.get(`/Lends/Comic/${id}`).then((result) => data = result.data).catch((err) => { })
+    return data
 }

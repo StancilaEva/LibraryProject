@@ -120,5 +120,25 @@ namespace Library.Api.Controllers
             return Ok(lendResult);
         }
 
+        [HttpGet("Comic/{id}")]
+        public async Task<IActionResult> GetLendsThatContainComic(int id)
+        {
+            var queryToSend = new GetAllLendsThatContainComicQuery()
+            {
+                ComicBookId = id
+            };
+            var result = await _mediatR.Send(queryToSend);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            var lendResult = _mapper.Map<List<TimePeriodDTO>>(result);
+
+            return Ok(lendResult);
+        }
+
+
     }
 }

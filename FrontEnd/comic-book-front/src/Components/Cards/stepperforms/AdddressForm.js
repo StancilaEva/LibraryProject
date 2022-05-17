@@ -33,10 +33,6 @@ const AddressForm = (props) => {
     useEffect(() => { loadCountiesData() }, [])
     useEffect(() => { loadCitiesData() }, [selectedCounty])
 
-    Object.keys(errors).forEach(element => {
-        const { ref } = errors[element]
-    });
-
     return (
         <Box sx={{ width: '100%', display: 'center', justifyContent: "center", alignItems: "center", marginTop: "5%" }}>
             <Card sx={{ width: '50%', alignSelf: 'center', justifySelf: 'center', height: '60%' }}>

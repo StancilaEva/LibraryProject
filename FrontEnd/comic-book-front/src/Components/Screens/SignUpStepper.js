@@ -69,7 +69,6 @@ export default function HorizontalLinearStepper() {
     }
   }
 
-
   const renderToast = () => {
     return (<UnsuccessfulMessage setShowMessage={setShowMessage} message={errorMessage} showMessage={showMessage} />)
   }

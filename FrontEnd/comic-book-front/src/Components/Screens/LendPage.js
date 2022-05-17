@@ -19,7 +19,6 @@ function LendPage() {
         comicBookTitle: '',
         comicBookCover: '',
         clientId: 0,
-        email: '',
         startDate: new Date(Date.now()),
         endDate: new Date(Date.now()),
         extended: false

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
@@ -10,7 +9,9 @@ import Collapse from '@mui/material/Collapse';
 import SuccessfulMessage from "./Toasts/SuccesfulMessage";
 import UnsuccessfulMessage from "./Toasts/UnsuccessfulMessage";
 import { newLend } from "../../services/LendService";
-
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { lendDateSchema } from "../../validators/lendDateSchema";
 
 
 function NewLend(props) {
@@ -20,8 +21,13 @@ function NewLend(props) {
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(0)
+    const { register, handleSubmit, formState: { errors },watch } = useForm({
+        resolver: joiResolver(lendDateSchema),
+      });
+    const startLendDate = register("startLendDate")
+    const endLendDate = register("endLendDate")
 
-    const onBorrowClick = async () => {
+    const onBorrowClick = async (data) => {
         const body = {
             startDate,
             endDate
@@ -54,12 +60,17 @@ function NewLend(props) {
             <Box sx={{ margin: '1%' }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}  >
                     <DatePicker
+                        {...startLendDate}
                         label="Start Date"
                         value={startDate}
                         onChange={(evt) => {
                             setStartDate(evt);
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField 
+                         {...params}
+                         helperText={errors ? errors.startLendDate?.message : null} 
+                         />}
+                        
                     />
                 </LocalizationProvider>
             </Box>
@@ -67,16 +78,20 @@ function NewLend(props) {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         label="End Date"
+                        {...endLendDate}
                         value={endDate}
                         onChange={(evt) => {
                             setEndDate(evt);
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField 
+                        {...params}
+                        helperText={errors ? errors.endLendDate?.message : null}/>}
+                        
                     />
                 </LocalizationProvider>
             </Box>
             <Button
-                onClick={() => { onBorrowClick() }}>
+                onClick={handleSubmit(onBorrowClick)}>
                 Borrow
             </Button>
             <Box sx={{ width: '30%', position: "absolute", bottom: 0 }} >
