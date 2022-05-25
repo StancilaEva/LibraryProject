@@ -11,5 +11,6 @@ namespace Library.Application.Queries.LendQueries
     public class GetLendByIdQuery : IRequest<Lend>
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
     }
 }

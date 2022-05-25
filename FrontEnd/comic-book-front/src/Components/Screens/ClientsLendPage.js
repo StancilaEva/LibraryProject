@@ -7,12 +7,10 @@ import api from "../../api/posts"
 import { getAllClientLends } from "../../services/LendService";
 
 function ClientLends() {
-    let { id } = useParams()
-
     const [lends, setLends] = useState([])
 
     const loadLends = async () => {
-        const response = await getAllClientLends(id)
+        const response = await getAllClientLends()
         setLends(response)
     }
 

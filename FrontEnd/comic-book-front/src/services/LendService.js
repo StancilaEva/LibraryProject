@@ -1,13 +1,27 @@
 import { RepeatOneSharp } from "@mui/icons-material";
 import api from "../api/posts"
 
-export const getAllClientLends = async (id) => {
+export const getAllClientLends = async () => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
     let data = [];
-    await api.get(`/Client/${id}/Lends`).then((result) => data = result.data).catch((err) => { })
+    await api.get(`/Lends`,header).then((result) => 
+    {
+        if(result.status===200)data = result.data
+    }
+        ).catch((err) => { })
     return data
 }
 
 export const getLendById = async (id) => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
     let data = {
         lendId: 0,
         comicBookId: 0,
@@ -18,18 +32,24 @@ export const getLendById = async (id) => {
         endDate: new Date(Date.now()),
         extended: false
     };
-    await api.get(`/Lends/${id}`)
+    await api.get(`/Lends/${id}`,header)
         .then((result) => data = result.data).catch((err) => { });
     return data;
 }
 
 export const newLend = async (dates, comicId) => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
+
     const jsonMessage = {
         status: 0,
         message: ""
     }
 
-    await api.post(`/Lends/1/comicBook/${comicId}`, dates)
+    await api.post(`/Lends/BorrowComic/${comicId}`, dates,header)
         .then((result) => {
             jsonMessage.status = result.status
             jsonMessage.message = "Lend was successful!"
@@ -43,13 +63,18 @@ export const newLend = async (dates, comicId) => {
 }
 
 export const extendLend = async (id, newEndDate) => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
     const jsonMessage = {
         status: 0,
         message: "",
         lend: {}
     }
 
-    await api.patch(`/Lends/${id}`, { newEndDate })
+    await api.patch(`/Lends/${id}`, { newEndDate },header)
         .then((result) => {
             jsonMessage.status = result.status
             jsonMessage.message = "End date updated!"

@@ -52,7 +52,7 @@ namespace Library.Application.Handlers.LendHandlers
 
         public async Task<bool> CheckIfBookIsAvailable(int comicBookId, DateTime startDate,DateTime endDate)
         {
-            if (await _lendRepository.FindIfComicHasBeenLentInThatTimePeriodAsync(comicBookId, startDate,endDate) == true) return false;
+            if (await _lendRepository.FindIfComicHasBeenLentInThatTimePeriodAsync(comicBookId, startDate.Date,endDate.Date) == true) return false;
             return true;
         }
 

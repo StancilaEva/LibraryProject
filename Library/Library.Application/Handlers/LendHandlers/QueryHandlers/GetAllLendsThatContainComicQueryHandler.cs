@@ -21,7 +21,7 @@ namespace Library.Application.Handlers.LendHandlers.QueryHandlers
 
         public async Task<List<Lend>> Handle(GetAllLendsThatContainComicQuery request, CancellationToken cancellationToken)
         {
-            return await _lendRepository.AllLendsThatContainComic(request.ComicBookId);
+            return await _lendRepository.AllLendsThatContainComicAsync(request.ComicBookId);
         }
     }
 }

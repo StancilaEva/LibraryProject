@@ -1,5 +1,5 @@
 import AppBar from '@mui/material/AppBar';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,51 +28,61 @@ function ApplicationMenuBar(){
     };
    
     const onMyLendsClick = () =>{
-        navigate(`/Client/1/Lends`)
+        navigate(`/Client/Lends`)
     }
 
     const onMyAddressClick = () =>{
-        navigate(`/Client/1/Address`)
+        navigate(`/Client/Address`)
     }
 
     const goToHome = () =>{
         navigate(`/`)
     }
 
+    const LogOut = () =>{
+        localStorage.clear()
+        navigate(`/LogIn`)
+    }
+
+    const LogIn = () =>{
+        navigate(`/Login`)
+    }
+
     return (
-        <div>
-            <Box sx={{ flexGrow: 1 }}>
-            <AppBar position='static'>
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                            onClick={handleClick}>
-                            <MenuIcon />
-                        </IconButton>
-                        <HomeIcon
-                          onClick={goToHome} />
-                        <SearchComic sx={{width:'100px',position:'absolute',right:0}}/>
-                    </Toolbar>
-                </AppBar>
-            </Box>
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-                <MenuItem onClick={onMyLendsClick}>My Lends</MenuItem>
-                <MenuItem onClick={onMyAddressClick}>Address</MenuItem>
-            </Menu>
-        </div>
-    )
+        <>
+        <Box>
+        <AppBar position='static'>
+                <Toolbar >
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                        onClick={handleClick}>
+                        <MenuIcon />
+                    </IconButton>
+                    <HomeIcon
+                      onClick={goToHome}/>
+                    <SearchComic sx={{width:'100px',marginLeft:'8px'}}/>
+                    <Button onClick={LogOut} color="secondary">Log Out</Button>
+                </Toolbar>
+            </AppBar>
+        </Box>
+        <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+                'aria-labelledby': 'basic-button',
+            }}
+        >
+            <MenuItem onClick={onMyLendsClick}>My Lends</MenuItem>
+            <MenuItem onClick={onMyAddressClick}>Address</MenuItem>
+        </Menu>
+        </>)
+    
 }
 
 export default ApplicationMenuBar;

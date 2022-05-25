@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { getLendById } from "../../services/LendService";
 import ExtendLend from "../Cards/ExtendLendCopmponent";
 import { Divider } from "@mui/material";
+import {useContext} from "react"
+import { UserContext } from "../../Context/userContext";
 
 function LendPage() {
     const { id } = useParams()
@@ -58,7 +60,7 @@ function LendPage() {
                                 component="img"
                                 src={lend.comicBookCover}
                                 sx={{ objectFit: 'contain', height: '65vh' }} />
-                                 <Divider/>
+                                 <Divider sx={{margin:'4px'}}/>
                             <CardContent>
                                 <Container>
                                     <Box sx={{ display: 'flex' }}>

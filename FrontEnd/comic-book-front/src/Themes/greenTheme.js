@@ -6,8 +6,8 @@ export const greenTheme = createTheme({
       main: '#ADC2A9',
     },
     secondary: {
-      main: '#E9B2BC',
-      light: '#E9B2BC',
+      main: '#FFE5B4',
+      light: '#FFE5B4',
     },
     background: {
       default: '#FEF5ED',

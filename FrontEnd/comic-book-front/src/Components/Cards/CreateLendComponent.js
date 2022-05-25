@@ -12,9 +12,12 @@ import { newLend } from "../../services/LendService";
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { lendDateSchema } from "../../validators/lendDateSchema";
+import { useContext } from "react";
+import { UserContext } from "../../Context/userContext";
 
 
 function NewLend(props) {
+    const {user} = useContext(UserContext)
     const { comicBook } = props
     const [startDate, setStartDate] = useState(new Date(Date.now()))
     const [endDate, setEndDate] = useState(new Date(Date.now()))
@@ -83,6 +86,7 @@ function NewLend(props) {
                         onChange={(evt) => {
                             setEndDate(evt);
                         }}
+                        
                         renderInput={(params) => <TextField 
                         {...params}
                         helperText={errors ? errors.endLendDate?.message : null}/>}

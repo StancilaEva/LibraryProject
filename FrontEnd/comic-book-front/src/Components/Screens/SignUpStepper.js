@@ -14,6 +14,7 @@ import { userSchema } from '../../validators/userSchema';
 import { signUpUser } from '../../services/RegisterService';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Collapse } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const steps = ['Enter User Data', 'Enter address'];
 
@@ -60,7 +61,8 @@ export default function HorizontalLinearStepper() {
 
   const onSignUpSubmit = async (data) => {
     const response = await signUpUser(user)
-    if(response.status===201){
+    if(response.status===200){
+      localStorage.setItem("token",response.token)
       navigate('/')
     }
     else{
@@ -136,6 +138,7 @@ export default function HorizontalLinearStepper() {
             renderToast() 
             }
         </Collapse>
+        <Link to="/LogIn">Already have an account? Log In!</Link>
     </Box>
   );
 }

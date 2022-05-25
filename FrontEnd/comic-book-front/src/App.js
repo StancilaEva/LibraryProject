@@ -11,20 +11,47 @@ import LendDatePicker from "./Components/Cards/LendDatePicker";
 import { ThemeProvider } from "@mui/material/styles";
 import { greenTheme } from "./Themes/greenTheme";
 import { CssBaseline } from "@mui/material";
+import { UserContext } from "./Context/userContext";
+import { useState } from "react";
+import { useMemo } from "react";
+import PrivateRoute from "./PrivateRouter/PrivateRouter";
+
+
 function App() {
+  const [user,setUser] = useState(null)
   return (
     <ThemeProvider theme={greenTheme}>
-      <CssBaseline/>
+    <CssBaseline/>
+    <UserContext.Provider value={{user,setUser}}>
     <Routes>
-            <Route path="/" exact element={<AltHomePage/>}></Route>
-            <Route path="/Client/:id/Address" exact element={<ClientAddress/>}/>
-            <Route path="/Client/:id/Lends" exact  element={<ClientLends/>}/>
-            <Route path="Lends/:id" exact element={<LendPage/>}></Route>
-            <Route path="/ComicBook/:id" exact element={<ComicBookPage/>}></Route>
+            <Route path="/" exact element={
+            <PrivateRoute>
+            <AltHomePage/>
+            </PrivateRoute>
+            }/>
+            <Route path="/Client/Address" exact element={
+            <PrivateRoute>
+              <ClientAddress/>
+              </PrivateRoute>}/>
+            <Route path="/Client/Lends" exact  element={
+            <PrivateRoute>
+              <ClientLends/>
+              </PrivateRoute>}/>
+            <Route path="Lends/:id" exact element={
+            <PrivateRoute>
+            <LendPage/>
+            </PrivateRoute>}></Route>
+            <Route path="/ComicBook/:id" exact element={
+            <PrivateRoute>
+            <ComicBookPage/>
+            </PrivateRoute>
+             }></Route>
             <Route path="/Signup" exact element={<SignUpStepper/>}></Route>
             <Route path="/LogIn" exact element={<LogIn/>}></Route>
             <Route path="/DatePicker" exact element={<LendDatePicker/>}></Route>
+            
     </Routes>
+    </UserContext.Provider>
     </ThemeProvider>
   );
 }

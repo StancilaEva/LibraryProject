@@ -1,17 +1,22 @@
 ﻿using AutoMapper;
 using Library.Api.DTOs;
+using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.LendDTOs;
 using Library.Application.Commands.ClientCommands;
 using Library.Application.Commands.LendCommands;
 using Library.Application.Queries.ClientQueries;
 using Library.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Library.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     public class ClientController : ControllerBase
     {
         public readonly IMapper _mapper;
@@ -23,59 +28,67 @@ namespace Library.Api.Controllers
             _mediatr = mediatr;
         }
 
-        [HttpPatch("{id}/Address")]
-        public async Task<IActionResult> ChangeAddress([FromBody] AddressDTO addressModel, int id)
+        [HttpPatch("Address")]
+        public async Task<IActionResult> ChangeAddress([FromBody] AddressDTO addressModel)
         {
-            var addressToSend = _mapper.Map<Address>(addressModel);
-            var commandToSend = new UpdateAddressCommand()
+            try
             {
-                Id = id,
-                NewAddress = addressToSend
-            };
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    var id = Int32.Parse(identity.FindFirst("UserId").Value);
+                    var addressToSend = _mapper.Map<Address>(addressModel);
+                    var commandToSend = new UpdateAddressCommand()
+                    {
+                        Id = id,
+                        NewAddress = addressToSend
+                    };
 
-            var result = await _mediatr.Send(commandToSend);
+                    var result = await _mediatr.Send(commandToSend);
 
-            return Ok(result);
-
-        }
-
-        [HttpGet("{id}/Address")]
-        public async Task<IActionResult> GetAddress(int id)
-        {
-            var queryToSend = new GetClientAddressQuery()
+                    return Ok(result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }catch(ArgumentNullException ex)
             {
-                Id = id
-            };
-            var result = await _mediatr.Send(queryToSend);
-
-            if (result == null)
-            {
-                return NotFound();
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
             }
 
-            var mappedResult = _mapper.Map<AddressDTO>(result);
-
-            return Ok(mappedResult);
-
         }
 
-        [HttpGet("{id}/Lends")]
-        public async Task<IActionResult> GetLends(int id)
+        [HttpGet("Address")]
+        public async Task<IActionResult> GetAddress()
         {
-            var queryToSend = new GetClientLendsQuery()
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
             {
-                IdClient = id
-            };
-            var result = await _mediatr.Send(queryToSend);
+                var id = Int32.Parse(identity.FindFirst("UserId").Value);
+                var queryToSend = new GetClientAddressQuery()
+                {
+                    Id = id
+                };
+                var result = await _mediatr.Send(queryToSend);
 
-            if (result.Count==0)
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                var mappedResult = _mapper.Map<AddressDTO>(result);
+
+                return Ok(mappedResult);
+            }
+            else
             {
-                return NoContent();
+                return Unauthorized();
             }
 
-            var mappedResult = _mapper.Map<List<LendResultDTO>>(result);
-
-            return Ok(mappedResult);
         }
+
+        
     }
 }

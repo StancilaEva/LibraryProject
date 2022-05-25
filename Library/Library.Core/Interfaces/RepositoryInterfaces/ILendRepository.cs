@@ -14,7 +14,10 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
         public Task<bool> FindIfComicHasBeenLentInThatTimePeriodAsync(int id, DateTime startDate, DateTime endDate);
         public Task<bool> FindOverlapInLendedComicsAsync(Lend lend,DateTime newDate);
-        public Task<List<Lend>> AllLendsThatContainComic(int comicId);
+        public Task<List<Lend>> AllLendsThatContainComicAsync(int comicId);
+
+        public Task<Dictionary<ComicBook, int>> MostBorrowedComicsInThePastMonthAsync();
+        public Task<Dictionary<Genre, int>> MostReadGenresAsync();
 
     }
 }

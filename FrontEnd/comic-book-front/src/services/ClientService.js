@@ -1,26 +1,49 @@
 import api from "../api/posts"
 
-export const getAddress = async (id) => {
-    let data
-    await api.get(`/Client/${id}/Address`)
-        .then((result) => data = result.data)
-    return data
+export const getAddress = async () => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
+    let jsonMessage = 
+    {
+        county:'',
+        city:'',
+        street:'',
+        number:0
+    }
+    await api.get(`/Client/Address`,header)
+        .then((result) => jsonMessage = result.data).catch((err)=>{})
+    return jsonMessage
 }
 
-export const modifyAddress = async (id, county, city, street, number) => {
-    let data;
-    await api.patch(`/Client/${id}/Address`,
+export const modifyAddress = async (county, city, street, number) => {
+    const header = {
+        headers: {
+           Authorization: "Bearer " + localStorage.getItem('token')
+        }
+     }
+    let jsonMessage = {
+        status:0,
+        message:'',
+        address:{}
+    };
+    await api.patch(`/Client/Address`,
         {
             county,
             city,
             street,
             number
-        }).then((result) => {
-            data = result.data
+        },header).then((result) => {
+            jsonMessage.status = result.status
+            jsonMessage.message = "Address changed"
+            jsonMessage.address = result.data
             alert("merge")
         })
         .catch((err) => {
-            alert(err.response.data)
+            jsonMessage.status = err.response.status
+            jsonMessage.message = err.response.data.errorMessage
         })
-    return data
+    return jsonMessage
 }

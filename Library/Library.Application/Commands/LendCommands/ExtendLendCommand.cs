@@ -12,5 +12,6 @@ namespace Library.Application.Commands.LendCommands
     {
         public int IdLend { get; set; }
         public DateTime EndDate { get; set; }
+        public int UserId { get; set; }
     }
 }

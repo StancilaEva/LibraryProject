@@ -25,7 +25,7 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             Lend lend = await _lendRepository.GetLendByIdAsync(request.IdLend);
 
 
-            if (await isValid(lend, request.EndDate))
+            if (await isValid(lend, request.EndDate,request.UserId))
             {
                 var result = await _lendRepository.ExtendLendAsync(lend, request.EndDate);
 
@@ -36,7 +36,7 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
                 return null;
         }
 
-        private async Task<bool> isValid(Lend lend, DateTime endDate)
+        private async Task<bool> isValid(Lend lend, DateTime endDate,int userId)
         {
             if (lend == null)
                 return false;
@@ -60,6 +60,10 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             {
                 throw new LendDateNotValidException("The comic book is not available in that time period");
             }
+            if(lend.ClientId != userId)
+            {
+                throw new UnauthorizedAccessException("You can only extend the time period for one of your borrowed comics");
+            }
             return true;
         }
 
@@ -67,7 +71,7 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
         //am cautat cu any daca exista un imprumut care sa fie in perioada cand dorim sa extindem si noi imprumutul => nu putem 
         private async Task<bool> CheckIfBookIsAvailabe(Lend lend, DateTime endDate)
         {
-            return await _lendRepository.FindOverlapInLendedComicsAsync(lend, endDate);
+            return await _lendRepository.FindOverlapInLendedComicsAsync(lend, endDate.Date);
            
         }
 

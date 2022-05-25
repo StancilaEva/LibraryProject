@@ -13,6 +13,8 @@ namespace Library.Core
     public class Client 
     {
         public int Id { get; set; }
+        //pentru identity
+        public string IdentityId { get; set; }
         public string Username { get; set; }    
         public string Password { get; set; }
 
@@ -34,6 +36,16 @@ namespace Library.Core
             Email = email;
 
         }
+
+        public Client(string identityId, string username, string password, Address address, string email)
+        {
+            IdentityId = identityId;
+            Username = username;
+            Password = password;
+            Address = address;
+            Email = email;
+        }
+
         public Client (string username, string password, Address address, string email)
         {
             if (!String.IsNullOrEmpty(username) && username.Length >= 4)

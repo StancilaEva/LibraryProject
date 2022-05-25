@@ -23,5 +23,7 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
 
         public Task<Address> GetClientAddress(int id);
         public Task<List<Lend>> GetAllClientLends(int id);
+
+        public Task<Client> GetUserByIdentityId(string identityId);
     }
 }

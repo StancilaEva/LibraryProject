@@ -8,9 +8,10 @@ import { getComicBooks } from "../../services/ComicBooksService";
 import SortFilter from "../Cards/FilterInputs/SortFilter";
 import PublisherFilter from "../Cards/FilterInputs/PublisherFilter";
 import GenreFilter from "../Cards/FilterInputs/GenreFilter";
+import { useContext } from "react";
+import { UserContext } from "../../Context/userContext";
 
 function AltHomePage() {
-
     const sortOptions = [
         { label: 'Title Asc', value: 'asc' },
         { label: 'Title Desc', value: 'desc' }

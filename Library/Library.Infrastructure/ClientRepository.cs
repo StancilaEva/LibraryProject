@@ -85,5 +85,9 @@ namespace Library.Infrastructure
                 .ToListAsync();
         }
 
+        public async Task<Client> GetUserByIdentityId(string identityId)
+        {
+            return await context.Clients.FirstOrDefaultAsync(client => client.IdentityId.Equals(identityId));
+        }
     }
 }

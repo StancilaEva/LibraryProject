@@ -45,4 +45,3 @@ export const userSchema = Joi.object({
         'number.greater': `number must be greater than 0`
       }),
 })
-

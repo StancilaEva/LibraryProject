@@ -1,18 +1,15 @@
-﻿
-using Library.Core;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Application.Queries.ClientQueries
+namespace Library.Application.Handlers.RegistrationHandlers.CommandHandlers
 {
-    public class GetClientLogInQuery : IRequest<Client>
+    public class LogInCommand : IRequest<string>
     {
         public string Email { get; set; }
-
         public string Password { get; set; }
     }
 }

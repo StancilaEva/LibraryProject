@@ -1,10 +1,24 @@
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/userContext";
 import { logIn } from "../../services/RegisterService";
+import { Collapse } from "@mui/material";
+import UnsuccessfulMessage from "../Cards/Toasts/UnsuccessfulMessage";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { joiResolver } from '@hookform/resolvers/joi';
+import { logInSchema } from "../../validators/logInSchema";
+
 export default function LogIn() {
-    const { handleSubmit,register } = useForm()
+    const {user,setUser} = useContext(UserContext)
+    const { handleSubmit,register, formState: { errors } } = useForm( {resolver: joiResolver(logInSchema)})
+    const navigate = useNavigate()
+    const [showMessage, setShowMessage] = useState(false)
+    const [message,setMessage] = useState('')
+    const [status,setStatus] = useState(0)
 
     const onLogInSubmit = async (data) =>{
         const userBody = {
@@ -12,22 +26,37 @@ export default function LogIn() {
             password:data.password
         }
         const response = await logIn(userBody)
-        if(response.status===201){
-            Navigate('/')
+        setStatus(response.status)
+        setMessage(response.message)
+        if(response.status===200){
+            localStorage.setItem("token",response.token)
+            navigate('/')
         }
         else{
-            alert(response.message)
+            setShowMessage(true)
         }
     }
 
+    const renderToast =  () =>{
+        return (<UnsuccessfulMessage setShowMessage={setShowMessage} message={message} showMessage={showMessage} />)
+    }
+
     return (
-        <Box sx={{width:'100%',display:'center',justifyContent: "center", alignItems: "center",marginTop:"5%"}}>
+        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: '75vh' }} >
             <TextField 
-            {...register("email")}/>
+            {...register("email")}
+            helperText={errors ? errors.email?.message : null}/>
             <TextField 
             {...register("password")}
+            helperText={errors ? errors.password?.message : null}
             type="password" />
             <Button onClick={handleSubmit(onLogInSubmit)}>Log in</Button>
+            <Link to="/SignUp">Don't have an account? Sign Up!</Link>
+            <Collapse in={showMessage}>
+            {
+            renderToast() 
+            }
+        </Collapse>
         </Box>
     )
 }

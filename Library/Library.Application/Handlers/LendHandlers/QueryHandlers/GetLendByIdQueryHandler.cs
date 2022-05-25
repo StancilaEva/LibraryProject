@@ -23,6 +23,8 @@ namespace Library.Application.Handlers.LendHandlers.QueryHandlers
         public async Task<Lend> Handle(GetLendByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _lendRepository.GetLendByIdAsync(request.Id);
+            if (result.Client.Id != request.UserId)
+                throw new UnauthorizedAccessException();
             return result;
         }
     }

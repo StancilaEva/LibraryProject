@@ -5,10 +5,14 @@ using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.LendDTOs;
 using Library.Application.Commands.LendCommands;
 using Library.Application.Exceptions;
+using Library.Application.Queries.ClientQueries;
 using Library.Application.Queries.LendQueries;
 using Library.Core.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Library.Api.Controllers
 {
@@ -26,29 +30,38 @@ namespace Library.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("{clientId}/comicbook/{comicId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("BorrowComic/{comicId}")]
         public async Task<IActionResult> CreateLend(int clientId, int comicId, [FromBody] LendDTO lendDTO)
         {
-
             try
             {
-                var commandToSend = new CreateLendCommand()
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
                 {
-                    ComicId = comicId,
-                    UserId = clientId,
-                    StartDate = lendDTO.StartDate,
-                    EndDate = lendDTO.EndDate
-                };
-                var result = await _mediatR.Send(commandToSend);
+                    var id = Int32.Parse(identity.FindFirst("UserId").Value);
+                    var commandToSend = new CreateLendCommand()
+                    {
+                        ComicId = comicId,
+                        UserId = id,
+                        StartDate = lendDTO.StartDate,
+                        EndDate = lendDTO.EndDate
+                    };
+                    var result = await _mediatR.Send(commandToSend);
 
-                if(result == null)
-                {
-                    return NotFound();
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var lendResult = _mapper.Map<LendResultDTO>(result);
+
+                    return CreatedAtAction(nameof(GetLendById), new { id = result.Id }, lendResult);
                 }
-
-                var lendResult = _mapper.Map<LendResultDTO>(result);
-
-                return CreatedAtAction(nameof(GetLendById), new { id = result.Id }, lendResult);
+                else
+                {
+                    return Unauthorized();
+                }
             }
             catch(InvalidDateException ex)
             {
@@ -67,27 +80,38 @@ namespace Library.Api.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPatch("{lendId}")]
         public async Task<IActionResult> ExtendLend([FromBody] LendExtensionDTO lendExtensionDTO,int lendId)
         {
             try
             {
-                var commandToSend = new ExtendLendCommand()
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
                 {
-                    EndDate = lendExtensionDTO.NewEndDate,
-                    IdLend = lendId
-                };
+                    var userId = Int32.Parse(identity.FindFirst("UserId").Value);
+                    var commandToSend = new ExtendLendCommand()
+                    {
+                        EndDate = lendExtensionDTO.NewEndDate,
+                        IdLend = lendId,
+                        UserId = userId
+                    };
 
-                var result = await _mediatR.Send(commandToSend);
+                    var result = await _mediatR.Send(commandToSend);
 
-                if (result == null)
-                {
-                    return NotFound();
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var lendResult = _mapper.Map<LendResultDTO>(result);
+
+                    return Ok(lendResult);
                 }
-
-                var lendResult =  _mapper.Map<LendResultDTO>(result);
-
-                return Ok(lendResult);
+                else
+                {
+                    return Unauthorized();
+                }
             }
             catch(LendDateNotValidException ex)
             {
@@ -99,46 +123,99 @@ namespace Library.Api.Controllers
                 ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
                 return BadRequest(err);
             }
+            catch(UnauthorizedAccessException ex)
+            {
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
+            }
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLendById(int id)
         {
-            var queryToSend = new GetLendByIdQuery()
+            try
             {
-                Id = id
-            };
-            var result = await _mediatR.Send(queryToSend);
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
+                 {
+                    var userId = Int32.Parse(identity.FindFirst("UserId").Value);
+                    var queryToSend = new GetLendByIdQuery()
+                    {
+                        Id = id,
+                        UserId = userId
+                    };
+                    var result = await _mediatR.Send(queryToSend);
 
-            if (result == null)
-            {
-                return NotFound();
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var lendResult = _mapper.Map<LendResultDTO>(result);
+
+                    return Ok(lendResult);
             }
-
-            var lendResult = _mapper.Map<LendResultDTO>(result);
-
-            return Ok(lendResult);
+            else
+            {
+                return Unauthorized();
+            }
+            }
+                catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ErrorDTO
+                {
+                    ErrorMessage = ex.Message
+                });
+            }
         }
+
 
         [HttpGet("Comic/{id}")]
         public async Task<IActionResult> GetLendsThatContainComic(int id)
         {
-            var queryToSend = new GetAllLendsThatContainComicQuery()
-            {
-                ComicBookId = id
-            };
-            var result = await _mediatR.Send(queryToSend);
+                var queryToSend = new GetAllLendsThatContainComicQuery()
+                {
+                    ComicBookId = id
+                };
+                var result = await _mediatR.Send(queryToSend);
 
-            if (result == null)
-            {
-                return NotFound();
-            }
+                if (result == null)
+                {
+                    return NotFound();
+                }
 
-            var lendResult = _mapper.Map<List<TimePeriodDTO>>(result);
+                var lendResult = _mapper.Map<List<TimePeriodDTO>>(result);
 
-            return Ok(lendResult);
+                return Ok(lendResult);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]
+        public async Task<IActionResult> GetUserLends()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                var id = Int32.Parse(identity.FindFirst("UserId").Value);
+                var queryToSend = new GetClientLendsQuery()
+                {
+                    IdClient = id
+                };
+                var result = await _mediatR.Send(queryToSend);
+
+                if (result.Count == 0)
+                {
+                    return NoContent();
+                }
+
+                var mappedResult = _mapper.Map<List<LendResultDTO>>(result);
+
+                return Ok(mappedResult);
+            }
+            else
+                return Unauthorized();
+        }
 
     }
 }

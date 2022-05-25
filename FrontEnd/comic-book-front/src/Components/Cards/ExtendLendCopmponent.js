@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button} from "@mui/material";
 import { Box } from "@mui/system";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,7 @@ import { extendLend } from "../../services/LendService";
 import { Collapse } from "@mui/material";
 import SuccessfulMessage from "./Toasts/SuccesfulMessage";
 import UnsuccessfulMessage from "./Toasts/UnsuccessfulMessage";
+import { UserContext } from "../../Context/userContext";
 
 function ExtendLend(props) {
     const {id,setUpdated} = props
