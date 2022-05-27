@@ -45,21 +45,15 @@ namespace NUnitLibraryTests
         [Test]
         public void InvalidEmailTest()
         {
-            Assert.Throws<InvalidEmailException>(() => new Client("user1", "password1", new Address("street", "city", "county", 1), "someinvalidemail"));
+            Assert.Throws<InvalidUserCredentialsException>(() => new Client("user1", "password1", new Address("street", "city", "county", 1), "someinvalidemail"));
 
         }
 
         [Test]
         public void InvalidUsernameTest()
         {
-            Assert.Throws<InvalidUsernameException>(() => new Client("", "password1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
+            Assert.Throws<InvalidUserCredentialsException>(() => new Client("", "password1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
 
-        }
-
-        [Test]
-        public void InvalidPasswordTest()
-        {
-            Assert.Throws<InvalidPasswordException>(() => new Client("user1", "", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
         }
 
         [Test]
@@ -94,6 +88,25 @@ namespace NUnitLibraryTests
            
         }
 
+        //[Test]
+        //public async Task Check_Comic_By_Id_GetComicBookByIdIsCalled()
+        //{
+        //    //Arrange
+        //    _mediator
+        //        .Setup(m => m.Send(It.IsAny<GetComicBookByIdQuery>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(() => CreateComicBook());
+        //    //Act
+        //    var controller = new ComicBooksController(_mediator.Object, _mapper.Object);
+
+        //    var result = await controller.GetComicBookById(1);
+        //    //var newResult = await result.ExecuteResultAsync()
+        //    //Result
+            
+        //    var okObject = result as OkObjectResult;
+        //    Assert.IsInstanceOf<ComicBookDTO>(okObject.Value);
+
+        //}
+
 
         [Test]
         public async Task Invalid_ComicBook_GetComicBookByIdIsCalled()
@@ -102,6 +115,7 @@ namespace NUnitLibraryTests
             _mediator
                 .Setup(m => m.Send(It.IsAny<GetComicBookByIdQuery>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
+            
             //Act
             var controller = new ComicBooksController(_mediator.Object, _mapper.Object);
 
@@ -147,7 +161,7 @@ namespace NUnitLibraryTests
         private Lend CreateListOfLends()
         {
             var comic = new ComicBook(1, "title", "publisher", Genre.COMEDY, 1, "cover");
-            var client = new Client(1,"user1", "password1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com");
+            var client = new Client(1,"user1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com");
             return new Lend(comic, client, DateTime.Today, DateTime.Today.AddDays(14));
         }
 

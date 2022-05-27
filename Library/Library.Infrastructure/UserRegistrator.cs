@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure
 {
-    public class RegisterRepository : IRegisterRepository
+    public class UserRegistrator : IUserRegistrator
     {
         private readonly LibraryContext _libraryContext;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public RegisterRepository(LibraryContext libraryContext, UserManager<IdentityUser> userManager)
+        public UserRegistrator(LibraryContext libraryContext, UserManager<IdentityUser> userManager)
         {
             _libraryContext = libraryContext;
             _userManager = userManager;
@@ -38,7 +38,7 @@ namespace Library.Infrastructure
                 string errorMessage = createdIdentity.Errors.First().Description;
                 throw new CreateUserException(errorMessage);
             }
-            Client client = new Client(identity.Id, username, password, address, email);
+            Client client = new Client(identity.Id, username, address, email);
             _libraryContext.Clients.Add(client);
             try
             {

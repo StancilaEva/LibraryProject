@@ -53,17 +53,7 @@ namespace Library.Api.Controllers
                     Token = result,
                 });
             }
-            catch (InvalidEmailException ex)
-            {
-                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
-                return BadRequest(err);
-            }
-            catch (InvalidPasswordException ex)
-            {
-                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
-                return BadRequest(err);
-            }
-            catch (InvalidUsernameException ex)
+            catch (InvalidUserCredentialsException ex)
             {
                 ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
                 return BadRequest(err);
@@ -74,6 +64,11 @@ namespace Library.Api.Controllers
                 return BadRequest(err);
             }
             catch(CreateUserException ex)
+            {
+                ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
+                return BadRequest(err);
+            }
+            catch(ArgumentNullException ex)
             {
                 ErrorDTO err = new ErrorDTO() { ErrorMessage = ex.Message };
                 return BadRequest(err);

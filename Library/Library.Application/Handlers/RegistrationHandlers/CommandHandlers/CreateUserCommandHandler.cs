@@ -18,9 +18,9 @@ namespace Library.Application.Handlers.RegistrationHandlers.CommandHandlers
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, string>
     {
         private RegistrationService  _identityService;
-        private readonly IRegisterRepository _register;
+        private readonly IUserRegistrator _register;
 
-        public CreateUserCommandHandler(RegistrationService identityService, IRegisterRepository register)
+        public CreateUserCommandHandler(RegistrationService identityService, IUserRegistrator register)
         {
             _identityService = identityService;
             _register = register;

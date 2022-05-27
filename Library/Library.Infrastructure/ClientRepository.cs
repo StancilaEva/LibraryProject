@@ -44,15 +44,7 @@ namespace Library.Infrastructure
             return client;
         }
 
-        public async Task<Client> GetClientByEmailAndPassowrdAsync(String email,String password)
-        {
-            Client client = await context.Clients
-                .Include(client=>client.Address)
-                .SingleOrDefaultAsync((client) => client.Email.Equals(email) && client.Password.Equals(password));
-            
-
-            return client;
-        }
+ 
 
         public async Task<Address> UpdateClientAdressAsync(int id, Address newAddress)
         {

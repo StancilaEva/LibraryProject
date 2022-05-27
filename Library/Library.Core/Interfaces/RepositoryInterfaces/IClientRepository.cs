@@ -11,8 +11,6 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
     {
         public Task<List<Client>> GetAllClientsAsync();
 
-        public Task<Client> GetClientByEmailAndPassowrdAsync(String email, String password);
-
         public Task<Client> InsertClientAsync(Client client);
 
         public Task<Client> GetClientByEmailAsync(string email);

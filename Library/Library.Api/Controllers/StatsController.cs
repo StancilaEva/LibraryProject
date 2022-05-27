@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Library.Api.DTOs.StatsDTO;
 using Library.Api.DTOs.StatsDTOs;
+using Library.Application.Exceptions;
 using Library.Application.Queries.StatsQueries;
+using Library.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,13 +25,20 @@ namespace Library.Api.Controllers
         [HttpGet("MostBorrowedComics")]
         public async Task<IActionResult> MostBorrowedComics()
         {
-            var queryToSend = new GetMostBorrowedComicQuery();
-            
-            var result = await _mediatR.Send(queryToSend);
+            try
+            {
+                var queryToSend = new GetMostBorrowedComicQuery();
 
-            var statResult = _mapper.Map<List<ComicCountsDTO>>(result);
+                var result = await _mediatR.Send(queryToSend);
 
-            return Ok(statResult);
+                var statResult = _mapper.Map<List<ComicCountsDTO>>(result);
+
+                return Ok(statResult);
+            }
+            catch(NotEnoughComicsException ex)
+            {
+                return NoContent();
+            }
         }
 
         [HttpGet("MostReadGenres")]
@@ -39,9 +48,45 @@ namespace Library.Api.Controllers
 
             var result = await _mediatR.Send(queryToSend);
 
-            var statResult = _mapper.Map<List<GenreDTO>>(result);
+            var statResult = _mapper.Map<List<GenreStatsDTO>>(result);
 
             return Ok(statResult);
         }
+
+        [HttpGet("MostReadPublishers")]
+        public async Task<IActionResult> MostReadPublishers()
+        {
+            var queryToSend = new GetMostReadPublishersQuery();
+
+            var result = await _mediatR.Send(queryToSend);
+
+            var statResult = _mapper.Map<List<PublisherStatsDTO>>(result);
+
+            return Ok(statResult);
+        }//GetUserWithMostComicsQuery
+
+        [HttpGet("UserWithMostBorrowedComics")]
+        public async Task<IActionResult> UserWithMostBorrowedComics()
+        {
+            try
+            {
+                var queryToSend = new GetUserWithMostComicsQuery();
+
+                var result = await _mediatR.Send(queryToSend);
+
+                var statResult = new UserStatsDTO()
+                {
+                    Username = result.Item1.Username,
+                    Count = result.Item2
+                };
+
+                return Ok(statResult);
+            }
+            catch(NoLendsException ex)
+            {
+                return NoContent();
+            }
+        }
+
     }
 }

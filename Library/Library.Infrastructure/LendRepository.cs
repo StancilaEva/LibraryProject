@@ -2,6 +2,7 @@
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
 using Library.Infrastructure.Data;
+using Library.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -82,25 +83,21 @@ namespace Library.Infrastructure
                 .Where(l => l.BookId == comicId).ToListAsync();
         } 
 
-        public async Task<Dictionary<ComicBook, int>> MostBorrowedComicsInThePastMonthAsync()
+        public async Task<Dictionary<int, int>> MostBorrowedComicsInThePastMonthAsync()
         {
-            var getComicsStatsQuery = await libraryContext.Lends
-                .Where((lend) => lend.StartDate.Month.Equals(DateTime.Now.Month))
-                .GroupBy((lend) => lend.BookId)
-                .Select(gr =>
-                new
-                {
-                    Comic = (from comics in libraryContext.ComicBooks
-                             where comics.Id == gr.Key
-                             select comics).First(),
-                    Count = gr.Count()
-                })
-               .OrderByDescending(gr => gr.Count)
-               .Take(3)
-               .ToDictionaryAsync(x => x.Comic, x => x.Count);
- 
-
-            return getComicsStatsQuery;
+                var getComicsStatsQuery = await libraryContext.Lends
+                    .Where((lend) => lend.StartDate.Month.Equals(DateTime.Now.Month))
+                    .GroupBy((lend) => lend.BookId)
+                    .Select(gr =>
+                    new
+                    {
+                        Comic = gr.Key,
+                        Count = gr.Count()
+                    })
+                   .OrderByDescending(gr => gr.Count)
+                   .Take(3)
+                   .ToDictionaryAsync(x => x.Comic, x => x.Count);
+                return getComicsStatsQuery;
         }
 
         public async Task<Dictionary<Genre, int>> MostReadGenresAsync()
@@ -123,6 +120,62 @@ namespace Library.Infrastructure
                 .OrderByDescending(gr => gr.Count)
                 .Take(3)
                 .ToDictionaryAsync(x => x.Genre, x => x.Count);
+
+            return getComicsStatsQuery;
+        }
+
+        public async Task<Dictionary<string, int>> MostReadPublishersAsync()
+        {
+            var getComicsStatsQuery = await libraryContext.ComicBooks
+                .Join(libraryContext.Lends,
+                book => book.Id,
+                lend => lend.BookId,
+                (comic, lend) => new
+                {
+                    Publisher = comic.Publisher,
+                    Lends = lend.Id
+                })
+                .GroupBy((publisherGr) => publisherGr.Publisher)
+                .Select(gr => new
+                {
+                    Publisher = gr.Key,
+                    Count = gr.Count()
+                })
+                .OrderByDescending(gr => gr.Count)
+                .Take(3)
+                .ToDictionaryAsync(x => x.Publisher, x => x.Count);
+
+            return getComicsStatsQuery;
+        }
+
+        public async Task<int> UserIdWithMostLendsAsync()
+        {
+            var getComicsStatsQuery = await libraryContext.Lends
+                .Include(lend => lend.Client)
+                .GroupBy((lend) => lend.ClientId)
+                .Select(gr => new
+                {
+                    ClientId = gr.Key,
+                    Count = gr.Count()
+                })
+                .OrderByDescending(gr => gr.Count)
+                .Select(gr=>gr.ClientId)
+                .FirstOrDefaultAsync();
+            return getComicsStatsQuery;
+        }
+
+        public async Task<int> UserCountWithMostLendsAsync()
+        {
+            var getComicsStatsQuery = await libraryContext.Lends
+                .GroupBy((lend) => lend.ClientId)
+                .Select(gr => new
+                {
+                    Id = gr.Key,
+                    Count = gr.Count()
+                })
+                .OrderByDescending(gr => gr.Count)
+                .Select(gr => gr.Count)
+                .FirstOrDefaultAsync();
 
             return getComicsStatsQuery;
         }

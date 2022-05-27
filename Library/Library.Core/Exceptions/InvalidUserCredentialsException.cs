@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Library.Core.Exceptions
 {
-    public class InvalidEmailException : Exception
+    public class InvalidUserCredentialsException : Exception
     {
-        public InvalidEmailException(string message) : base(message)
+        public InvalidUserCredentialsException(string message) : base(message)
         {
         }
     }

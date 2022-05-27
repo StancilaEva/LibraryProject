@@ -15,38 +15,34 @@ namespace Library.Core
         public int Id { get; set; }
         //pentru identity
         public string IdentityId { get; set; }
-        public string Username { get; set; }    
-        public string Password { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
 
         [JsonIgnore]
         public Address Address  { get; set; }
-        public string Email { get; set; }
 
 
         public Client()
         {
         }
 
-        public Client(int id, string username, string password, Address address, string email)
+        public Client(int id, string username, Address address, string email)
         {
             Id = id;
             Username = username;
-            Password = password;
             Address = address;
             Email = email;
-
         }
 
-        public Client(string identityId, string username, string password, Address address, string email)
+        public Client(string identityId, string username, Address address, string email)
         {
             IdentityId = identityId;
             Username = username;
-            Password = password;
             Address = address;
             Email = email;
         }
 
-        public Client (string username, string password, Address address, string email)
+        public Client (string username, Address address, string email)
         {
             if (!String.IsNullOrEmpty(username) && username.Length >= 4)
             {
@@ -54,37 +50,20 @@ namespace Library.Core
             }
             else
             {
-                throw new InvalidUsernameException("Invalid username");
+                throw new InvalidUserCredentialsException("Invalid username");
             }
-
             Regex regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
-            if(!String.IsNullOrEmpty(email) && regex.IsMatch(email))
+            if (!String.IsNullOrEmpty(email) && regex.IsMatch(email))
             {
                 Email = email;
             }
             else
             {
-                throw new InvalidEmailException("Invalid email");
+                throw new InvalidUserCredentialsException("Invalid email");
             }
-
-            if(!String.IsNullOrEmpty(password) && password.Length>=4)
-            {
-                Password = password;
-            }
-            else
-            {
-                throw new InvalidPasswordException("Password must be at least 4 characters long");
-            }
-
             Address = address;
 
         }
-        public override string ToString()
-        {
-            return $"{Username}";
-        }
-
-       
     }
 }

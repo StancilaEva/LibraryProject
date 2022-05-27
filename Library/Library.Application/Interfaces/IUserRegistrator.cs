@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Interfaces
 {
-    public interface IRegisterRepository
+    public interface IUserRegistrator
     {
         public Task<Client> InsertUserInTheDatabase(string email, string username, string password, Address address);
     }
