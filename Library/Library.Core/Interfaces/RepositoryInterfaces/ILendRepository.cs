@@ -10,6 +10,7 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
     {
         public Task<List<Lend>> GetAllLendsAsync();
         public Task<Lend> InsertLendAsync(int clientId, int comicId, DateTime startDate, DateTime endDate);
+        public Task<List<Lend>> GetAllLendsFromClientAsync(int id);
         public Task<Lend> GetLendByIdAsync(int id);
         public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
         public Task<bool> FindIfComicHasBeenLentInThatTimePeriodAsync(int id, DateTime startDate, DateTime endDate);

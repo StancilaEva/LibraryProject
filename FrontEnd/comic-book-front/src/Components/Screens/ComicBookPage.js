@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import ComicBookDetailCard from "../Cards/ComicBookDetailCard";
 import NewLend from "../Cards/CreateLendComponent";
 import { getComicBook } from "../../services/ComicBooksService";
-
+import LendTimesDialog from "../Cards/Dialog/LendTimesDialog";
 function ComicBookPage() {
 
     let { id } = useParams()
@@ -36,6 +36,7 @@ function ComicBookPage() {
                 <Grid container margin={'1%'} width="99%">
                     <Grid item xs={12} md={6}  >
                         <ComicBookDetailCard comicBook={comicBook} />
+                        <LendTimesDialog id={id}></LendTimesDialog>
                     </Grid>
                     <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} >
                         <NewLend comicBook={comicBook} />

@@ -4,6 +4,7 @@ import { getSearchComics } from "../../../services/ComicBooksService"
 import { TextField } from "@mui/material"
 import { Box } from "@mui/system"
 import { useNavigate } from "react-router-dom"
+import SearchIcon from '@mui/icons-material/Search';
 const SearchComic = () =>{
 
     const [searchResult,setSearchResult] = useState([])
@@ -13,10 +14,6 @@ const SearchComic = () =>{
     const loadSearchResults = async () =>{
         const data = await getSearchComics(searchString)
         setSearchResult(data)
-    }
-
-    const handleComicClick = (evt,id) =>{
-        console.log(id)
     }
 
     useEffect(()=>{loadSearchResults()},[searchString])
@@ -56,9 +53,9 @@ const SearchComic = () =>{
              inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password', 
-              }}
-               />}
-        sx={{width:'20%'}}/>
+              }}></TextField>}
+        sx={{width:'20%'}}>
+        </Autocomplete>
     )
 }
 export default SearchComic

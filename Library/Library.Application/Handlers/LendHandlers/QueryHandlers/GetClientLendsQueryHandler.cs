@@ -12,16 +12,16 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
 {
     public class GetClientLendsQueryHandler : IRequestHandler<GetClientLendsQuery, List<Lend>>
     {
-        IClientRepository _clientRepository;
+        private ILendRepository _lendRepository;
 
-        public GetClientLendsQueryHandler(IClientRepository clientRepository)
+        public GetClientLendsQueryHandler(ILendRepository lendRepository)
         {
-            _clientRepository = clientRepository;
+            _lendRepository = lendRepository;
         }
 
         public async Task<List<Lend>> Handle(GetClientLendsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _clientRepository.GetAllClientLends(request.IdClient);
+            var result = await _lendRepository.GetAllLendsFromClientAsync(request.IdClient);
 
             return result;
         }

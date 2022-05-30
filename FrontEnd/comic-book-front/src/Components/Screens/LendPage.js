@@ -11,6 +11,7 @@ import ExtendLend from "../Cards/ExtendLendCopmponent";
 import { Divider } from "@mui/material";
 import {useContext} from "react"
 import { UserContext } from "../../Context/userContext";
+import LendTimesDialog from "../Cards/Dialog/LendTimesDialog";
 
 function LendPage() {
     const { id } = useParams()

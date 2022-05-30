@@ -12,28 +12,22 @@ import { newLend } from "../../services/LendService";
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { lendDateSchema } from "../../validators/lendDateSchema";
-import { useContext } from "react";
-import { UserContext } from "../../Context/userContext";
-
+import { Controller } from "react-hook-form";
 
 function NewLend(props) {
-    const {user} = useContext(UserContext)
     const { comicBook } = props
-    const [startDate, setStartDate] = useState(new Date(Date.now()))
-    const [endDate, setEndDate] = useState(new Date(Date.now()))
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(0)
-    const { register, handleSubmit, formState: { errors },watch } = useForm({
-        resolver: joiResolver(lendDateSchema),
+    const { register, handleSubmit, formState: { errors },control } = useForm({
+       resolver: joiResolver(lendDateSchema),
       });
-    const startLendDate = register("startLendDate")
-    const endLendDate = register("endLendDate")
+      
 
     const onBorrowClick = async (data) => {
         const body = {
-            startDate,
-            endDate
+            startDate:data.startLendDate,
+            endDate:data.endLendDate
         }
         const result = await newLend(body, comicBook.id)
         if (result.status === 201) {
@@ -61,38 +55,47 @@ function NewLend(props) {
     return (
         <>
             <Box sx={{ margin: '1%' }}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}  >
+                
+                <Controller
+                    name="startLendDate"
+                    defaultValue={new Date()}
+                    control = {control}
+                    render={({field})=>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}  >
                     <DatePicker
-                        {...startLendDate}
                         label="Start Date"
-                        value={startDate}
+                        value={field.value}
                         onChange={(evt) => {
-                            setStartDate(evt);
+                            field.onChange(evt)
                         }}
+                        defaultValue = {new Date(Date.now())}
                         renderInput={(params) => <TextField 
                          {...params}
                          helperText={errors ? errors.startLendDate?.message : null} 
-                         />}
-                        
-                    />
-                </LocalizationProvider>
+                         />}/> 
+                         </LocalizationProvider>
+                        }/>
             </Box>
             <Box sx={{ margin: '1%' }}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Controller
+                    name="endLendDate"
+                    defaultValue={new Date(Date.now())}
+                    control = {control}
+                    render={( {field} )=>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                        label="End Date"
-                        {...endLendDate}
-                        value={endDate}
-                        onChange={(evt) => {
-                            setEndDate(evt);
-                        }}
-                        
-                        renderInput={(params) => <TextField 
-                        {...params}
-                        helperText={errors ? errors.endLendDate?.message : null}/>}
-                        
+                    label="End Date"
+                    value={field.value}
+                    onChange={(evt) => {
+                        field.onChange(evt)
+                    }}
+                    renderInput={(params) => <TextField 
+                    {...params}
+                    helperText={errors ? errors.endLendDate?.message : null}/>} 
                     />
-                </LocalizationProvider>
+                    </LocalizationProvider>}
+                    >
+                    </Controller>
             </Box>
             <Button
                 onClick={handleSubmit(onBorrowClick)}>

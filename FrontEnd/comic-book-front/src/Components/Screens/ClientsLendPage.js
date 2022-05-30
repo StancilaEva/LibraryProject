@@ -5,10 +5,11 @@ import LendCard from "../Cards/GridCards/LendCard";
 import { Grid } from "@mui/material";
 import api from "../../api/posts"
 import { getAllClientLends } from "../../services/LendService";
-
+import Pagination from "@mui/material/Pagination";
 function ClientLends() {
     const [lends, setLends] = useState([])
-
+    const [lendsToShow,setLendsToShow] = useState([])
+    const [currentPage,setCurrentPage] = useState()
     const loadLends = async () => {
         const response = await getAllClientLends()
         setLends(response)
@@ -24,6 +25,7 @@ function ClientLends() {
                     lends.map((lend, index) => <Grid item xs={12} sm={6} md={3} key={index}><LendCard key={index} lend={lend}></LendCard></Grid>)
                 }
             </Grid>
+            <Pagination/>
         </div>)
 }
 export default ClientLends;

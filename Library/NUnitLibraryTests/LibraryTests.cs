@@ -1,8 +1,10 @@
 using AutoMapper;
 using Library.Api.Controllers;
 using Library.Api.DTOs;
+using Library.Api.DTOs.LendDTOs;
 using Library.Application.Commands.LendCommands;
 using Library.Application.Queries.BookQueries;
+using Library.Application.utils;
 using Library.Core;
 using Library.Core.Exceptions;
 using MediatR;
@@ -88,24 +90,75 @@ namespace NUnitLibraryTests
            
         }
 
+        [Test]
+        public async Task Check_Comic_By_Id_GetComicBookByIdIsCalled()
+        {
+            //Arrange
+            _mediator
+                .Setup(m => m.Send(It.IsAny<GetComicBookByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => CreateComicBook());
+
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<ComicBook, ComicBookDTO>()
+                 .ForMember(add => add.Title, opt => opt.MapFrom(comic => comic.Title))
+                 .ForMember(x => x.Publisher, opt => opt.MapFrom(comic => comic.Publisher))
+                 .ForMember(x => x.IssueNumber, opt => opt.MapFrom(comic => comic.IssueNumber))
+                 .ForMember(x => x.Cover, opt => opt.MapFrom(comic => comic.Cover))
+                 .ForMember(x => x.Genre, opt => opt.MapFrom(comic => GenreConverter.FromEnum(comic.Genre)))
+                );
+            Mapper map = new Mapper(config);
+            //Act
+            var controller = new ComicBooksController(_mediator.Object,map);
+
+            var result = await controller.GetComicBookById(1);
+            //var newResult = await result.ExecuteResultAsync()
+            //Result
+
+            var okObject = result as OkObjectResult;
+            Assert.IsInstanceOf<OkObjectResult>(okObject);
+            var body = okObject.Value;
+            Assert.IsInstanceOf<ComicBookDTO>(body);
+            var comic = body as ComicBookDTO;
+            Assert.AreEqual(1, comic.Id);
+        }
+
+
         //[Test]
-        //public async Task Check_Comic_By_Id_GetComicBookByIdIsCalled()
+        //public async Task Check_OverLapping_Lend_CreateLend()
         //{
         //    //Arrange
         //    _mediator
         //        .Setup(m => m.Send(It.IsAny<GetComicBookByIdQuery>(), It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(() => CreateComicBook());
+        //        .ReturnsAsync(() => new Lend(1));
+
+        //    var config = new MapperConfiguration(cfg =>
+        //            cfg.CreateMap<Lend, LendResultDTO>()
+        //        .ForMember(add => add.ComicBookId, opt => opt.MapFrom(x => x.Book.Id))
+        //         .ForMember(add => add.ComicBookTitle, opt => opt.MapFrom(x => x.Book.Title))
+        //          .ForMember(x => x.ComicBookCover, opt => opt.MapFrom(x => x.Book.Cover))
+        //          .ForMember(add => add.StartDate, opt => opt.MapFrom(x => x.StartDate))
+        //           .ForMember(add => add.EndDate, opt => opt.MapFrom(x => x.EndDate))
+        //           .ForMember(add => add.LendId, opt => opt.MapFrom(x => x.Id))
+        //           .ForMember(add => add.ClientId, opt => opt.MapFrom(x => x.Client.Id))
+        //           .ForMember(add => add.Extended, opt => opt.MapFrom(x => x.IsExtended))
+        //        );
+        //    Mapper map = new Mapper(config);
         //    //Act
-        //    var controller = new ComicBooksController(_mediator.Object, _mapper.Object);
+        //    var controller = new ComicBooksController(_mediator.Object, map);
 
         //    var result = await controller.GetComicBookById(1);
         //    //var newResult = await result.ExecuteResultAsync()
         //    //Result
-            
+
         //    var okObject = result as OkObjectResult;
-        //    Assert.IsInstanceOf<ComicBookDTO>(okObject.Value);
+        //    Assert.IsInstanceOf<OkObjectResult>(okObject);
+        //    var body = okObject.Value;
+        //    Assert.IsInstanceOf<ComicBookDTO>(body);
+        //    var comic = body as ComicBookDTO;
+        //    Assert.AreEqual(1, comic.Id);
 
         //}
+
 
 
         [Test]

@@ -18,7 +18,7 @@ function ComicBookGridCard(props) {
         navigate(`/ComicBook/${comicBook.id}`)
     }
     return (
-        <Card sx={{ height: '100%', width: '40vh' }}>
+        <Card sx={{  width: '40vh' }}>
             <CardActionArea onClick={onComicCardClick}>
                 <CardMedia
                     component="img"

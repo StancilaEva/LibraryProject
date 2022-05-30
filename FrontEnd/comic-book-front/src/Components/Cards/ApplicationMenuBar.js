@@ -11,8 +11,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchComic from './FilterInputs/SearchComic';
 
 function ApplicationMenuBar(){
-
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -44,14 +42,14 @@ function ApplicationMenuBar(){
         navigate(`/LogIn`)
     }
 
-    const LogIn = () =>{
-        navigate(`/Login`)
+    const onStatsClick = () =>{
+        navigate(`/Stats`)
     }
 
     return (
         <>
-        <Box>
-        <AppBar position='static'>
+        <Box flexGorw={1}>
+        <AppBar position='static' width={"100%"}>
                 <Toolbar >
                     <IconButton
                         size="large"
@@ -65,6 +63,7 @@ function ApplicationMenuBar(){
                     <HomeIcon
                       onClick={goToHome}/>
                     <SearchComic sx={{width:'100px',marginLeft:'8px'}}/>
+                    <Box flexGrow={1}/>
                     <Button onClick={LogOut} color="secondary">Log Out</Button>
                 </Toolbar>
             </AppBar>
@@ -80,6 +79,7 @@ function ApplicationMenuBar(){
         >
             <MenuItem onClick={onMyLendsClick}>My Lends</MenuItem>
             <MenuItem onClick={onMyAddressClick}>Address</MenuItem>
+            <MenuItem onClick={onStatsClick}>Stats</MenuItem>
         </Menu>
         </>)
     

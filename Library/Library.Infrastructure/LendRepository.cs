@@ -42,6 +42,14 @@ namespace Library.Infrastructure
             return lend;
         }
 
+        public async Task<List<Lend>> GetAllLendsFromClientAsync(int id)
+        {
+            return await libraryContext.Lends.Include(lend => lend.Client)
+                .Include(lend => lend.Book)
+                .Where(lend => lend.Client.Id.Equals(id))
+                .OrderByDescending(lend => lend.StartDate)
+                .ToListAsync();
+        }
 
         public async Task<Lend> GetLendByIdAsync(int id)
         {
@@ -83,6 +91,7 @@ namespace Library.Infrastructure
                 .Where(l => l.BookId == comicId).ToListAsync();
         } 
 
+        // STATS
         public async Task<Dictionary<int, int>> MostBorrowedComicsInThePastMonthAsync()
         {
                 var getComicsStatsQuery = await libraryContext.Lends
@@ -179,6 +188,8 @@ namespace Library.Infrastructure
 
             return getComicsStatsQuery;
         }
+
+        
     }
 }
 

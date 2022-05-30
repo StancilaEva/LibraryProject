@@ -1,11 +1,7 @@
-import { useForm } from "react-hook-form"
 import { Box } from "@mui/system";
-import { CardContent, Container } from "@mui/material";
+import { CardContent, Container,Card } from "@mui/material";
 import { TextField } from "@mui/material";
-import { joiResolver } from '@hookform/resolvers/joi';
 import React from "react";
-import { Card } from "@mui/material";
-import { Navigate, useNavigate } from "react-router-dom";
 
 const SignUpForm = (props) => {
     const { setActiveStep, user, setUser,email,username,password,confirmPassword,errors } = props;

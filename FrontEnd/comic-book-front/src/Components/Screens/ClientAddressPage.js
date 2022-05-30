@@ -12,41 +12,46 @@ import UnsuccessfulMessage from "../Cards/Toasts/UnsuccessfulMessage";
 import { useForm } from "react-hook-form";
 import { addressSchema } from "../../validators/addressSchema";
 import { joiResolver } from '@hookform/resolvers/joi';
+import { useNavigate } from "react-router";
 
 function ClientAddress() {
-    const [county, setCounty] = useState('')
-    const [city, setCity] = useState('')
-    const [street, setStreet] = useState('')
-    const [number, setNumber] = useState(0)
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(0)
-    const { register, handleSubmit, formState: { errors },watch } = useForm({
+    const [address,setAddress] = useState({
+        county:'',
+        city:'',
+        street:'',
+        number:0
+    })
+    const { register, handleSubmit, formState: { errors },reset } = useForm({
         resolver: joiResolver(addressSchema),
-      });
-    //pune axios!!!
+        defaultValues: address
+    });
+    const navigate = useNavigate()
+
+
+    
     const loadAddress = async () => {
         const response = await getAddress()
-        setCounty(response.county)
-        setCity(response.city)
-        setStreet(response.street)
-        setNumber(response.number)
-
+        setAddress(response)
+        reset(response)
     }
 
     const changeAddress = async (data) => {
-        const result = await modifyAddress(county, city, street, number)
+        const result = await modifyAddress(data.county, data.city, data.street, data.number)
         if (result.status === 200) {
-            setCity(result.address.city)
-            setCounty(result.address.county)
-            setStreet(result.address.street)
-            setNumber(result.address.number)
             setMessage(result.address.message)
             setShowMessage(true)
             setMessage(result.message)
             setStatus(result.status)
         }
-        else {
+        else if(result.status === 401)
+        {
+            localStorage.clear()
+            navigate('/LogIn')
+
+        } else {
             setShowMessage(true)
             setMessage(result.message)
             setStatus(result.status)
@@ -71,36 +76,28 @@ function ClientAddress() {
             <Box component="form" sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: '75vh' }} >
                 <TextField
                     required
-                    value={county}
                     {...register("county")}
                     sx={{ width: 200, marginBottom: 1 }}
-                    onChange={evt => setCounty(evt.target.value)}
                     helperText={errors ? errors.county?.message : null}>
                 </TextField>
                 <TextField
                     required
-                    value={city}
                     {...register("city")}
                     sx={{ width: 200, marginBottom: 1 }}
-                    onChange={evt => setCity(evt.target.value)}
                     helperText={errors ? errors.city?.message : null}>
                 </TextField>
                 <TextField
                     required
                     {...register("street")}
                     sx={{ width: 200, marginBottom: 1 }}
-                    value={street}
-                    onChange={evt => setStreet(evt.target.value)}
                     helperText={errors ? errors.street?.message : null}>
                 </TextField>
                 <TextField
                     required
                     sx={{ width: 200, marginBottom: 1 }}
-                    value={number}
                     type="number"
                     {...register("number")}
                     inputProps={{ min: 0, inputMode: 'numeric', pattern: '[0-9]*' }}
-                    onChange={event => setNumber(event.target.value)}
                     helperText={errors ? errors.email?.number : null}>
                 </TextField>
                 <Button variant="outlined" onClick={handleSubmit(changeAddress)} sx={{ marginBottom: 1 }}>

@@ -8,6 +8,7 @@ export const getAddress = async () => {
      }
     let jsonMessage = 
     {
+        status:0,
         county:'',
         city:'',
         street:'',
@@ -39,7 +40,6 @@ export const modifyAddress = async (county, city, street, number) => {
             jsonMessage.status = result.status
             jsonMessage.message = "Address changed"
             jsonMessage.address = result.data
-            alert("merge")
         })
         .catch((err) => {
             jsonMessage.status = err.response.status

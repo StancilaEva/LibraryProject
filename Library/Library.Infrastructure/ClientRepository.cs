@@ -68,14 +68,6 @@ namespace Library.Infrastructure
                 .FirstOrDefaultAsync((client) => client.Id == id);
         }
 
-        public async Task<List<Lend>> GetAllClientLends(int id)
-        {
-            return await context.Lends.Include(lend => lend.Client)
-                .Include(lend => lend.Book)
-                .Where(lend => lend.Client.Id.Equals(id))
-                .OrderByDescending(lend=>lend.StartDate)
-                .ToListAsync();
-        }
 
         public async Task<Client> GetUserByIdentityId(string identityId)
         {

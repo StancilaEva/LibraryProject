@@ -15,6 +15,8 @@ import { UserContext } from "./Context/userContext";
 import { useState } from "react";
 import { useMemo } from "react";
 import PrivateRoute from "./PrivateRouter/PrivateRouter";
+import StatsPage from "./Components/Screens/StatsPage";
+import LendTimesDialog from "./Components/Cards/Dialog/LendTimesDialog";
 
 
 function App() {
@@ -46,9 +48,14 @@ function App() {
             <ComicBookPage/>
             </PrivateRoute>
              }></Route>
+             <Route path="/Stats" exact element={
+            <PrivateRoute>
+            <StatsPage/>
+            </PrivateRoute>
+             }></Route>
             <Route path="/Signup" exact element={<SignUpStepper/>}></Route>
             <Route path="/LogIn" exact element={<LogIn/>}></Route>
-            <Route path="/DatePicker" exact element={<LendDatePicker/>}></Route>
+            <Route path="/DatePicker" exact element={<LendTimesDialog/>}></Route>
             
     </Routes>
     </UserContext.Provider>
