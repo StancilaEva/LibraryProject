@@ -23,7 +23,7 @@ export const GetMostReadPublishers = async () =>
 
 export const GetUserWithMostComics = async () =>
 {
-    let data = {};
+    let data = [];
     await api.get(`/Stats/UserWithMostBorrowedComics`).then((result) => data = result.data).catch((err) => { })
     return data
 } 

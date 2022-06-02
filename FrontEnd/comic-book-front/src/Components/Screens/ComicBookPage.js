@@ -36,7 +36,7 @@ function ComicBookPage() {
                 <Grid container margin={'1%'} width="99%">
                     <Grid item xs={12} md={6}  >
                         <ComicBookDetailCard comicBook={comicBook} />
-                        <LendTimesDialog id={id}></LendTimesDialog>
+                        <LendTimesDialog id={id} sx={{margin:'8px'}}></LendTimesDialog>
                     </Grid>
                     <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} >
                         <NewLend comicBook={comicBook} />

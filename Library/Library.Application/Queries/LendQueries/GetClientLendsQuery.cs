@@ -1,4 +1,5 @@
-﻿using Library.Core;
+﻿using Library.Application.Paging;
+using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.ClientQueries
 {
-    public class GetClientLendsQuery : IRequest<List<Lend>>
+    public class GetClientLendsQuery : IRequest<LendPage>
     {
         public int IdClient { get; set; }
+        public int Page { get; set; }
     }
 }

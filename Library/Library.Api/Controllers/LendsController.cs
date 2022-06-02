@@ -5,6 +5,7 @@ using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.LendDTOs;
 using Library.Application.Commands.LendCommands;
 using Library.Application.Exceptions;
+using Library.Application.Paging;
 using Library.Application.Queries.ClientQueries;
 using Library.Application.Queries.LendQueries;
 using Library.Core.Exceptions;
@@ -191,8 +192,8 @@ namespace Library.Api.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet]
-        public async Task<IActionResult> GetUserLends()
+        [HttpGet()]
+        public async Task<IActionResult> GetUserLends([FromQuery] int page)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
@@ -200,18 +201,25 @@ namespace Library.Api.Controllers
                 var id = Int32.Parse(identity.FindFirst("UserId").Value);
                 var queryToSend = new GetClientLendsQuery()
                 {
-                    IdClient = id
+                    IdClient = id,
+                    Page = page
                 };
-                var result = await _mediatR.Send(queryToSend);
+                LendPage result = await _mediatR.Send(queryToSend);
 
                 if (result.Count == 0)
                 {
                     return NoContent();
                 }
 
-                var mappedResult = _mapper.Map<List<LendResultDTO>>(result);
+                var mappedResult = _mapper.Map<List<LendResultDTO>>(result.Lends);
 
-                return Ok(mappedResult);
+                var userLendsDTO = new LendPaginationDTO
+                {
+                    Lends = mappedResult,
+                    Count = result.Count
+                };
+
+                return Ok(userLendsDTO);
             }
             else
                 return Unauthorized();

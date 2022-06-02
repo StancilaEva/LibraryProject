@@ -26,7 +26,6 @@ namespace Library.Api.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetComicBooksPaging([FromQuery] ComicBookPaging comicBookPagingDTO)
         {
@@ -40,16 +39,15 @@ namespace Library.Api.Controllers
             };
             var result = await _mediatr.Send(queryToSend);
             
-            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookSearchDTO>>(result.Item1);
-            var recordCount = result.Item2;
+            var mappedResult = _mapper.Map<List<ComicBook>, List<ComicBookSearchDTO>>(result.Comics);
 
-            ComicBookPagingDTO comicBookPaging = new ComicBookPagingDTO()
+            ComicBookPagingDTO comicBookPagingResult = new ComicBookPagingDTO()
             {
                 ComicBooks = mappedResult,
-                RecordCount = recordCount
+                RecordCount = result.Count
             };
 
-            return Ok(comicBookPaging);
+            return Ok(comicBookPagingResult);
         }
 
         [HttpGet]
@@ -128,19 +126,6 @@ namespace Library.Api.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(result);
-        }
-        
-        // trebuie scos si pus in alt controller
-        [HttpPost("File")]
-        public async Task<IActionResult> PostFile(IFormFile formFile)
-        {
-            var command = new FileCommand()
-            {
-                File = formFile
-            };
-            var result = await _mediatr.Send(command);
 
             return Ok(result);
         }

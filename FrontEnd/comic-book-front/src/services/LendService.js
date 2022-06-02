@@ -1,19 +1,30 @@
 import { RepeatOneSharp } from "@mui/icons-material";
 import api from "../api/posts"
 
-export const getAllClientLends = async () => {
+export const getAllClientLends = async (page) => {
     const header = {
         headers: {
            Authorization: "Bearer " + localStorage.getItem('token')
         }
      }
-    let data = [];
-    await api.get(`/Lends`,header).then((result) => 
-    {
-        if(result.status===200)data = result.data
+    let jsonMessage = {
+        status:0,
+        data: {
+        count:0,
+        lends:[]
+        }
     }
-        ).catch((err) => { })
-    return data
+    await api.get(`/Lends?page=${page}`,header).then((result) => 
+    {
+        if(result.status===200){
+            jsonMessage.data.lends = result.data.lends
+            jsonMessage.data.count = result.data.count
+        }
+    }
+        ).catch((err) => {
+            jsonMessage.status = err.response.status
+         })
+    return jsonMessage
 }
 
 export const getLendById = async (id) => {
@@ -22,7 +33,9 @@ export const getLendById = async (id) => {
            Authorization: "Bearer " + localStorage.getItem('token')
         }
      }
-    let data = {
+    let jsonMessage = {
+        status:0,
+        lend:{
         lendId: 0,
         comicBookId: 0,
         comicBookTitle: '',
@@ -30,11 +43,16 @@ export const getLendById = async (id) => {
         clientId: 0,
         startDate: new Date(Date.now()),
         endDate: new Date(Date.now()),
-        extended: false
+        extended: false}
     };
     await api.get(`/Lends/${id}`,header)
-        .then((result) => data = result.data).catch((err) => { });
-    return data;
+        .then((result) => {
+            jsonMessage.lend = result.data
+            jsonMessage.status = result.data
+        }).catch((err) => { 
+            jsonMessage.status = err.response.status
+        });
+    return jsonMessage;
 }
 
 export const newLend = async (dates, comicId) => {

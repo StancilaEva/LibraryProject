@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Infrastructure", "L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Api", "Library.Api\Library.Api.csproj", "{B635DDC7-F0DA-491D-8D27-4F5B88388AC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NUnitLibraryTests", "NUnitLibraryTests\NUnitLibraryTests.csproj", "{1048833C-AA57-4D9C-A845-A25BFD3D21BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Tests", "NUnitLibraryTests\Library.Tests.csproj", "{1048833C-AA57-4D9C-A845-A25BFD3D21BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

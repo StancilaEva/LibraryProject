@@ -29,4 +29,7 @@
     <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Library.Tests" />
+	</ItemGroup>
 </Project>

@@ -13,21 +13,22 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { lendDateSchema } from "../../validators/lendDateSchema";
 import { Controller } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 function NewLend(props) {
     const { comicBook } = props
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(0)
-    const { register, handleSubmit, formState: { errors },control } = useForm({
-       resolver: joiResolver(lendDateSchema),
-      });
-      
+    const { register, handleSubmit, formState: { errors }, control } = useForm({
+        resolver: joiResolver(lendDateSchema),
+    });
+    const navigate = useNavigate()
 
     const onBorrowClick = async (data) => {
         const body = {
-            startDate:data.startLendDate,
-            endDate:data.endLendDate
+            startDate: data.startLendDate,
+            endDate: data.endLendDate
         }
         const result = await newLend(body, comicBook.id)
         if (result.status === 201) {
@@ -35,12 +36,15 @@ function NewLend(props) {
             setMessage(result.message)
             setStatus(result.status)
         }
-        else
-            if (result.status === 400) {
-                setMessage(result.message)
-                setShowMessage(true)
-                setStatus(result.status)
-            }
+        else if (result.status === 401) {
+            localStorage.clear()
+            navigate('/LogIn')
+        }
+        else {
+            setMessage(result.message)
+            setShowMessage(true)
+            setStatus(result.status)
+        }
     }
 
     const renderMessage = () => {
@@ -55,47 +59,47 @@ function NewLend(props) {
     return (
         <>
             <Box sx={{ margin: '1%' }}>
-                
+
                 <Controller
                     name="startLendDate"
                     defaultValue={new Date()}
-                    control = {control}
-                    render={({field})=>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}  >
-                    <DatePicker
-                        label="Start Date"
-                        value={field.value}
-                        onChange={(evt) => {
-                            field.onChange(evt)
-                        }}
-                        defaultValue = {new Date(Date.now())}
-                        renderInput={(params) => <TextField 
-                         {...params}
-                         helperText={errors ? errors.startLendDate?.message : null} 
-                         />}/> 
-                         </LocalizationProvider>
-                        }/>
+                    control={control}
+                    render={({ field }) =>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}  >
+                            <DatePicker
+                                label="Start Date"
+                                value={field.value}
+                                onChange={(evt) => {
+                                    field.onChange(evt)
+                                }}
+                                defaultValue={new Date(Date.now())}
+                                renderInput={(params) => <TextField
+                                    {...params}
+                                    helperText={errors ? errors.startLendDate?.message : null}
+                                />} />
+                        </LocalizationProvider>
+                    } />
             </Box>
             <Box sx={{ margin: '1%' }}>
-                    <Controller
+                <Controller
                     name="endLendDate"
                     defaultValue={new Date(Date.now())}
-                    control = {control}
-                    render={( {field} )=>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                    label="End Date"
-                    value={field.value}
-                    onChange={(evt) => {
-                        field.onChange(evt)
-                    }}
-                    renderInput={(params) => <TextField 
-                    {...params}
-                    helperText={errors ? errors.endLendDate?.message : null}/>} 
-                    />
-                    </LocalizationProvider>}
-                    >
-                    </Controller>
+                    control={control}
+                    render={({ field }) =>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                label="End Date"
+                                value={field.value}
+                                onChange={(evt) => {
+                                    field.onChange(evt)
+                                }}
+                                renderInput={(params) => <TextField
+                                    {...params}
+                                    helperText={errors ? errors.endLendDate?.message : null} />}
+                            />
+                        </LocalizationProvider>}
+                >
+                </Controller>
             </Box>
             <Button
                 onClick={handleSubmit(onBorrowClick)}>

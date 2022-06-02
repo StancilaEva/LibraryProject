@@ -40,7 +40,7 @@ function AltHomePage() {
         <div>
             <ApplicationMenuBar />
             <main>
-                <Box className="filters" sx={{ display: "flex", width: '100%' }}>
+                <Box className="filters" sx={{ display: "flex", width: '100%',marginTop:"8px" }} >
                 <SortFilter sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions={sortOptions}/>
                 <PublisherFilter filterPublisher={filterPublisher} setFilterPublisher={setFilterPublisher} setPage={setPage}/>
                 <GenreFilter filterGenre={filterGenre} setFilterGenre={setFilterGenre} setPage={setPage}/>
@@ -51,7 +51,7 @@ function AltHomePage() {
                     }
                 </Grid>
                 <Box display={"flex"} justifyContent={"center"}>
-                    <Pagination count={noOfPAges} page={page} onChange={(evt, value) => { setPage(value) }} />
+                    <Pagination count={noOfPAges} page={page} onChange={(evt, value) => { setPage(value) }} sx={{marginTop:"16px",marginBottom:"16px"}} />
                 </Box>
             </main>
         </div>

@@ -74,11 +74,7 @@ namespace Library.Api.Controllers
 
                 var result = await _mediatR.Send(queryToSend);
 
-                var statResult = new UserStatsDTO()
-                {
-                    Username = result.Item1.Username,
-                    Count = result.Item2
-                };
+                var statResult = _mapper.Map<List<UserStatsDTO>>(result);
 
                 return Ok(statResult);
             }

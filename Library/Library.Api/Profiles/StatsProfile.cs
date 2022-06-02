@@ -16,6 +16,7 @@ namespace Library.Api.Profiles
                 .ForMember(dest => dest.Cover, opt => opt.MapFrom(src => src.Key.Cover))
                 .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => GenreConverter.FromEnum(src.Key.Genre)))
                  .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Value));
+
             CreateMap<KeyValuePair<Genre, int>, GenreStatsDTO>()
                 .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => GenreConverter.FromEnum(src.Key)))
                 .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Value));
@@ -23,6 +24,10 @@ namespace Library.Api.Profiles
             CreateMap<KeyValuePair<string, int>, PublisherStatsDTO>()
                 .ForMember(dest => dest.Publishers, opt => opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Value));
+
+            CreateMap<KeyValuePair<Client, int>, UserStatsDTO>()
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Key.Username))
+               .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Value));
         }
     }
 }

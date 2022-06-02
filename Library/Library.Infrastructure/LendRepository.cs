@@ -42,13 +42,23 @@ namespace Library.Infrastructure
             return lend;
         }
 
-        public async Task<List<Lend>> GetAllLendsFromClientAsync(int id)
+        public async Task<List<Lend>> GetAllLendsFromClientAsync(int id,int page)
         {
             return await libraryContext.Lends.Include(lend => lend.Client)
                 .Include(lend => lend.Book)
                 .Where(lend => lend.Client.Id.Equals(id))
                 .OrderByDescending(lend => lend.StartDate)
+                .Skip((page - 1) * 8)
+                .Take(8)
                 .ToListAsync();
+        }
+
+        public async Task<int> GetAllLendsCountFromClientAsync(int id, int page)
+        {
+            return await libraryContext.Lends.Include(lend => lend.Client)
+                .Include(lend => lend.Book)
+                .Where(lend => lend.Client.Id.Equals(id))
+                .CountAsync();
         }
 
         public async Task<Lend> GetLendByIdAsync(int id)
@@ -62,6 +72,7 @@ namespace Library.Infrastructure
             lend.EndDate = endDate.Date;
             lend.IsExtended = true;
             await libraryContext.SaveChangesAsync();
+
             return lend;
         }
 
@@ -73,6 +84,7 @@ namespace Library.Infrastructure
                 (l.EndDate >= endDate && endDate >= l.StartDate) ||
                 (l.StartDate <= startDate && l.EndDate >= endDate)|| //cazul in care un imprumut acopera in intregime imprumutul nostru
                 (startDate<=l.StartDate && endDate>=l.EndDate)));
+
             return exists;
         }
 
@@ -82,13 +94,16 @@ namespace Library.Infrastructure
                .AnyAsync(l => (l.BookId == lend.Book.Id && l.Id!=lend.Id) && (
                (l.EndDate >= date && date >= l.StartDate) ||  
                (l.StartDate>=lend.StartDate && date >= l.EndDate)));
+
             return exists;
         }
 
         public async Task<List<Lend>> AllLendsThatContainComicAsync(int comicId)
         {
             return await libraryContext.Lends.Include(l=>l.Client)
-                .Where(l => l.BookId == comicId).ToListAsync();
+                .Where(l => l.BookId == comicId)
+                //.Where(lend=>lend.EndDate>=DateTime.Now.Date)
+                .ToListAsync();
         } 
 
         // STATS
@@ -106,6 +121,7 @@ namespace Library.Infrastructure
                    .OrderByDescending(gr => gr.Count)
                    .Take(3)
                    .ToDictionaryAsync(x => x.Comic, x => x.Count);
+
                 return getComicsStatsQuery;
         }
 
@@ -170,6 +186,7 @@ namespace Library.Infrastructure
                 .OrderByDescending(gr => gr.Count)
                 .Select(gr=>gr.ClientId)
                 .FirstOrDefaultAsync();
+
             return getComicsStatsQuery;
         }
 

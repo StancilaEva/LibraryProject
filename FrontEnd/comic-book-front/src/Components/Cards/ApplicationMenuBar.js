@@ -61,8 +61,8 @@ function ApplicationMenuBar(){
                         <MenuIcon />
                     </IconButton>
                     <HomeIcon
-                      onClick={goToHome}/>
-                    <SearchComic sx={{width:'100px',marginLeft:'8px'}}/>
+                      onClick={goToHome} />
+                    <SearchComic sx={{width:'10%'}}/>
                     <Box flexGrow={1}/>
                     <Button onClick={LogOut} color="secondary">Log Out</Button>
                 </Toolbar>

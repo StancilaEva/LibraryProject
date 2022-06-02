@@ -12,6 +12,7 @@ import { Divider } from "@mui/material";
 import {useContext} from "react"
 import { UserContext } from "../../Context/userContext";
 import LendTimesDialog from "../Cards/Dialog/LendTimesDialog";
+import { useNavigate } from "react-router";
 
 function LendPage() {
     const { id } = useParams()
@@ -27,10 +28,16 @@ function LendPage() {
         extended: false
     })
     const [updated,setUpdated] = useState(false)
+    const navigate = useNavigate()
 
     const LoadLend = async () => {
-        const result = await getLendById(id)
-        setLend(result);
+        const response = await getLendById(id)
+        if(response.status===401){
+            localStorage.clear()
+            navigate('/LogIn')
+        } else {
+        setLend(response.lend)
+        }
     }
 
     useEffect(() => { LoadLend() }, [updated])

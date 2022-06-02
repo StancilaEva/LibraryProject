@@ -3,32 +3,39 @@ import api from "../api/posts"
 export const getAddress = async () => {
     const header = {
         headers: {
-           Authorization: "Bearer " + localStorage.getItem('token')
+            Authorization: "Bearer " + localStorage.getItem('token')
         }
-     }
-    let jsonMessage = 
-    {
-        status:0,
-        county:'',
-        city:'',
-        street:'',
-        number:0
     }
-    await api.get(`/Client/Address`,header)
-        .then((result) => jsonMessage = result.data).catch((err)=>{})
+    let jsonMessage =
+    {
+        status: 0,
+        address: {
+            county: '',
+            city: '',
+            street: '',
+            number: 0
+        }
+    }
+    await api.get(`/Client/Address`, header)
+        .then((result) => {
+            jsonMessage.address = result.data;
+            jsonMessage.status = result.status;
+        }).catch((err) => { 
+            jsonMessage.status = err.response.status
+        })
     return jsonMessage
 }
 
 export const modifyAddress = async (county, city, street, number) => {
     const header = {
         headers: {
-           Authorization: "Bearer " + localStorage.getItem('token')
+            Authorization: "Bearer " + localStorage.getItem('token')
         }
-     }
+    }
     let jsonMessage = {
-        status:0,
-        message:'',
-        address:{}
+        status: 0,
+        message: '',
+        address: {}
     };
     await api.patch(`/Client/Address`,
         {
@@ -36,7 +43,7 @@ export const modifyAddress = async (county, city, street, number) => {
             city,
             street,
             number
-        },header).then((result) => {
+        }, header).then((result) => {
             jsonMessage.status = result.status
             jsonMessage.message = "Address changed"
             jsonMessage.address = result.data

@@ -133,12 +133,14 @@ export default function HorizontalLinearStepper() {
           </Box>
         </React.Fragment>
       )}
+       <Link to="/LogIn">Already have an account? Log In!</Link>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}} >
       <Collapse in={showMessage}>
             {
             renderToast() 
             }
         </Collapse>
-        <Link to="/LogIn">Already have an account? Log In!</Link>
+        </Box>
     </Box>
   );
 }

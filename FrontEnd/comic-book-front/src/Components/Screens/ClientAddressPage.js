@@ -34,8 +34,14 @@ function ClientAddress() {
     
     const loadAddress = async () => {
         const response = await getAddress()
-        setAddress(response)
-        reset(response)
+        if(response.status === 401)
+        {
+            localStorage.clear()
+            navigate('/LogIn')
+
+        }
+        setAddress(response.address)
+        reset(response.address)
     }
 
     const changeAddress = async (data) => {

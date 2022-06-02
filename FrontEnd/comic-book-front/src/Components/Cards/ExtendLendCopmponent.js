@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { extendDateSchema } from "../../validators/extendDateSchema";
 import { Controller } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 
 
 function ExtendLend(props) {
@@ -23,6 +24,7 @@ function ExtendLend(props) {
     const { register, handleSubmit, formState: { errors }, control } = useForm({
         resolver: joiResolver(extendDateSchema)
     })
+    const navigate = useNavigate()
 
     const onExtendLendClick = async (data) => {
         const result = await extendLend(id, data.endLendDate)
@@ -30,6 +32,10 @@ function ExtendLend(props) {
         setMessage(result.message)
         if (result.status == 200) {
             setUpdated(true)
+        } else 
+        if(result.status === 401){
+            localStorage.clear()
+            navigate('/LogIn')
         }
         else {
             setShowMessage(true)

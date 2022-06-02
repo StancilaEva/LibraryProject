@@ -31,7 +31,7 @@ const LendTimesDialog = (props) => {
 
     return (
         <div>
-            <Button onClick={handleClickOpen} variant="contained">See Lends For This Comic</Button>
+            <Button onClick={handleClickOpen} variant="contained" sx={{margin:'8px'}}>See Lends For This Comic</Button>
             <Dialog onClose={handleClose} open={open}>
                 <DialogTitle>Other Users Borrowed This Comic On</DialogTitle>
                 <List sx={{ pt: 0 }}>

@@ -1,6 +1,6 @@
 import Joi from "joi";
 const today = new Date()
-const yesterday = new Date(today)
+const yesterday = new Date(new Date().setHours(23, 59, 59, 999))
 
 yesterday.setDate(yesterday.getDate() - 1)
 export const lendDateSchema = Joi.object({

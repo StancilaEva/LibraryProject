@@ -1,4 +1,5 @@
 ﻿
+using Library.Application.Paging;
 using Library.Application.Queries.BookQueries;
 using Library.Application.utils;
 using Library.Core;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Handlers.BookHandlers.QueryHandlers
 {
-    public class GetComicBooksPageHandler : IRequestHandler<GetComicBooksPageQuery, (List<ComicBook>,int)>
+    public class GetComicBooksPageHandler : IRequestHandler<GetComicBooksPageQuery, ComicBookPage>
     {
         IBookRepository _bookRepository;
 
@@ -21,12 +22,15 @@ namespace Library.Application.Handlers.BookHandlers.QueryHandlers
             _bookRepository = bookRepository;
         }
 
-        public async Task<(List<ComicBook>,int)> Handle(GetComicBooksPageQuery request, CancellationToken cancellationToken)
+        public async Task<ComicBookPage> Handle(GetComicBooksPageQuery request, CancellationToken cancellationToken)
         {
-            var result = (await _bookRepository.FilterComicBooksAsync(request.Publisher, request.Genre, request.Order, request.Index));
+            var result = await _bookRepository.FilterComicBooksAsync(request.Publisher, request.Genre, request.Order, request.Index);
             var pageNumber = await _bookRepository.GetFilteredRecordsCount(request.Publisher, request.Genre, request.Order);
 
-            return (result,pageNumber);
+            return new ComicBookPage() { 
+                Comics=result,
+                Count=pageNumber
+            };
             
         }
     }

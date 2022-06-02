@@ -1,4 +1,5 @@
-﻿using Library.Core;
+﻿using Library.Application.Paging;
+using Library.Core;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Queries.BookQueries
 {
-    public class GetComicBooksPageQuery : IRequest<(List<ComicBook>,int)>
+    public class GetComicBooksPageQuery : IRequest<ComicBookPage>
     {
         public int Index { get; set; }
 
