@@ -8,14 +8,17 @@ import { getAllClientLends } from "../../services/LendService";
 import Pagination from "@mui/material/Pagination";
 import { Box } from "@mui/system";
 import { useNavigate } from "react-router";
+import TimeFilter from "../Cards/FilterInputs/TimeFilter";
 function ClientLends() {
     const [lends, setLends] = useState([])
     const [page, setPage] = useState(1)
     const [noOfPAges, setNoOfPages] = useState(0)
+    const [filterTime,setFilterTime] = useState("")
+
     const navigate = useNavigate()
 
     const loadLends = async () => {
-        const response = await getAllClientLends(page)
+        const response = await getAllClientLends(page,filterTime)
         if(response.status===401){
             localStorage.clear()
             navigate('/LogIn')
@@ -25,11 +28,14 @@ function ClientLends() {
         }
     }
 
-    useEffect(() => { loadLends() }, [page])
+    useEffect(() => { loadLends() }, [page,filterTime])
 
     return (
         <div>
             <ApplicationMenuBar />
+            <Box className="filters" sx={{ display: "flex", width: '100%',marginTop:"8px" }} >
+            <TimeFilter filterTime={filterTime} setFilterTime={setFilterTime} setPage={setPage}/>
+            </Box>
             <Grid container spacing={3} marginLeft={"0.05%"} marginTop="0.05%" width="99%">
                 {
                     lends.map((lend, index) => <Grid item xs={12} sm={6} md={3} key={index}><LendCard key={index} lend={lend}></LendCard></Grid>)

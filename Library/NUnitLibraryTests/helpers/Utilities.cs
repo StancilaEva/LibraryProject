@@ -13,9 +13,9 @@ namespace NUnitLibraryTests.helpers
 		public static void InitializeDbForTests(LibraryContext db)
 		{
 			
-			var comic1 = new ComicBook("title1", "author1", Genre.ROMANCE, 2, "cover1");
-			var comic2 = new ComicBook("title2", "author2", Genre.ROMANCE, 2, "cover2");
-			var comic3 = new ComicBook("title3", "author3", Genre.ROMANCE, 2, "cover3");
+			var comic1 = new ComicBook("title1", "publisher1", Genre.ROMANCE, 2, "cover1");
+			var comic2 = new ComicBook("title2", "publisher2", Genre.ROMANCE, 2, "cover2");
+			var comic3 = new ComicBook("title3", "publisher3", Genre.ROMANCE, 2, "cover3");
 
 			db.ComicBooks.AddRange(comic1, comic2, comic3);
 
@@ -24,9 +24,10 @@ namespace NUnitLibraryTests.helpers
 
 			db.Clients.AddRange(client1, client2);
 
-			var lend1 = new Lend(comic1, client1, DateTime.Now, DateTime.Now.AddDays(14));
+			var lend1 = new Lend(comic1, client1, DateTime.Now.AddDays(1).Date, DateTime.Now.AddDays(7).Date);
+			var lend2 = new Lend(comic1, client1, DateTime.Now.AddDays(10).Date, DateTime.Now.AddDays(12).Date);
 
-			db.Lends.AddRange(lend1);
+			db.Lends.AddRange(lend1,lend2);
 			db.SaveChanges();
 		}
 	}

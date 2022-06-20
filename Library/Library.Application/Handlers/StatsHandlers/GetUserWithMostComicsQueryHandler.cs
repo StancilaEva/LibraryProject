@@ -22,17 +22,20 @@ namespace Library.Application.Handlers.StatsHandlers
         }
         public async Task<Dictionary<Client, int>> Handle(GetUserWithMostComicsQuery request, CancellationToken cancellationToken)
         {
-            var clientId = await _lendRepository.UserIdWithMostLendsAsync();
-            var client = await _clientRepository.GetClientByIdAsync(clientId);
-            if (client != null)
+            var clients = await _lendRepository.UserIdWithMostLendsAsync();
+
+            if (clients.Count!=0)
             {
-                var noOfLends = await _lendRepository.UserCountWithMostLendsAsync();
                 Dictionary<Client, int> clientAndNoOfLends = new Dictionary<Client, int>();
-                clientAndNoOfLends.Add(client, noOfLends);
+                foreach(var clientId in clients.Keys)
+                {
+                    var client = await _clientRepository.GetClientByIdAsync(clientId);
+                    clientAndNoOfLends.Add(client, clients[clientId]);
+                }
+
                 return clientAndNoOfLends;
-            }
-            else
-            {
+            }  else {
+
                 throw new NoLendsException("No user lends registered yet");
             }
 

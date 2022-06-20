@@ -13,5 +13,6 @@ namespace Library.Application.Queries.ClientQueries
     {
         public int IdClient { get; set; }
         public int Page { get; set; }
+        public TimePeriod? Time { get; set; }
     }
 }

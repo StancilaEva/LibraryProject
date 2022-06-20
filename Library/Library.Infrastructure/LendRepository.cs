@@ -42,9 +42,20 @@ namespace Library.Infrastructure
             return lend;
         }
 
-        public async Task<List<Lend>> GetAllLendsFromClientAsync(int id,int page)
+        public async Task<List<Lend>> GetAllLendsFromClientAsync(int id,int page, TimePeriod? time)
         {
-            return await libraryContext.Lends.Include(lend => lend.Client)
+                var query = libraryContext.Lends.AsQueryable();
+
+                switch (time)
+                {
+                   case TimePeriod.Past: query = query.Where(lend => lend.EndDate < DateTime.Now); ; break;//ends in the past so it is no longer available
+
+                   case TimePeriod.Pesent: query = query.Where(lend => lend.StartDate <= DateTime.Now && lend.EndDate >= DateTime.Now); break;// current time is between start date and end date => it is ongoing
+
+                   case TimePeriod.Future: query = query.Where(lend => lend.StartDate > DateTime.Now); break; // it starts after current date => it is in the future
+                }
+
+                 return await query.Include(lend => lend.Client)
                 .Include(lend => lend.Book)
                 .Where(lend => lend.Client.Id.Equals(id))
                 .OrderByDescending(lend => lend.StartDate)
@@ -53,9 +64,20 @@ namespace Library.Infrastructure
                 .ToListAsync();
         }
 
-        public async Task<int> GetAllLendsCountFromClientAsync(int id, int page)
+        public async Task<int> GetAllLendsCountFromClientAsync(int id, int page, TimePeriod? time)
         {
-            return await libraryContext.Lends.Include(lend => lend.Client)
+            var query = libraryContext.Lends.AsQueryable();
+
+            switch (time)
+            {
+                case TimePeriod.Past: query = query.Where(lend => lend.EndDate < DateTime.Now); ; break;//ends in the past so it is no longer available
+
+                case TimePeriod.Pesent: query = query.Where(lend => lend.StartDate <= DateTime.Now && lend.EndDate >= DateTime.Now); break;// current time is between start date and end date => it is ongoing
+
+                case TimePeriod.Future: query = query.Where(lend => lend.StartDate > DateTime.Now); break; // it starts after current date => it is in the future
+            }
+
+            return await query.Include(lend => lend.Client)
                 .Include(lend => lend.Book)
                 .Where(lend => lend.Client.Id.Equals(id))
                 .CountAsync();
@@ -143,7 +165,7 @@ namespace Library.Infrastructure
                     Count = gr.Count()
                 })
                 .OrderByDescending(gr => gr.Count)
-                .Take(3)
+                .Take(4)
                 .ToDictionaryAsync(x => x.Genre, x => x.Count);
 
             return getComicsStatsQuery;
@@ -167,13 +189,13 @@ namespace Library.Infrastructure
                     Count = gr.Count()
                 })
                 .OrderByDescending(gr => gr.Count)
-                .Take(3)
+                .Take(4)
                 .ToDictionaryAsync(x => x.Publisher, x => x.Count);
 
             return getComicsStatsQuery;
         }
 
-        public async Task<int> UserIdWithMostLendsAsync()
+        public async Task<Dictionary<int, int>> UserIdWithMostLendsAsync()
         {
             var getComicsStatsQuery = await libraryContext.Lends
                 .Include(lend => lend.Client)
@@ -184,28 +206,11 @@ namespace Library.Infrastructure
                     Count = gr.Count()
                 })
                 .OrderByDescending(gr => gr.Count)
-                .Select(gr=>gr.ClientId)
-                .FirstOrDefaultAsync();
+                .Take(1)
+                .ToDictionaryAsync(x => x.ClientId, x => x.Count);
 
             return getComicsStatsQuery;
         }
-
-        public async Task<int> UserCountWithMostLendsAsync()
-        {
-            var getComicsStatsQuery = await libraryContext.Lends
-                .GroupBy((lend) => lend.ClientId)
-                .Select(gr => new
-                {
-                    Id = gr.Key,
-                    Count = gr.Count()
-                })
-                .OrderByDescending(gr => gr.Count)
-                .Select(gr => gr.Count)
-                .FirstOrDefaultAsync();
-
-            return getComicsStatsQuery;
-        }
-
         
     }
 }

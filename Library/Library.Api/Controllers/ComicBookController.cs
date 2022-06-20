@@ -13,7 +13,7 @@ using System.Web;
 
 namespace Library.Api.Controllers
 {
-    [Route("api/[controller]")] // o sa fie api/ComicBooks
+    [Route("api/[controller]")] 
     [ApiController]
     public class ComicBooksController : ControllerBase
     {
@@ -160,7 +160,7 @@ namespace Library.Api.Controllers
         }
 
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchComics([FromQuery] Search searchValue)
+        public async Task<IActionResult> SearchComics([FromQuery] SearchTitle searchValue)
         {
             if (String.IsNullOrEmpty(searchValue.SearchString))
             {

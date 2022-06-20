@@ -47,14 +47,14 @@ namespace NUnitLibraryTests
         [Test]
         public void InvalidEmailTest()
         {
-            Assert.Throws<InvalidUserCredentialsException>(() => new Client("user1", "password1", new Address("street", "city", "county", 1), "someinvalidemail"));
+            Assert.Throws<InvalidUserCredentialsException>(() => new Client("user1", new Address("street", "city", "county", 1), "someinvalidemail"));
 
         }
 
         [Test]
         public void InvalidUsernameTest()
         {
-            Assert.Throws<InvalidUserCredentialsException>(() => new Client("", "password1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
+            Assert.Throws<InvalidUserCredentialsException>(() => new Client("", new Address("street", "city", "county", 1), "somevalidemail@gmail.com"));
 
         }
 
@@ -91,19 +91,6 @@ namespace NUnitLibraryTests
             //Result
 
             Assert.IsInstanceOf<NotFoundResult>(result);
-        }
-
-
-        private ComicBook CreateComicBook()
-        {
-            return new ComicBook(1, "title", "publisher", Genre.COMEDY, 1, "cover");
-        }
-
-        private Lend CreateListOfLends()
-        {
-            var comic = new ComicBook(1, "title", "publisher", Genre.COMEDY, 1, "cover");
-            var client = new Client(1,"user1", new Address("street", "city", "county", 1), "somevalidemail@gmail.com");
-            return new Lend(comic, client, DateTime.Today, DateTime.Today.AddDays(14));
         }
 
     }

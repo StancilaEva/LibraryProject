@@ -10,8 +10,8 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
     {
         public Task<List<Lend>> GetAllLendsAsync();
         public Task<Lend> InsertLendAsync(int clientId, int comicId, DateTime startDate, DateTime endDate);
-        public Task<List<Lend>> GetAllLendsFromClientAsync(int id,int page);
-        public Task<int> GetAllLendsCountFromClientAsync(int id, int page);
+        public Task<List<Lend>> GetAllLendsFromClientAsync(int id,int page, TimePeriod? time);
+        public Task<int> GetAllLendsCountFromClientAsync(int id, int page, TimePeriod? time);
         public Task<Lend> GetLendByIdAsync(int id);
         public Task<Lend> ExtendLendAsync(Lend lend, DateTime endDate);
         public Task<bool> FindIfComicHasBeenLentInThatTimePeriodAsync(int id, DateTime startDate, DateTime endDate);
@@ -20,8 +20,7 @@ namespace Library.Core.Interfaces.RepositoryInterfaces
         public Task<Dictionary<int, int>> MostBorrowedComicsInThePastMonthAsync();
         public Task<Dictionary<Genre, int>> MostReadGenresAsync();
         public Task<Dictionary<string, int>> MostReadPublishersAsync();
-        public Task<int> UserIdWithMostLendsAsync();
-        public Task<int> UserCountWithMostLendsAsync();
+        public Task<Dictionary<int, int>> UserIdWithMostLendsAsync();
 
     }
 }

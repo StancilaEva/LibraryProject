@@ -40,6 +40,7 @@ namespace NUnitLibraryTests
 
             Assert.AreEqual(1, book.Id);
             Assert.AreEqual("title1", book.Title);
+            Assert.AreEqual("publisher1", book.Publisher);
         }
 
         [Test]
@@ -50,7 +51,6 @@ namespace NUnitLibraryTests
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
-
 
     }
 }

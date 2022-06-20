@@ -56,6 +56,7 @@ function ExtendLend(props) {
                 render={({ field }) =>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
+                            inputFormat="dd/MM/yyyy"
                             label="End Date"
                             value={field.value}
                             onChange={(evt) => {

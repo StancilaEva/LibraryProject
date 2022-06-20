@@ -156,11 +156,9 @@ namespace Library.Api.Controllers
                     var lendResult = _mapper.Map<LendResultDTO>(result);
 
                     return Ok(lendResult);
-            }
-            else
-            {
+            } else {
                 return Unauthorized();
-            }
+               }
             }
                 catch (UnauthorizedAccessException ex)
             {
@@ -193,7 +191,7 @@ namespace Library.Api.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet()]
-        public async Task<IActionResult> GetUserLends([FromQuery] int page)
+        public async Task<IActionResult> GetUserLends([FromQuery] LendPaging lendPaging)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
@@ -202,7 +200,8 @@ namespace Library.Api.Controllers
                 var queryToSend = new GetClientLendsQuery()
                 {
                     IdClient = id,
-                    Page = page
+                    Page = lendPaging.Page,
+                    Time = lendPaging.Time
                 };
                 LendPage result = await _mediatR.Send(queryToSend);
 
@@ -222,7 +221,9 @@ namespace Library.Api.Controllers
                 return Ok(userLendsDTO);
             }
             else
+            {
                 return Unauthorized();
+            }
         }
 
     }

@@ -15,24 +15,12 @@ import PublishersPieChart from "../Cards/Charts/PublishersPieChart";
 const StatsPage = () =>{
 
     const [mostBorrowed,setMostBorrowed] = useState([])
-    const [mostReadGenres,setMostReadGenres] = useState([])
-    const [mostReadPublishers,setMostReadPublishers] = useState([])
     const [userStats,setUser] = useState([])
 
     const loadGetMostBorrowed = async () =>
     {
         const response = await GetMostBorrowedBooks()
         setMostBorrowed(response)
-    }
-
-    const loadMostReadGenres = async () =>{
-        const response = await GetMostReadGenres()
-        setMostReadGenres(response)
-    }
-
-    const loadMostReadPublishers = async () =>{
-        const response = await GetMostReadPublishers()
-        setMostReadPublishers(response)
     }
     
     const loadUserWithMostComics = async () =>{
@@ -42,8 +30,6 @@ const StatsPage = () =>{
 
     useEffect(() => { 
         loadGetMostBorrowed();
-        loadMostReadGenres();
-        loadMostReadPublishers();
         loadUserWithMostComics();
      }, []);
 
@@ -53,7 +39,7 @@ const StatsPage = () =>{
     <main>
         <Grid container spacing={3} padding={"16px"}>
             <Grid item xs={12} sm={12} md={12} marginTop={"16px"}>
-                <Typography variant="h6" sx={{margin:'4px'}}>Most Borrowed Comics This Month</Typography>
+                <Typography variant="h6" sx={{margin:'4px'}}>Top Comics This Month</Typography>
             </Grid>
             {
                 mostBorrowed.map((comic, index) => 
@@ -73,21 +59,21 @@ const StatsPage = () =>{
             <Grid item xs={12}sm={12} md={12}/>
             <Grid item xs={12} sm={12} md={6} marginTop={"32px"} >
                 <Card>
-                <Typography variant="h6" sx={{margin:'8px'}}>Most Read Genres</Typography>
-                <BarChart mostReadGenres={mostReadGenres}></BarChart>
+                <Typography variant="h6" sx={{margin:'8px'}}>Top Genres</Typography>
+                <BarChart></BarChart>
                 </Card>
             </Grid>
             <Grid item xs={12} sm={12} md={6} marginTop={"32px"}  >
             <Card padding={"4px"}  sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <Typography variant="h6" sx={{margin:'8px'}} >Most Read Publishers</Typography>
-                <PublishersPieChart mostReadPublishers={mostReadPublishers}/>
+                <Typography variant="h6" sx={{margin:'8px'}} >Top Publishers</Typography>
+                <PublishersPieChart/>
             </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={6} marginTop={"32px"}>
             <Card>
-                <Typography variant="h6" sx={{margin:'8px'}}>User Who Borrowed Most Comics</Typography>
+                <Typography variant="h6" sx={{margin:'8px'}}>Top Users</Typography>
                 <Divider />
-                <Box sx={{display:'flex'}} >
+                <Box >
                 {
                     userStats.map((user,index)=>
                     <Typography variant="h6" sx={{margin:'8px'}} key={index}><StarIcon sx={{color:"#FFD32D"}}/>{`${user.username} with ${user.count} comics`}</Typography>

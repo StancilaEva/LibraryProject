@@ -1,6 +1,6 @@
 ﻿namespace Library.Api.DTOs.ComicBookDTOs
 {
-    public class Search
+    public class SearchTitle
     {
         public String? SearchString { get; set; }
     }

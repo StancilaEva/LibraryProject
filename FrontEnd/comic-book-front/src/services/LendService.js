@@ -1,7 +1,7 @@
 import { RepeatOneSharp } from "@mui/icons-material";
 import api from "../api/posts"
 
-export const getAllClientLends = async (page) => {
+export const getAllClientLends = async (page,time) => {
     const header = {
         headers: {
            Authorization: "Bearer " + localStorage.getItem('token')
@@ -14,7 +14,8 @@ export const getAllClientLends = async (page) => {
         lends:[]
         }
     }
-    await api.get(`/Lends?page=${page}`,header).then((result) => 
+    
+    await api.get(`/Lends?page=${page}&time=${time===-1?'':time}`,header).then((result) => 
     {
         if(result.status===200){
             jsonMessage.data.lends = result.data.lends

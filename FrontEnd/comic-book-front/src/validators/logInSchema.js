@@ -6,7 +6,7 @@ export const logInSchema = Joi.object({
         'string.email': `enter a valid email`,
         'any.required': `email is required`
     }),
-    password: Joi.string().min(4).required().messages({
+    password: Joi.string().required().messages({
         'string.base': `invalid password`,
         'string.empty': `password cannot be empty`,
         'any.required': `password is required`

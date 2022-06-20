@@ -69,6 +69,7 @@ function NewLend(props) {
                             <DatePicker
                                 label="Start Date"
                                 value={field.value}
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(evt) => {
                                     field.onChange(evt)
                                 }}
@@ -89,6 +90,7 @@ function NewLend(props) {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 label="End Date"
+                                inputFormat="dd/MM/yyyy"
                                 value={field.value}
                                 onChange={(evt) => {
                                     field.onChange(evt)

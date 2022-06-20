@@ -56,24 +56,22 @@ namespace Library.Core
             if (DateOnly.FromDateTime(startDate) >= DateOnly.FromDateTime(DateTime.Today))
             {
                 StartDate = startDate;
-            }
-            else
-            {
+            } else {
                 throw new InvalidDateException("Invalid date");
             }
 
             if (DateOnly.FromDateTime(endDate) > DateOnly.FromDateTime(DateTime.Today))
             {
                 EndDate = endDate;
-            }
-            else
-            {
+            } else {
                 throw new InvalidDateException("Invalid date");
             }
+
             if (DateOnly.FromDateTime(startDate) > DateOnly.FromDateTime(endDate))
             {
                 throw new InvalidDateException("Invalid date");
             }
+
             this.ClientId = clientId;
             this.BookId = comicId;
             IsExtended = false;

@@ -46,13 +46,17 @@ namespace Library.Application.Handlers.LendHandlers.CommandHandlers
             }
             if(lend.EndDate < System.DateTime.Now)
             {
-                throw new LendDateNotValidException("this comic book has already been returned");
+                throw new LendDateNotValidException("This comic book has already been returned");
+            }
+            if (lend.EndDate.Date == endDate.Date)
+            {
+                throw new LendDateNotValidException("New end date and old end date shouldn't be equal");
             }
             if (lend.EndDate > endDate)
             {
                 throw new LendDateNotValidException("The extended date cannot be before the original end date");
             }
-            if ((endDate - lend.EndDate).TotalDays > 7)
+            if ((endDate.Date - lend.EndDate.Date).TotalDays > 7)
             {
                 throw new LendDateNotValidException("You cannot extend the lending time of a comic by more than a week");
             }

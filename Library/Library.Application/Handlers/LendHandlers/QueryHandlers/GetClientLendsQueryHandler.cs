@@ -22,8 +22,8 @@ namespace Library.Application.Handlers.ClientHandlers.QueryHandlers
 
         public async Task<LendPage> Handle(GetClientLendsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _lendRepository.GetAllLendsFromClientAsync(request.IdClient,request.Page);
-            var count = await _lendRepository.GetAllLendsCountFromClientAsync(request.IdClient, request.Page);
+            var result = await _lendRepository.GetAllLendsFromClientAsync(request.IdClient,request.Page,request.Time);
+            var count = await _lendRepository.GetAllLendsCountFromClientAsync(request.IdClient, request.Page,request.Time);
             return new LendPage()
             {
                 Lends = result,
