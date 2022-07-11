@@ -90,7 +90,6 @@ namespace Library.Infrastructure
                 await libraryContext.SaveChangesAsync();
                 return bookToDelete;
             }
-
             return null;
         }
 

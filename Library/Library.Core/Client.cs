@@ -13,6 +13,7 @@ namespace Library.Core
         public string IdentityId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public ICollection<ComicBook> Comics { get; set; }
 
         [JsonIgnore]
         public Address Address  { get; set; }

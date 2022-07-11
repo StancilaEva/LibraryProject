@@ -84,5 +84,16 @@ namespace Library.Api.Controllers
             }
         }
 
+        [HttpGet("BestRated")]
+        public async Task<IActionResult> BestRatedComics()
+        {
+            var result = await _mediatR.Send(new GetBestRatedComicsQuery());
+
+            var statResult = _mapper.Map<List<ComicAverageDTO>>(result);
+
+            return Ok(statResult);
+
+        }
+
     }
 }

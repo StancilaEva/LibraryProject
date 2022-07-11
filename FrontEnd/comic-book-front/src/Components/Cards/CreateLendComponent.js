@@ -57,8 +57,8 @@ function NewLend(props) {
     }
 
     return (
-        <>
-            <Box sx={{ margin: '1%' }}>
+        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" , height:'50vh'}}>
+            <Box sx={{ margin: '1%' }} >
 
                 <Controller
                     name="startLendDate"
@@ -112,7 +112,7 @@ function NewLend(props) {
                     {renderMessage()}
                 </Collapse>
             </Box>
-        </>
+        </Box>
     )
 }
 

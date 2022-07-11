@@ -46,6 +46,10 @@ function ApplicationMenuBar(){
         navigate(`/Stats`)
     }
 
+    const onFavClick = () =>{
+        navigate(`/Favorites`)
+    }
+
     return (
         <>
         <Box flexGorw={1}>
@@ -61,7 +65,7 @@ function ApplicationMenuBar(){
                         <MenuIcon />
                     </IconButton>
                     <HomeIcon
-                      onClick={goToHome} />
+                      onClick={goToHome} sx={{marginRight:"24px"}}/>
                     <SearchComic sx={{width:'10%'}}/>
                     <Box flexGrow={1}/>
                     <Button onClick={LogOut} color="secondary">Log Out</Button>
@@ -80,6 +84,7 @@ function ApplicationMenuBar(){
             <MenuItem onClick={onMyLendsClick}>My Lends</MenuItem>
             <MenuItem onClick={onMyAddressClick}>Address</MenuItem>
             <MenuItem onClick={onStatsClick}>Stats</MenuItem>
+            <MenuItem onClick={onFavClick}>Favorites</MenuItem>
         </Menu>
         </>)
     

@@ -3,25 +3,21 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import { Button } from '@mui/material';
+import { Button,Box } from '@mui/material';
 import { useState } from 'react';
 import { getTimePeriods } from '../../../services/LendService';
+import { useEffect } from 'react';
 
 const LendTimesDialog = (props) => {
     const {id} = props
     const [lends, setLends] = useState([])
-    const [open,setOpen] = useState(false)
 
     const handleClickOpen = async () => {
         const response = await getTimePeriods(id)
         setLends(response)
-        setOpen(true);
-      };
-    
-      const handleClose = (value) => {
-        setOpen(false);
       };
 
+      useEffect(()=>{handleClickOpen()},[])
 
       const parseDate = (lend) =>{
         let startDate  = new Date(lend.startDate)
@@ -30,10 +26,8 @@ const LendTimesDialog = (props) => {
       }
 
     return (
-        <div>
-            <Button onClick={handleClickOpen} variant="contained" sx={{margin:'8px'}}>See Lends For This Comic</Button>
-            <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>Other Users Borrowed This Comic On</DialogTitle>
+     
+            <Box style={{maxHeight: '60vh', overflow: 'auto'}}>
                 <List sx={{ pt: 0 }}>
                     {lends.map((lend, key) => (
                         <ListItem key={key}>
@@ -41,8 +35,8 @@ const LendTimesDialog = (props) => {
                         </ListItem>
                     ))}
                 </List>
-            </Dialog>
-        </div>
+                </Box>
+          
     )
 }
 

@@ -15,6 +15,7 @@ namespace Library.Core
         public string Publisher { get; set; }
         public int IssueNumber { get; set; }
         public String Cover { get; set; }
+        public ICollection<Client> Clients { get; set; }
 
 
 

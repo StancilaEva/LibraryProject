@@ -16,6 +16,8 @@ namespace Library.Infrastructure.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Lend> Lends { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
         public LibraryContext(DbContextOptions options):base(options)
         {
@@ -33,6 +35,7 @@ namespace Library.Infrastructure.Data
           modelBuilder.ApplyConfiguration(new IdentityUserTokenConfig());
           modelBuilder.ApplyConfiguration(new IdentityUserLogInConfig());
             modelBuilder.ApplyConfiguration(new IdentityUserRoleConfig());
+            modelBuilder.ApplyConfiguration(new FavoritesEntityConfigurations());
         }
     }
 }

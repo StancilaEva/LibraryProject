@@ -113,6 +113,29 @@ namespace Library.Infrastructure.Migrations
                     b.ToTable("ComicBooks");
                 });
 
+            modelBuilder.Entity("Library.Core.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ComicId");
+
+                    b.ToTable("Favorites");
+                });
+
             modelBuilder.Entity("Library.Core.Lend", b =>
                 {
                     b.Property<int>("Id")
@@ -143,6 +166,36 @@ namespace Library.Infrastructure.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Lends");
+                });
+
+            modelBuilder.Entity("Library.Core.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ComicId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -319,6 +372,25 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("Library.Core.Favorite", b =>
+                {
+                    b.HasOne("Library.Core.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Core.ComicBook", "ComicBook")
+                        .WithMany()
+                        .HasForeignKey("ComicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("ComicBook");
+                });
+
             modelBuilder.Entity("Library.Core.Lend", b =>
                 {
                     b.HasOne("Library.Core.ComicBook", "Book")
@@ -336,6 +408,25 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("Library.Core.Review", b =>
+                {
+                    b.HasOne("Library.Core.Client", "Author")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Core.ComicBook", "Comic")
+                        .WithMany()
+                        .HasForeignKey("ComicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Comic");
                 });
 
             modelBuilder.Entity("Library.Core.Address", b =>

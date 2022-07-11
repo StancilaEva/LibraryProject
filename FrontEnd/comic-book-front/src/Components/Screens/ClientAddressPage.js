@@ -18,30 +18,30 @@ function ClientAddress() {
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState(0)
-    const [address,setAddress] = useState({
-        county:'',
-        city:'',
-        street:'',
-        number:0
+    const [address, setAddress] = useState({
+        county: '',
+        city: '',
+        street: '',
+        number: 0
     })
-    const { register, handleSubmit, formState: { errors },reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: joiResolver(addressSchema),
         defaultValues: address
     });
     const navigate = useNavigate()
 
 
-    
+
     const loadAddress = async () => {
         const response = await getAddress()
-        if(response.status === 401)
-        {
+        if (response.status === 401) {
             localStorage.clear()
             navigate('/LogIn')
 
+        } else {
+            setAddress(response.address)
+            reset(response.address)
         }
-        setAddress(response.address)
-        reset(response.address)
     }
 
     const changeAddress = async (data) => {
@@ -52,8 +52,7 @@ function ClientAddress() {
             setMessage(result.message)
             setStatus(result.status)
         }
-        else if(result.status === 401)
-        {
+        else if (result.status === 401) {
             localStorage.clear()
             navigate('/LogIn')
 
@@ -110,10 +109,10 @@ function ClientAddress() {
                     Change Address
                 </Button>
                 <Box sx={{ width: '30%', position: "absolute", bottom: 0 }} >
-                <Collapse in={showMessage}>
-                    {renderMessage()}
-                </Collapse>
-            </Box>
+                    <Collapse in={showMessage}>
+                        {renderMessage()}
+                    </Collapse>
+                </Box>
             </Box>
         </div>)
 }

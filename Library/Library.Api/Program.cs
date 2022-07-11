@@ -33,6 +33,8 @@ builder.Services.AddCors(options => options
 builder.Services.AddTransient(typeof(IBookRepository), typeof(ComicBookRepository));
 builder.Services.AddTransient(typeof(IClientRepository), typeof(ClientRepository));
 builder.Services.AddTransient(typeof(ILendRepository), typeof(LendRepository));
+builder.Services.AddTransient(typeof(IReviewRepository), typeof(ReviewRepository));
+builder.Services.AddTransient(typeof(IFavoritesRepository), typeof(FavoritesRepository));
 builder.Services.AddTransient((global::System.Type)typeof(global::Library.Application.Interfaces.IUserRegistrator), (global::System.Type)typeof(global::Library.Infrastructure.UserRegistrator));
 builder.Services.AddTransient(typeof(RegistrationService));
 

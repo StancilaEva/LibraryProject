@@ -28,6 +28,13 @@ namespace Library.Api.Profiles
             CreateMap<KeyValuePair<Client, int>, UserStatsDTO>()
                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Key.Username))
                .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Value));
+            CreateMap<KeyValuePair<ComicBook,double>,ComicAverageDTO>()
+                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Key.Id))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Key.Title))
+                .ForMember(dest => dest.Cover, opt => opt.MapFrom(src => src.Key.Cover))
+                .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => GenreConverter.FromEnum(src.Key.Genre)))
+                 .ForMember(dest => dest.Average, opt => opt.MapFrom(src => src.Value));
+
         }
     }
 }

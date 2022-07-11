@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import PrivateRoute from "./PrivateRouter/PrivateRouter";
 import StatsPage from "./Components/Screens/StatsPage";
 import LendTimesDialog from "./Components/Cards/Dialog/LendTimesDialog";
+import FavoritesPage from "./Components/Screens/FavoritesPage";
 
 
 function App() {
@@ -51,6 +52,11 @@ function App() {
              <Route path="/Stats" exact element={
             <PrivateRoute>
             <StatsPage/>
+            </PrivateRoute>
+             }></Route>
+             <Route path="/Favorites" exact element={
+            <PrivateRoute>
+            <FavoritesPage/>
             </PrivateRoute>
              }></Route>
             <Route path="/Signup" exact element={<SignUpStepper/>}></Route>

@@ -27,3 +27,9 @@ export const GetUserWithMostComics = async () =>
     await api.get(`/Stats/UserWithMostBorrowedComics`).then((result) => data = result.data).catch((err) => { })
     return data
 } 
+
+export const getBestRatedComics = async () =>{
+    let data = [];
+    await api.get(`/Stats/BestRated`).then((result)=>data=result.data).catch((err)=>{})
+    return data
+}
