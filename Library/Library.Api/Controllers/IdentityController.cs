@@ -3,6 +3,7 @@ using Library.Api.DTOs;
 using Library.Api.DTOs.ErrorDTOs;
 using Library.Api.DTOs.RegisterDTOs;
 using Library.Api.DTOs.UserDTOs;
+using Library.Application.Commands;
 using Library.Application.Commands.ClientCommands;
 using Library.Application.Commands.RegistrationCommands;
 using Library.Application.Exceptions;
@@ -97,5 +98,6 @@ namespace Library.Api.Controllers
                 return BadRequest(err);
             }
         }
+
     }
 }

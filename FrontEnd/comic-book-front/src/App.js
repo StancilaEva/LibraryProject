@@ -18,6 +18,9 @@ import PrivateRoute from "./PrivateRouter/PrivateRouter";
 import StatsPage from "./Components/Screens/StatsPage";
 import LendTimesDialog from "./Components/Cards/Dialog/LendTimesDialog";
 import FavoritesPage from "./Components/Screens/FavoritesPage";
+import AdminPage from "./Components/Screens/AdminPage";
+import PrivateAdminRoute from "./PrivateRouter/PrivateAdminRouter";
+import AddComicBookPage from "./Components/Screens/AddComicBookPage";
 
 
 function App() {
@@ -59,6 +62,18 @@ function App() {
             <FavoritesPage/>
             </PrivateRoute>
              }></Route>
+             <Route path="/Admin" exact element={
+              <PrivateAdminRoute>
+                <AdminPage/>
+              </PrivateAdminRoute>
+             }>
+             </Route>
+             <Route path="/ComicBook" exact element={
+              <PrivateAdminRoute>
+                <AddComicBookPage/>
+              </PrivateAdminRoute>
+             }>
+             </Route>
             <Route path="/Signup" exact element={<SignUpStepper/>}></Route>
             <Route path="/LogIn" exact element={<LogIn/>}></Route>
             <Route path="/DatePicker" exact element={<LendTimesDialog/>}></Route>

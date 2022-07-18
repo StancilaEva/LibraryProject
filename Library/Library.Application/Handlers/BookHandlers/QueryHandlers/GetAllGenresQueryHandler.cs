@@ -1,4 +1,5 @@
 ﻿using Library.Application.Queries.BookQueries;
+using Library.Application.utils;
 using Library.Core;
 using Library.Core.Interfaces.RepositoryInterfaces;
 using MediatR;
@@ -19,11 +20,16 @@ namespace Library.Application.Handlers.BookHandlers.QueryHandlers
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<string>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
+        public Task<List<string>> Handle(GetAllGenresQuery request, CancellationToken cancellationToken)
         {
-            var genres = await _bookRepository.GetAllGenresAsync();
-            genres.Insert(0, "");
-            return genres;
+            Genre[] enumGenres = (Genre[])Enum.GetValues(typeof(Genre));
+            var stringGenres = new List<string>();
+            foreach(var genre in enumGenres)
+            {
+                stringGenres.Add(GenreConverter.FromEnum(genre));
+            }
+            stringGenres.Insert(0, "");
+            return Task.FromResult(stringGenres);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Library.Application.Handlers.RegistrationHandlers.CommandHandlers
                 {
                     string identityId = await _identityService.GetProfileId(request.Email);
                     Client client = await _clientRepository.GetUserByIdentityId(identityId);
-                    string result = RegistrationService.GenerateJwtToken(client);
+                    string result = await _identityService.GenerateJwtToken(client);
                     return result;
                 }
                 else

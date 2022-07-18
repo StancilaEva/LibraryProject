@@ -1,5 +1,6 @@
 ﻿using Library.Core;
 using Library.Infrastructure.EntityConfigurations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,8 +35,8 @@ namespace Library.Infrastructure.Data
          .OnDelete(DeleteBehavior.SetNull);
           modelBuilder.ApplyConfiguration(new IdentityUserTokenConfig());
           modelBuilder.ApplyConfiguration(new IdentityUserLogInConfig());
-            modelBuilder.ApplyConfiguration(new IdentityUserRoleConfig());
-            modelBuilder.ApplyConfiguration(new FavoritesEntityConfigurations());
+          modelBuilder.ApplyConfiguration(new IdentityUserRoleConfig());
+          modelBuilder.ApplyConfiguration(new FavoritesEntityConfigurations());
         }
     }
 }

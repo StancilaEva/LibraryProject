@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchComic from './FilterInputs/SearchComic';
-
+import { getRole } from '../../functions/ExtractFromToken';
 function ApplicationMenuBar(){
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -50,6 +50,10 @@ function ApplicationMenuBar(){
         navigate(`/Favorites`)
     }
 
+    const onAddComicClick = () =>{
+        navigate(`/ComicBook`)
+    }
+
     return (
         <>
         <Box flexGorw={1}>
@@ -85,6 +89,7 @@ function ApplicationMenuBar(){
             <MenuItem onClick={onMyAddressClick}>Address</MenuItem>
             <MenuItem onClick={onStatsClick}>Stats</MenuItem>
             <MenuItem onClick={onFavClick}>Favorites</MenuItem>
+            {getRole(localStorage.getItem("token"))==="Admin"?<MenuItem onClick={onAddComicClick}>Add Comic Book</MenuItem>:<></>}
         </Menu>
         </>)
     

@@ -8,6 +8,8 @@ using Library.Application.Queries;
 using Library.Application.Queries.BookQueries;
 using Library.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 
@@ -110,7 +112,9 @@ namespace Library.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateComicBookById([FromBody] ComicBookBodyDTO comicBookDTO)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateComicBook([FromBody] ComicBookBodyDTO comicBookDTO)
         {
             var commandToSend = new CreateComicBookCommand()
             {
@@ -126,8 +130,8 @@ namespace Library.Api.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(result);
+            
+            return CreatedAtAction(nameof(GetComicBookById),new {id=result.Id},result);
         }
 
         [HttpGet("Publishers")]

@@ -26,6 +26,7 @@ function AltHomePage() {
     const [filterPublisher, setFilterPublisher] = useState("");
     const [filterGenre, setFilterGenre] = useState("");
 
+    const [deleteComic,setDeleteComic] = useState(0)
 
     const loadComics = async () => {
           const result = await getComicBooks(page,sortOrder,filterPublisher,filterGenre)
@@ -33,7 +34,7 @@ function AltHomePage() {
           setNoOfPages(Math.ceil(result.recordCount / 8))
     };
 
-    useEffect(() => { loadComics() }, [page, sortOrder, filterPublisher, filterGenre]);
+    useEffect(() => { loadComics() }, [page, sortOrder, filterPublisher, filterGenre,deleteComic]);
 
 
     return (
@@ -47,7 +48,7 @@ function AltHomePage() {
                 </Box>
                 <Grid container spacing={3} marginLeft={"0.05%"} marginTop="0.05%" width="99%">
                     {
-                        comics.map((comic, index) => <Grid item xs={12} sm={6} md={3} key={index}><ComicBookGridCard key={index} comicBook={comic} ></ComicBookGridCard></Grid>)
+                        comics.map((comic, index) => <Grid item xs={12} sm={6} md={3} key={index}><ComicBookGridCard key={index} comicBook={comic} deleteComic={deleteComic} setDeleteComic={setDeleteComic}></ComicBookGridCard></Grid>)
                     }
                 </Grid>
                 <Box display={"flex"} justifyContent={"center"}>

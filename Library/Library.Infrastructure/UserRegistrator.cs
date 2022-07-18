@@ -16,19 +16,21 @@ namespace Library.Infrastructure
     {
         private readonly LibraryContext _libraryContext;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserRegistrator(LibraryContext libraryContext, UserManager<IdentityUser> userManager)
+        public UserRegistrator(LibraryContext libraryContext, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _libraryContext = libraryContext;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<Client> InsertUserInTheDatabase(string email, string username, string password, Address address)
         {
             var identity = new IdentityUser()
             {
-                Email = email,
-                UserName = username,
+                Email = "admin@example.com",
+                UserName = "admin",
             };
             using var transaction = _libraryContext.Database.BeginTransaction();
             var createdIdentity = await _userManager.CreateAsync(identity, password);
@@ -38,6 +40,8 @@ namespace Library.Infrastructure
                 string errorMessage = createdIdentity.Errors.First().Description;
                 throw new CreateUserException(errorMessage);
             }
+             _userManager.AddToRoleAsync(identity, "Client").Wait();
+           
             Client client = new Client(identity.Id, username, address, email);
             _libraryContext.Clients.Add(client);
             try

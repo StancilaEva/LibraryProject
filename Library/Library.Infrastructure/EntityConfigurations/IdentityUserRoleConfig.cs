@@ -13,7 +13,7 @@ namespace Library.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
         {
-            builder.HasKey(iur => iur.RoleId);
+            builder.HasKey(i => new { i.UserId, i.RoleId });
         }
     }
 }

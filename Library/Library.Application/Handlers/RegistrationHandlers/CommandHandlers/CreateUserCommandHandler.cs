@@ -33,7 +33,7 @@ namespace Library.Application.Handlers.RegistrationHandlers.CommandHandlers
                 Client client = await _register.InsertUserInTheDatabase(request.Email, request.Username, request.Password, new Address(request.Street, request.City, request.County, request.Number));
                 if (client != null)
                 {
-                    var token = RegistrationService.GenerateJwtToken(client);
+                    var token = await _identityService.GenerateJwtToken(client);
                     return token;
                 }
                 else throw new UserRegistrationException("Something went wrong");

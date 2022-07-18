@@ -17,17 +17,20 @@ namespace Library.Application.JwtTokenGeneration
             _userManager = userManager;
         }
 
-        public static string GenerateJwtToken(Client client)
+        public async Task<string> GenerateJwtToken(Client client)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("643A60B964080FBAE64AD75F7B7C19D5"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var identity = await _userManager.FindByEmailAsync(client.Email);
+            var role = await _userManager.GetRolesAsync(identity);
             var claims = new[]
            {
                 new Claim("UserId",client.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub,client.Email),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, client.Username),
-                new Claim(JwtRegisteredClaimNames.Email, client.Email)
+                new Claim(JwtRegisteredClaimNames.Email, client.Email),
+                new Claim(ClaimTypes.Role,role[0])
             };
             var token = new JwtSecurityToken("Library",
                          "SwaggerUI",
@@ -37,7 +40,6 @@ namespace Library.Application.JwtTokenGeneration
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
 
         public async Task<bool> CheckIfUserAlreadyExists(string email)
         {
